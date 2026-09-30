@@ -1,0 +1,50 @@
+================================================================================
+RINGKASAN REVISI TAMPILAN FORMULA MATEMATIKA PADA WEBPAGE TESIS
+Tanggal: 2026-09-30
+Penulis: Sean Pribadi (PNU - AI Convergence)
+================================================================================
+
+1. MASALAH SEBELUMNYA:
+- Formula matematika sebelumnya masih berupa kode mentah LaTeX (seperti `$$`, `\text{...}`,
+  `\frac{...}`, `$\tau$`, `$2^{SF}$`).
+- Jika jaringan offline atau CDN skrip pihak ketiga terblokir, kode mentah tersebut tetap
+  muncul di layar pengguna sehingga sulit dan tidak nyaman dibaca.
+
+2. SOLUSI & PERBAIKAN YANG DITERAPKAN:
+- Dibuat sistem tipografi matematika native berbasis HTML5 & CSS modern (.equation-card)
+  tanpa bergantung pada dependensi eksternal (100% offline & GitHub Pages ready).
+- Seluruh simbol variabel, fungsi, pecahan bertumpuk, integral, dan operator kini ditampilkan
+  dengan font standar publikasi ilmiah ('Cambria Math', 'STIX Two Math', 'Times New Roman'):
+  
+  a. Equation (1) - Signal-to-Noise Ratio (SNR):
+     Ditampilkan dengan pecahan bertingkat (numerator P_signal di atas garis bagi,
+     denominator P_noise di bawah), fungsi log_10, dan kartu penjelasan parameter.
+
+  b. LoRa Demodulation (Dechirping Operation):
+     y(t) = s_rx(t) * s_down*(t)
+     Simbol transmit: S in [0, 2^SF - 1].
+
+  c. Hardware Impairments & Offsets (3 Kartu Terpisah):
+     - STO (Symbol Timing Offset):
+       Delta k_STO = round( tau / T_s ) dengan pecahan vertikal dan badge huruf Yunani tau.
+     - CFO (Carrier Frequency Offset):
+       Delta f = f_c * PPM * 10^-6 dengan badge Delta f dan superskrip eksponen.
+     - SFO (Sampling Frequency Offset):
+       theta_err(t) = 2*pi * Integral dari 0 ke t untuk delta_s(tau) d_tau dengan simbol integral
+       dan batas integral atas-bawah yang proporsional.
+
+  d. Equation (2) - The Decoupling Dilemma (Conventional Algebraic Decoupling):
+     Ditampilkan berdampingan dalam kartu khusus pada kotak peringatan:
+     Delta k_STO = (f_up + f_down) / 2
+     Delta f_CFO = (f_up - f_down) / 2
+
+  e. Inline Math & Badges:
+     Seluruh simbol teks seperti 2^SF chips, Delta k_STO, Delta f_CFO, dan parameter S=0
+     diberi kontainer khusus (.math-inline) beraksen cyan lembut yang menyatu elegan
+     dengan teks paragraf.
+
+3. STATUS PENGUJIAN VISUAL:
+- Telah diverifikasi langsung melalui browser subagent:
+  * Tidak ada lagi karakter mentah dollar ($) maupun backslash (\).
+  * Pecahan, integral, superskrip, dan subskrip terlihat tajam, presisi, dan estetis.
+================================================================================

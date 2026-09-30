@@ -996,16 +996,211 @@ code, kbd, samp, pre {
   font-weight: 700;
 }
 
-.math-formula {
-  background: var(--bg-tertiary);
+/* ===================================================================
+   Native Academic Mathematical Typography System
+   Crisp, Publication-Grade Rendering (No external dependencies needed)
+   =================================================================== */
+
+.equation-card {
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 0.75rem 1rem;
-  margin: 0.85rem 0;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.equation-card:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.12);
+}
+
+.equation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.equation-badge {
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+}
+
+.equation-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.equation-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.5rem;
+  font-family: 'Cambria Math', 'Latin Modern Math', 'STIX Two Math', 'Times New Roman', serif;
+  font-size: 1.32rem;
+  color: var(--text-primary);
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  user-select: all;
   overflow-x: auto;
+}
+
+.equation-body.compact {
+  font-size: 1.15rem;
+  padding: 0.5rem 0;
+}
+
+/* Math Components */
+.math-var {
+  font-style: italic;
+  font-family: 'Cambria Math', 'Latin Modern Math', 'Times New Roman', serif;
+  color: var(--text-primary);
+}
+
+.math-func {
+  font-style: normal;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  margin: 0 0.15rem;
+}
+
+.math-op {
+  font-style: normal;
+  margin: 0 0.45rem;
+  color: var(--accent-cyan);
+  font-weight: 400;
+}
+
+.math-sub {
+  font-size: 0.72em;
+  vertical-align: sub;
+  font-style: normal;
+  font-family: var(--font-sans);
+  margin-left: 0.05rem;
+}
+
+.math-sup {
+  font-size: 0.72em;
+  vertical-align: super;
+  font-style: normal;
+  font-family: var(--font-sans);
+  margin-left: 0.05rem;
+}
+
+.math-paren {
+  font-size: 1.35em;
+  color: var(--text-muted);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.math-bracket {
+  font-size: 1.4em;
+  color: var(--text-muted);
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* Vertical Fractions */
+.math-frac {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0 0.35rem;
+  margin: 0 0.2rem;
+}
+
+.math-num {
+  padding-bottom: 0.2rem;
+  border-bottom: 1.8px solid var(--text-primary);
+  line-height: 1.2;
+}
+
+.math-den {
+  padding-top: 0.2rem;
+  line-height: 1.2;
+}
+
+/* Big Integral & Greek Symbol accents */
+.math-symbol {
+  font-size: 1.45em;
+  vertical-align: -0.18em;
+  color: var(--accent-emerald);
+  margin: 0 0.15rem;
+}
+
+.math-integral {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0.3rem;
+}
+
+.math-integral .int-sym {
+  font-size: 1.75em;
+  color: var(--accent-purple);
+  line-height: 1;
+  vertical-align: -0.2em;
+}
+
+.math-integral .int-bounds {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.65em;
+  margin-left: -0.15rem;
+  height: 2.2em;
+  font-family: var(--font-mono);
+}
+
+.equation-legend {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-subtle);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.equation-legend strong {
+  color: var(--text-secondary);
+}
+
+/* Inline Mathematical Badges and Highlights */
+.math-inline {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Cambria Math', 'STIX Two Math', 'Times New Roman', serif;
+  font-size: 1.05em;
+  color: var(--accent-cyan);
+  padding: 0.05rem 0.35rem;
+  background: rgba(56, 189, 248, 0.08);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  margin: 0 0.15rem;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .math-inline {
+  color: #0369a1;
+  background: rgba(14, 165, 233, 0.08);
+  border-color: rgba(14, 165, 233, 0.25);
 }
 
 /* SOTA Matrix Cards */

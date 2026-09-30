@@ -1,0 +1,44 @@
+================================================================================
+ANALISIS & REKOMENDASI JUDUL TESIS S2 (MASTER OF AI CONVERGENCE - PNU)
+Mahasiswa: Sean Pribadi (시안)
+Departemen: AI Convergence, The Graduate School, Pusan National University
+Topik: LoRa Receiver, Ultra-Low SNR, Synchronization, Hardware Offsets (CFO/STO/SFO), Machine Learning
+Tanggal: 2026-09-30
+================================================================================
+
+1. ANALISIS KONTEN DRAF TESIS
+--------------------------------------------------------------------------------
+Dari dokumen "Master_AI Convergence_Sean_v2.hwp", terdapat 4 pilar utama:
+1. Target Sistem: LoRa Physical Layer (LPWAN, CSS modulation).
+2. Kondisi Ekstrem: Ultra-Low SNR (di bawah ambang sensitivitas Semtech akibat blockage attenuation).
+3. Research Gap Utama: Sinkronisasi & koreksi offset hardware (CFO, STO, SFO) pada Ultra-Low SNR
+   (SOTA seperti NELoRa & GloriPhy hanya fokus di demodulasi simbol, CaLoRa hanya di preamble).
+4. Solusi / Paradigma: Pemanfaatan Deep Learning / Machine Learning & arsitektur C-RAN.
+
+2. REKOMENDASI PILIHAN JUDUL (BERDASARKAN FOKUS AKHIR RISET)
+--------------------------------------------------------------------------------
+Opsi 1 (Seimbang, Sangat Direkomendasikan untuk AI Convergence):
+- EN: "Machine Learning-Based Synchronization and Demodulation for LoRa Receivers in Ultra-Low SNR Environments"
+- KO: "초저 SNR 환경에서 머신러닝 기반 LoRa 수신기 동기화 및 복조 기법에 관한 연구"
+- Alasan: Mencakup dua kontribusi utama (sinkronisasi + demodulasi) dan secara jelas menonjolkan AI Convergence.
+
+Opsi 2 (Menonjolkan Novelty Riset Gap - Koreksi Offset):
+- EN: "Hardware-Offset-Resilient LoRa Synchronization and Signal Reception Using Deep Learning Under Ultra-Low SNR"
+- KO: "딥러닝을 활용한 초저 SNR 환경에서의 하드웨어 오프셋 강인 LoRa 동기화 및 신호 수신 연구"
+- Alasan: Langsung menjawab problem riil CFO, STO, dan SFO yang diabaikan penelitian lain.
+
+Opsi 3 (Berorientasi Arsitektur Sistem C-RAN & End-to-End Pipeline):
+- EN: "A Neural-Enhanced End-to-End LoRa Receiver Pipeline for C-RAN Deployments in Ultra-Low SNR Environments"
+- KO: "초저 SNR C-RAN 배치를 위한 신경망 기반 End-to-End LoRa 수신기 파이프라인"
+- Alasan: Sangat cocok jika riset Anda melanjutkan paper ICAICTA 2025 (IQ Data Compression & Gateway Collaboration).
+
+Opsi 4 (Ringkas, Padat, dan Standar Publikasi IEEE/ACM):
+- EN: "Deep Learning-Enhanced LoRa Physical Layer Reception in Ultra-Low SNR Environments"
+- KO: "초저 SNR 환경에서 딥러닝 기반 LoRa 물리 계층 수신 성능 향상 연구"
+- Alasan: Lebih luas dan fleksibel jika di tahap akhir ada penyesuaian porsi antara deteksi, sinkronisasi, dan klasifikasi.
+
+3. REKOMENDASI STRATEGIS PEMILIHAN:
+- Jika modul sinkronisasi (CFO/STO) menjadi inovasi utama Anda: Pilih Opsi 2.
+- Jika hasil pengujian mencakup perbaikan pipeline menyeluruh (Preamble + Sync + Demod): Pilih Opsi 1 atau Opsi 3.
+- Untuk sidang proposal awal (early stage): Opsi 1 paling aman dan mencakup seluruh draf saat ini.
+================================================================================

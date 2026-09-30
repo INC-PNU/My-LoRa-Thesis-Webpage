@@ -21,6 +21,11 @@
 
   <!-- Core Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- KaTeX for Academic Mathematical Typography -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -245,8 +250,27 @@
           Signal-to-Noise Ratio (SNR) in LoRa systems represents the power ratio between the transmitted CSS chirp signal and the background noise floor. Expressed logarithmically in decibels:
         </p>
 
-        <div class="math-formula">
-          $$\text{SNR}_{\text{dB}} = 10 \log_{10}\left(\frac{P_{\text{signal}}}{P_{\text{noise}}}\right)$$
+        <!-- Equation 1: SNR Formula -->
+        <div class="equation-card">
+          <div class="equation-header">
+            <span class="equation-badge">EQUATION 1</span>
+            <span class="equation-title">Signal-to-Noise Ratio (SNR) in Decibels</span>
+          </div>
+          <div class="equation-body">
+            <span class="math-var">SNR</span><sub class="math-sub">dB</sub>
+            <span class="math-op">=</span>
+            <span class="math-num">10</span>
+            <span class="math-func">log</span><sub class="math-sub">10</sub>
+            <span class="math-paren">(</span>
+            <div class="math-frac">
+              <div class="math-num"><span class="math-var">P</span><sub class="math-sub">signal</sub></div>
+              <div class="math-den"><span class="math-var">P</span><sub class="math-sub">noise</sub></div>
+            </div>
+            <span class="math-paren">)</span>
+          </div>
+          <div class="equation-legend">
+            <strong>Parameter Definitions:</strong> <em>P</em><sub>signal</sub> represents the received LoRa chirp signal power, and <em>P</em><sub>noise</sub> represents the background Additive White Gaussian Noise (AWGN) power floor.
+          </div>
         </div>
 
         <p>
@@ -354,7 +378,7 @@
             <div class="sim-control-group">
               <label for="sf-select">
                 <span>Spreading Factor Configuration</span>
-                <span style="color:var(--text-muted); font-size:0.8rem;">$2^{SF}$ chips</span>
+                <span style="color:var(--text-muted); font-size:0.8rem;"><span class="math-inline">2<sup>SF</sup></span> chips / symbol</span>
               </label>
               <select id="sf-select" style="width:100%; padding:0.45rem; background:var(--bg-tertiary); color:var(--text-primary); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); font-family:var(--font-mono);">
                 <option value="7" selected>SF 7 (Limit: -7.5 dB)</option>
@@ -524,7 +548,7 @@
             <span class="badge badge-cyan" style="margin-bottom:0.75rem;">Stage 1</span>
             <h3 style="font-size:1.1rem; margin-bottom:0.6rem;">Preamble Detection</h3>
             <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6;">
-              Because gateways listen 24/7 on empty spectrum, the receiver must distinguish pure noise from incoming signals. A standard preamble consists of 8 consecutive unmodulated base upchirps ($S=0$), two network synchronization chirps, and 2.25 downchirps.
+              Because gateways listen 24/7 on empty spectrum, the receiver must distinguish pure noise from incoming signals. A standard preamble consists of 8 consecutive unmodulated base upchirps (<span class="math-inline"><em>S</em> = 0</span>), two network synchronization chirps, and 2.25 downchirps.
             </p>
           </div>
 
@@ -540,8 +564,21 @@
             <span class="badge badge-purple" style="margin-bottom:0.75rem;">Stage 3</span>
             <h3 style="font-size:1.1rem; margin-bottom:0.6rem;">Symbol Demodulation</h3>
             <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6;">
-              In-phase and quadrature samples are multiplied by a reference base downchirp (complex conjugate of upchirp). This collapses the frequency sweep into a single instantaneous peak on the Discrete Fourier Transform (DFT), identifying the symbol value $\in [0, 2^{SF}-1]$.
+              In-phase and quadrature samples are multiplied by a reference base downchirp (complex conjugate of upchirp). This collapses the continuous frequency sweep into a single instantaneous peak on the Discrete Fourier Transform (DFT), identifying the transmitted symbol <span class="math-inline"><em>S</em> &isin; [0, 2<sup>SF</sup> &minus; 1]</span>.
             </p>
+            <div class="equation-card" style="margin-top:0.85rem; padding:0.9rem;">
+              <div class="equation-header" style="margin-bottom:0.4rem; padding-bottom:0.3rem;">
+                <span class="equation-badge">DECHIRPING</span>
+                <span class="equation-title">Conjugate Multiplication</span>
+              </div>
+              <div class="equation-body compact">
+                <span class="math-var">y</span><span class="math-paren">(</span><span class="math-var">t</span><span class="math-paren">)</span>
+                <span class="math-op">=</span>
+                <span class="math-var">s</span><sub class="math-sub">rx</sub><span class="math-paren">(</span><span class="math-var">t</span><span class="math-paren">)</span>
+                <span class="math-op">&middot;</span>
+                <span class="math-var">s</span><sub class="math-sub">down</sub><sup class="math-sup">*</sup><span class="math-paren">(</span><span class="math-var">t</span><span class="math-paren">)</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -559,13 +596,27 @@
           <div class="offset-card">
             <div class="offset-header">
               <div class="offset-title">Symbol Timing Offset (STO)</div>
-              <span class="badge badge-cyan">$\tau$</span>
+              <span class="badge badge-cyan">&tau;</span>
             </div>
             <p style="font-size:0.86rem;">
               <strong>Definition:</strong> Time difference between actual symbol arrival and the receiver's sampling window starting index.
             </p>
-            <div class="math-formula">
-              $$\Delta k_{\text{STO}} = \text{round}\left(\frac{\tau}{T_s}\right)$$
+            <div class="equation-card" style="padding:1rem; margin:0.85rem 0;">
+              <div class="equation-header" style="margin-bottom:0.4rem; padding-bottom:0.35rem;">
+                <span class="equation-badge">STO SHIFT</span>
+                <span class="equation-title">Sample Index Misalignment</span>
+              </div>
+              <div class="equation-body compact">
+                <span class="math-var">&Delta;k</span><sub class="math-sub">STO</sub>
+                <span class="math-op">=</span>
+                <span class="math-func">round</span>
+                <span class="math-paren">(</span>
+                <div class="math-frac">
+                  <div class="math-num"><span class="math-var">&tau;</span></div>
+                  <div class="math-den"><span class="math-var">T</span><sub class="math-sub">s</sub></div>
+                </div>
+                <span class="math-paren">)</span>
+              </div>
             </div>
             <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:0;">
               <strong>Impact:</strong> Causes a circular time shift during dechirping, manifesting directly as a shifted FFT peak index and yielding wrong decoded symbols.
@@ -576,16 +627,28 @@
           <div class="offset-card">
             <div class="offset-header">
               <div class="offset-title">Carrier Frequency Offset (CFO)</div>
-              <span class="badge badge-emerald">$\Delta f$</span>
+              <span class="badge badge-emerald">&Delta;f</span>
             </div>
             <p style="font-size:0.86rem;">
               <strong>Definition:</strong> Oscillator imperfection between transmitter and receiver RF local synthesizers.
             </p>
-            <div class="math-formula">
-              $$\Delta f = f_c \times \text{PPM} \times 10^{-6}$$
+            <div class="equation-card" style="padding:1rem; margin:0.85rem 0;">
+              <div class="equation-header" style="margin-bottom:0.4rem; padding-bottom:0.35rem;">
+                <span class="equation-badge">CFO SHIFT</span>
+                <span class="equation-title">Carrier Frequency Error</span>
+              </div>
+              <div class="equation-body compact">
+                <span class="math-var">&Delta;f</span>
+                <span class="math-op">=</span>
+                <span class="math-var">f</span><sub class="math-sub">c</sub>
+                <span class="math-op">&times;</span>
+                <span class="math-var">PPM</span>
+                <span class="math-op">&times;</span>
+                <span class="math-num">10</span><sup class="math-sup">&minus;6</sup>
+              </div>
             </div>
             <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:0;">
-              <strong>Example:</strong> For a 5 PPM crystal at 915 MHz, $\Delta f = 915 \times 10^6 \times 5 \times 10^{-6} = 4575 \text{ Hz}$. This shifts the frequency sweep vertically.
+              <strong>Example:</strong> For a 5 PPM crystal at 915 MHz, <span class="math-inline">&Delta;f = 915 &times; 10<sup>6</sup> &times; 5 &times; 10<sup>&minus;6</sup> = 4,575 Hz</span>. This shifts the frequency sweep vertically.
             </p>
           </div>
 
@@ -593,13 +656,30 @@
           <div class="offset-card">
             <div class="offset-header">
               <div class="offset-title">Sampling Frequency Offset (SFO)</div>
-              <span class="badge badge-purple">$\delta_s$</span>
+              <span class="badge badge-purple">&delta;<sub>s</sub></span>
             </div>
             <p style="font-size:0.86rem;">
               <strong>Definition:</strong> Discrepancy between ADC sampling clocks on transceiver and receiver chips.
             </p>
-            <div class="math-formula">
-              $$\theta_{\text{err}}(t) = 2\pi \int \delta_s(t) \, dt$$
+            <div class="equation-card" style="padding:1rem; margin:0.85rem 0;">
+              <div class="equation-header" style="margin-bottom:0.4rem; padding-bottom:0.35rem;">
+                <span class="equation-badge">SFO DRIFT</span>
+                <span class="equation-title">Accumulated Phase Error</span>
+              </div>
+              <div class="equation-body compact">
+                <span class="math-var">&theta;</span><sub class="math-sub">err</sub><span class="math-paren">(</span><span class="math-var">t</span><span class="math-paren">)</span>
+                <span class="math-op">=</span>
+                <span class="math-num">2&pi;</span>
+                <div class="math-integral">
+                  <span class="int-sym">&int;</span>
+                  <div class="int-bounds">
+                    <span><em>t</em></span>
+                    <span>0</span>
+                  </div>
+                </div>
+                <span class="math-var">&delta;</span><sub class="math-sub">s</sub><span class="math-paren">(</span><span class="math-var">&tau;</span><span class="math-paren">)</span>
+                <span class="math-var">d&tau;</span>
+              </div>
             </div>
             <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:0;">
               <strong>Impact:</strong> Phase errors accumulate progressively over time. While negligible during short preambles, SFO severely degrades longer payload frames.
@@ -612,8 +692,32 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
             The Decoupling Dilemma under Ultra-Low SNR
           </div>
+          <p style="margin-bottom:0.75rem;">
+            Because both STO and CFO shift the dechirped FFT peak, conventional receivers rely on conjugate symmetry between upchirps and downchirps to decouple the two offsets:
+          </p>
+          <div class="equation-card" style="margin: 0.85rem 0; padding: 1rem 1.25rem;">
+            <div class="equation-header" style="margin-bottom:0.5rem; padding-bottom:0.4rem;">
+              <span class="equation-badge">EQUATION 2</span>
+              <span class="equation-title">Conventional Algebraic Offset Decoupling</span>
+            </div>
+            <div class="equation-body compact">
+              <span class="math-var">&Delta;k</span><sub class="math-sub">STO</sub>
+              <span class="math-op">=</span>
+              <div class="math-frac">
+                <div class="math-num"><span class="math-var">f</span><sub class="math-sub">up</sub> <span class="math-op">+</span> <span class="math-var">f</span><sub class="math-sub">down</sub></div>
+                <div class="math-den"><span class="math-num">2</span></div>
+              </div>
+              <span style="display:inline-block; width:1.75rem;"></span>
+              <span class="math-var">&Delta;f</span><sub class="math-sub">CFO</sub>
+              <span class="math-op">=</span>
+              <div class="math-frac">
+                <div class="math-num"><span class="math-var">f</span><sub class="math-sub">up</sub> <span class="math-op">&minus;</span> <span class="math-var">f</span><sub class="math-sub">down</sub></div>
+                <div class="math-den"><span class="math-num">2</span></div>
+              </div>
+            </div>
+          </div>
           <p style="margin-bottom:0;">
-            Because both STO and CFO shift the dechirped FFT peak, conventional receivers rely on conjugate symmetry between upchirps and downchirps to calculate $(f_{\text{up}} + f_{\text{down}})/2$ and $(f_{\text{up}} - f_{\text{down}})/2$. However, under Ultra-Low SNR, the downchirp correlation peaks are completely corrupted by noise, making conventional algebraic decoupling impossible without neural assistance.
+            However, under Ultra-Low SNR, the downchirp correlation peaks are completely submerged by noise, causing conventional algebraic decoupling to collapse without neural assistance.
           </p>
         </div>
       </section>
@@ -794,7 +898,7 @@
           <div class="card">
             <h3 style="font-size:1.05rem; margin-bottom:0.6rem; color:var(--accent-emerald);">2. Neural Synchronization Estimator</h3>
             <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6; margin-bottom:0;">
-              Designing a deep network that accepts raw I/Q samples or high-resolution STFT representations to predict fraction and integer timing offsets ($\Delta k_{\text{STO}}$) and carrier frequency deviations ($\Delta f_{\text{CFO}}$) before dechirping.
+              Designing a deep network that accepts raw I/Q samples or high-resolution STFT representations to predict fraction and integer timing offsets (<span class="math-inline">&Delta;k<sub>STO</sub></span>) and carrier frequency deviations (<span class="math-inline">&Delta;f<sub>CFO</sub></span>) before dechirping.
             </p>
           </div>
 

@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSnrSimulator();
   initSotaFilter();
   initCitationModal();
+  initMathRendering();
 });
 
 /* -------------------------------------------------------------
@@ -597,4 +598,41 @@ function showToast(message) {
   setTimeout(() => {
     toast.classList.remove('show');
   }, 2800);
+}
+
+/* -------------------------------------------------------------
+   11. Mathematical Formula Rendering (KaTeX Auto-Render)
+------------------------------------------------------------- */
+function initMathRendering() {
+  const tryRender = () => {
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false },
+          { left: '\\(', right: '\\)', display: false },
+          { left: '\\[', right: '\\]', display: true }
+        ],
+        throwOnError: false
+      });
+      return true;
+    }
+    return false;
+  };
+
+  // Attempt render immediately
+  if (!tryRender()) {
+    // If KaTeX CDN is still downloading, retry on window load
+    window.addEventListener('load', () => {
+      tryRender();
+    });
+    // Fallback polling up to 2 seconds
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      if (tryRender() || attempts > 10) {
+        clearInterval(interval);
+      }
+    }, 200);
+  }
 }
