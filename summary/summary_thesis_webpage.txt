@@ -1,0 +1,93 @@
+================================================================================
+RINGKASAN & DOKUMENTASI PROYEK WEBPAGE TESIS S2 (MASTER OF AI CONVERGENCE)
+Penulis: Sean Pribadi (시안)
+Afiliasi: Departemen AI Convergence, Sekolah Pascasarjana Universitas Nasional Pusan (PNU)
+Tanggal: 2026-09-30
+================================================================================
+
+1. LATAR BELAKANG & INTI PENELITIAN (DARI Master_AI Convergence_Sean_v2.hwp)
+--------------------------------------------------------------------------------
+- Judul Riset: Machine Learning-Enhanced LoRa Receiver Pipeline in Ultra-Low SNR Environments
+- Permasalahan Utama:
+  * LoRa (LPWAN) secara teoritis mampu menjangkau 10+ mil. Namun pada lingkungan riil
+    (area perkotaan dan kampus), redaman halangan gedung (blockage attenuation) menurunkan
+    Signal-to-Noise Ratio (SNR) hingga jauh di bawah batas sensitivitas standar Semtech
+    (wilayah Ultra-Low SNR, misal < -7.5 dB pada SF7 atau < -20 dB pada SF12).
+  * Pada kondisi ini, penerima konvensional berbasis korelasi dan dechirping gagal mendeteksi
+    preamble dan gagal mendecode payload.
+- Research Gap:
+  * Penelitian terkini (NELoRa, GloriPhy, LoRaSeek) berfokus pada denoising dan klasifikasi simbol,
+    sementara CaLoRa fokus pada deteksi preamble.
+  * Belum ada riset yang membahas arsitektur Full Receiver Pipeline yang mengintegrasikan
+    tahap sinkronisasi (Synchronization) dan koreksi offset perangkat keras (CFO, STO, SFO)
+    pada lingkungan Ultra-Low SNR.
+- Kontribusi Tesis:
+  * Merancang dan mengevaluasi skema sinkronisasi berbasis machine learning untuk penerima LoRa
+    di lingkungan Ultra-Low SNR.
+  * Mengatasi 3 jenis offset perangkat keras:
+    1. STO (Symbol Timing Offset): Pergeseran jendela pencuplikan sampel waktu.
+    2. CFO (Carrier Frequency Offset): Ketidaksempurnaan osilator kristal (PPM error).
+    3. SFO (Sampling Frequency Offset): Ketidakcocokan clock konverter ADC/DAC yang terakumulasi.
+  * Pemanfaatan arsitektur C-RAN (Cloud Radio Access Network) untuk coherent combining sinyal
+    dan pemrosesan neural network berkecepatan tinggi pada GPU server.
+
+--------------------------------------------------------------------------------
+2. INTEGRASI ASSET GAMBAR (FOLDER /image)
+--------------------------------------------------------------------------------
+1. problem.png:
+   - Menjelaskan definisi wilayah Ultra-Low SNR dan ambang batas demodulasi Semtech berdasarkan
+     Spreading Factor (SF7 hingga SF12).
+   - Diintegrasikan pada Section "The Ultra-Low SNR Challenge" dengan penjelasan teknis dan
+     tabel perbandingan sensitivitas.
+
+2. lora-keseluruhan.png:
+   - Diagram aliran data sinyal IQ dan payload dalam arsitektur LoRaWAN & C-RAN (End Devices ->
+     Gateways sebagai IQ forwarders -> Network Server sebagai pusat pemrosesan C-RAN).
+   - Diintegrasikan pada Section "LoRaWAN & C-RAN System Architecture" beserta tabel perbandingan
+     teknologi nirkabel (LoRa vs BLE vs Seluler).
+
+3. pipeline.png (Resolusi Tinggi 4087 x 2234):
+   - Diagram master pipeline penerima digital LoRa (Preamble Detection, CFO/STO/SFO Synchronization,
+     dan Symbol Demodulation / Dechirping).
+   - Diintegrasikan pada Section "The Complete LoRa Receiver Pipeline" dengan fitur Lightbox HD,
+     fitur zoom in, zoom out, reset, dan pan.
+
+--------------------------------------------------------------------------------
+3. STRUKTUR FILE WEBPAGE STATIC (ZERO-SERVER / GITHUB PAGES READY)
+--------------------------------------------------------------------------------
+- /index.html:
+  Halaman web statis utama lengkap dengan metadata akademik (OpenGraph, Twitter card, Google Fonts,
+  semantik HTML5, accessible IDs).
+- /css/style.css:
+  Design system modern dengan tema Dark/Light mode, palet warna elegan (emerald, cyan, indigo),
+  glassmorphism (backdrop blur), tata letak responsif, sticky sidebar Table of Contents,
+  serta animasi micro-interactions.
+- /js/main.js:
+  Logika interaktif murni JavaScript (ES6+):
+  * Toggle tema Gelap/Terang tersimpan di localStorage.
+  * Tab multibahasa untuk Abstrak (English, Bahasa Indonesia, 한국어).
+  * Simulator interaktif LoRa Chirp & Noise berbasis HTML5 Canvas & Web Audio API synthesizer.
+  * Modal Lightbox Fullscreen untuk inspeksi diagram gambar definisi tinggi.
+  * Filter & pencarian interaktif untuk tabel pembanding State-of-the-Art (NELoRa, GloriPhy, LoRaSeek, CaLoRa).
+  * Modal sitasi akademik dan salin BibTeX otomatis ke clipboard dengan toast feedback.
+  * ScrollSpy yang menyorot posisi daftar isi (Table of Contents) secara dinamis.
+
+--------------------------------------------------------------------------------
+4. CARA DEPLOY KE GITHUB REPOSITORY / GITHUB PAGES
+--------------------------------------------------------------------------------
+Karena webpage ini 100% statis (HTML/CSS/JS murni tanpa build tool atau runtime server):
+Langkah 1: Commit dan push file ke repository GitHub:
+   git add index.html css/ js/ image/ summary/
+   git commit -m "feat: Add interactive static thesis showcase webpage"
+   git push origin main
+
+Langkah 2: Mengaktifkan GitHub Pages di Repository GitHub:
+   1. Buka halaman GitHub repository (misal: https://github.com/INC-PNU/My-LoRa-Thesis-Webpage).
+   2. Klik menu "Settings" -> pilih sub-menu "Pages" di bilah kiri.
+   3. Pada bagian "Build and deployment" -> "Source", pilih "Deploy from a branch".
+   4. Pilih branch "main" dan folder "/ (root)", lalu klik "Save".
+   5. Dalam 1-2 menit, webpage Anda akan langsung tayang di URL:
+      https://<username>.github.io/My-LoRa-Thesis-Webpage/
+
+Webpage dapat diakses secara langsung di browser mana pun tanpa konfigurasi server tambahan.
+================================================================================

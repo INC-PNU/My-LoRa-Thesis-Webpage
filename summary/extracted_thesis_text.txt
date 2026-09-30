@@ -1,0 +1,336 @@
+=== PRVTEXT ===
+
+[논문 작성 주요사항 안내]
+1. 규격이 정해져 있는 (표지), (등표지), (속표지 및 인준지), (초록-국문,영문)을
+   제외하고 본문, 참고문헌, 부록은 글꼴, 글자크기, 줄간격 등은 지도교수의 지도에 
+   따라 자유롭게 작성 가능
+   아래의 서식 참조하여 작성하거나, 본인이 만든 서식으로 작성
+2. 학위논문 규격 – A4(210*297mm)로 작성
+3. 논문표지 색상 – 회색(빛바랜 누런 색을 편의상 회색이라 칭함) 레자크지
+                   *박사논문도 동일(양장제본 하지 않음)
+4. 논문제본 순서 
+   표지→면지→속표지및인준지→목차→초록(본문언어와 동일)→본문→참고문헌→
+   부록(있을 경우)→초록(본문이 국문이면 외국어, 본문이 외국어이면 국문) 순으로 제본
+   (초록이 2개 이므로 작성 시 유의하시기 바람)
+5. 인준지의 연 월 일 반드시 기재(최종심사 연 월 일을 기재)
+6. 기타 논문작성에 관한 사항은 「부산대학교 학위논문 작성 준수사항」(별도파일)를 참고
+<>
+<Thesis for the degree of Master of OOO>
+<>
+<><Title><>
+<Sean>
+<>
+<Department of OOO The Graduate School Pusan National University>
+<>
+<Oktober 2026>
+<>
+<>
+<Title>
+<>
+<Name>
+<>
+<Month Year>
+<>
+<>
+<><Title ><>
+<>
+<A Thesis submitted to the graduate school of Pusan National University in partial fulfillment of the requirements for the degree of Master of OOO under the direction of Adviser's Name><The thesis for the degree of Master of OOO by Sean has been approved by the c>
+
+
+
+=== BodyText/Section0 ===
+
+捤獥      汤捯      湰灧     [논문 작성 주요사항 안내]
+1. 규격이 정해져 있는 (표지), (등표지), (속표지 및 인준지), (초록-국문,영문)을
+제외하고 본문, 참고문헌, 부록은 글꼴, 글자크기, 줄간격 등은 지도교수의 지도에
+따라 자유롭게 작성 가능
+아래의 서식 참조하여 작성하거나, 본인이 만든 서식으로 작성
+2. 학위논문 규격 – A4(210*297mm)로 작성
+3. 논문표지 색상 – 회색(빛바랜 누런 색을 편의상 회색이라 칭함) 레자크지
+*박사논문도 동일(양장제본 하지 않음)
+4. 논문제본 순서
+표지→면지→속표지및인준지→목차→초록(본문언어와 동일)→본문→참고문헌→
+부록(있을 경우)→초록(본문이 국문이면 외국어, 본문이 외국어이면 국문) 순으로 제본
+(초록이 2개 이므로 작성 시 유의하시기 바람)
+5. 인준지의 연 월 일 반드시 기재(최종심사 연 월 일을 기재)
+6. 기타 논문작성에 관한 사항은 「부산대학교 학위논문 작성 준수사항」(별도파일)를 참고
+
+
+
+=== BodyText/Section1 ===
+
+汤捯      捤獥      氠瑢
+Thesis for the degree of Master of  汫╣     OOO 汫ॣ
+汫╣     Title 汫ॣ
+汫╣     Sean 汫ॣ
+Department of  汫╣     OOO 汫ॣ
+The Graduate School
+Pusan National University
+汫╣     Oktober 2026 汫ॣ
+氠瑢
+汫╣     Title 汫ॣ
+汫╣     Name 汫ॣ
+汫╣     Month Year 汫ॣ
+氠瑢      氠瑢
+汫╣     Title 汫ॣ
+A Thesis submitted to the graduate school of
+Pusan National University in partial fulfillment of
+the requirements for the degree of Master of  汫╣     OOO 汫ॣ
+under the direction of  汫╣     Adviser's Name 汫ॣ
+The thesis for the degree of Master of  汫╣     OOO 汫ॣ
+by  汫╣     Sean 汫ॣ
+has been approved by the committee members.
+汫╣     Date 汫ॣ
+Chair
+Member
+Member
+汫╣     Name 汫ॣ
+汫╣     Name 汫ॣ
+汫╣     Name 汫ॣ
+
+
+
+=== BodyText/Section2 ===
+
+汤捯      捤獥      湰灧      湯湷     Table of Contents
+潣╴     <Table of Contents>
+汫╨     I. 서론Introduction  	練 ȃ   	1 汫h
+汫╨     A. 연구의 배경과 목적 Background and Purpose of the Study	⠰ ȃ   	1 汫h
+汫╨     1. Background of the Study	涐 ȃ   	1 汫h
+汫╨     2. Purpose	銀 ȃ   	2 汫h
+汫╨     B. LoRaWAN in General	癬 ȃ   	2 汫h
+汫╨     1. Edge Device	覐 ȃ   	3 汫h
+汫╨     2. Gateways	逴 ȃ   	3 汫h
+汫╨     3. Network Server	艌 ȃ   	4 汫h
+汫╨     II. Literature Review	縌 ȃ   	4 汫h
+汫╨     A. LoRa	顐 ȃ   	4 汫h
+汫╨     1. LoRa Modulation	羴 ȃ   	4 汫h
+汫╨     2. Struktur LoRa	蔈 ȃ   	5 汫h
+汫╨     3. Typical pipeline of LoRa Receiver	孜 ȃ   	5 汫h
+汫╨     4. Ultra Low SNR definition	渌 ȃ   	6 汫h
+汫╨     5. Offset	霼 ȃ   	7 汫h
+汫╨     B. Literature review of LoRa receiver pipeline	䚬 ȃ   	8 汫h
+汫╨     1. Conventional technique usage in symbol decoding	㝴 ȃ   	8 汫h
+汫╨     2. Conventional technique usage in synchronization	㦔 ȃ   	8 汫h
+汫╨     3. Conventional technique usage in preamble detection	㉬ ȃ   	9 汫h
+汫╨     C. Literature review Recent technique using Machine Learning	∔ ȃ   	9 汫h
+汫╨     1. NELoRa the benchmarking 	栰 ȃ   	9 汫h
+汫╨     2. GloriPhy	轤 ȃ   	10 汫h
+汫╨     3. LoRaSeek	賘 ȃ   	11 汫h
+汫╨     4. CaLoRa	酀 ȃ   	11 汫h
+汫╨     D. Literature review C-RAN 	楨 ȃ   	12 汫h
+汫╨     III. Research Methodology	濘 ȃ   	12 汫h
+汫╨     A. Methods	軸 ȃ   	12 汫h
+汫╨     IV. Architecture Design	瓄 ȃ   	12 汫h
+汫╨     A. Architecture 	菼 ȃ   	12 汫h
+汫╨     B. Design	鋤 ȃ   	13 汫h
+汫╨     V. Results & Discussion	珄 ȃ   	13 汫h
+汫╨     A. Comprehensive result 1	涤 ȃ   	13 汫h
+汫╨     B. Comprehensive result 2	渔 ȃ   	13 汫h
+汫╨     VI. Conclusion	蟠 ȃ   	13 汫h
+<Table of Tables>
+汫╨     Table 1 Comparison of Wireless Communication Technologies	␤ ȃ   	3 汫h
+<Table of Pictures>
+汫╨     Figure 1 Data flow diagram of IQ signals and payload data in LoRaWAN system	髸 ȃ   	2 汫h
+<Table of Equations>
+汫╨     (1) 	ꈄ ȃ   	4 汫h
+汫╨     Equation 2 	逬 ȃ   	4 汫h
+汫╨     Equation 3 	逬 ȃ   	5 汫h
+汫╨     Equation 4 	逬 ȃ   	5 汫h
+汫╨     Equation 5 	逬 ȃ   	6 汫h
+汫╨     Equation 6 	逬 ȃ   	6 汫h
+汫╨     Equation 7 	逬 ȃ   	6 汫h
+汫╨     Equation 8 	逬 ȃ   	6 汫h
+汫╨     Equation 9 	逬 ȃ   	7 汫h
+汫╨     Equation 10 	跐 ȃ   	9 汫h
+汫╨     Equation 11 	跐 ȃ   	9 汫h
+汫╨     Equation 12 	跐 ȃ   	9 汫h
+汫╨     Equation 13 	跐 ȃ   	9 汫h
+潣ࡴ
+氠瑢
+汫╣     Ultra Low SNR LoRa 汫ॣ
+汫╣     Sean 汫ॣ
+Department of  汫╣     OOO 汫ॣ
+The Graduate School
+Pusan National University
+Abstract
+Heres I provide the detailed of abstract. This one is the problem definition, then many signal LoRa failed on Ultra Low SNR, then recent work succeded increase the gain hence increase payload demodulation success rate, but still no related works related to the full pipeline of LoRa Receiver. No Prior works research about offset correction on Ultra Low SNR environment
+
+
+
+=== BodyText/Section3 ===
+
+汤捯      捤獥      湰灧      湯湷     서론Introduction   湯湷
+연구의 배경과 목적 Background and Purpose of the Study
+Background of the Study
+jelaskan topik utama. Low-Power Wide-Area Networks (LPWANs) memperkenalkan paradigma baru di dalam bidang IoT. Memungkinkan untuk pengiriman data jarak jauh berdaya rendah. Salah satu penerapannya yaitu precision agriculture  楴╣     [1] 楴c      楴╣     [2] 楴c      , kelautan maupun smart city  楴╣     [3] 楴c     . Pada tahun 2024, semtech  楴╣     [4] 楴c      楴╣     [5] 楴c      mencatat bahwa LoRa menyumbang 30% dari global LPWAN dengan 6.9 million gateways dan 350 milion end nodes.
+LoRa secara teori dapat mengkomunikasikan data even 10 miles away. unfortunatelly, recent studies  楴╣     [6] 楴c      楴╣     [7] 楴c      membuktikan keadaan lapangan bahwa jarak komunikasi LoRa jauh dibawah ekspektasi di dalam real world environment seperti urban areas dan kampus. Hal ini dikarenakan blockage attenuation yang dapat mendegrade Signal-to-Noise Ratio (SNR) secara signifikan.
+Researcher sekarang berlomba lomba untuk fokus bagaimana meningkatkan SNR gains atau merendahkan threshold agar LoRa receiver masih dapat mendecode sinyal dibawah batas ambang normal. 2 solusi utama yang secara paradigma adalah menggunakan Cloud Radio Access Network (C-RAN)  楴╣     [8] 楴c      atau merekonstruksi sinyal LoRa  楴╣     [9] 楴c      yang sudah hampir ilang terkubur dengan noise.
+Namun research gap nya adalah, untuk mewujudkan mendeteksi sinyal dalam lingkungan UlTra Low SNR merupakan permasalahan yang cukup berat dan complex. Serangkaian Receiver pipeline tidak bisa lagi menggunakan cara cara traditional untuk mendecode symbol dalam lingkungan Ultra Low SNR. Lora Receiver memiliki serangkaian pipeline yaitu mendeteksi sinyal, melakukan synchronisasi, dan mendecode symbol. Sampai dengan penulisan baru ada study mengenai mendeteksi sinyal LoRa dan cara mendecode symbol, namun sedikit sekali yang membahas mengenai synchronisasi dalam Ultra Low SNR. Kemudian dengan trend nya machine learning dan transformer sekarang, ada sebuah celah terbuka untuk memanfaatkannya demi untuk meningkatkan efisiensi dari LoRa Receiver.
+Solusi yang saya rencanakan dalam study dan research adalah untuk mengadaptasi traditional synchronization yang secara perhitungan akan gagal dibawah limit threshold Ultra Low SNR, menggunakan machine learning dalam menggantikan posisi symbol decoding traditional (dechirping) dengan symbol classification maupun symbol restoration.
+Purpose
+The main purpose of this study is to design and evaluate a machine learning-based synchronization scheme for LoRa signal reception, specifically tailored for operation in ultra-low Signal-to-Noise Ratio (SNR) environments. The scope of this research focuses on signal reception under severe noise conditions without neglecting hardware-induced frequency offsets, namely Carrier Frequency Offset (CFO), Symbol Timing Offset (STO), and Sampling Frequency Offset (SFO). To achieve this goal, the specific objectives for this study are as follows:
+To adapt and integrate machine learning techniques into conventional LoRa synchronization methods for enhanced performance under ultra-low SNR.
+To evaluate the performance enhancement in terms of SYmbol Decoding Success Rate compared to conventional synchronization architectures.
+LoRaWAN in General
+LoRa is a wireless communication technique that enables long-range communication. While LoRa operates at the physical layer, LoRaWAN functions as the network layer operating at the protocol level. It can be compared with other communication technologies such as Bluetooth and cellular networks. The comparison between LoRa, Bluetooth, and cellular networks is shown in Table  牦╸     1 牦x     . Typically, standard LoRaWAN architectures commercially available on the market consist of end devices, gateways, and a cloud or network server, as presented in Figure  牦╸     1 牦x     .
+氠瑢
+Table  湯慴      Comparison of Wireless Communication Technologies
+Parameter
+LoRa
+Bluetooth
+Cellular
+Range
+Long (2 to 15 Km)
+Short (10 to 100 m)
+Long (0.8 to 16 Km)
+Data Speed
+Very low (0.3 to 50 Kbps)
+Medium (1 to 2 Mbps)
+High (Megabits to Gigabits)
+Power Consumption
+Ultra-low
+Very Low
+High
+Primary Use Cases
+Off-grid, wide-area sensors
+Phone-to-device, wearables
+Streaming, high-data tracking
+Frequency Band
+433 MHz, 868 MHz, 915 MHz
+2.4 GHz
+600-900 MHz, 1.7-3.7 GHz, 24-39 GHz
+Edge Device
+Every communication system fundamentally relies on a transmitter and a receiver to facilitate data exchange. In the context of LoRaWAN architecture, an edge device often referred to as an end node or sensor node serves as the primary transmitting entity. These edge devices gather physical parameters from the surrounding environment and transmit the encoded data via LoRa RF signals to nearby gateways.
+Gateways
+漠杳     Gateways are general devices designed to receive radio signals. In general, gateways continuously listen for incoming LoRa signals. Gateways detect incoming LoRa signals via preamble detection (Sec 2). Subsequently, it decodes the header and payload before transmitting the processed data to the Network Server.
+Figure  湯慴      Data flow diagram of IQ signals and payload data in LoRaWAN system
+Network Server
+The Network Server serves as the central infrastructure responsible for processing data and handling downstream logic following reception from the gateways. Since a single end device can broadcast signals that are simultaneously captured by multiple gateways, the Network Server frequently receives duplicate payloads. To address this redundancy, the Network Server typically performs a deduplication and validation process (voting mechanism) to determine the most accurate data. Only this validated payload is accepted and subsequently forwarded for further processing at the application layer.
+Literature Review
+LoRa
+LoRa Modulation
+LoRa is low-power communication that rely on unlicensed ISM bands. the critical main function of LoRa is the usage of Chirp Spread Spectrum (CSS) to achieve a high resilience to many inference. With this type of modulation, each symbol is encoded as a chirp which have instantaneous frequency linear over time within [ 敤敱     ] where B denotes the bandwidth. The discrete-time baseband expression of LoRa symbol sampled at Nyquist rate is given by 楴╣     [10] 楴c      敤敱
+( 湯慴     )
+Where  敤敱      is the symbol value. Spreading Factor (SF) is the parameters dan control the data how fast or slow the data signal is spread throuh the frequency band.  敤敱      is the number of the all possibility chirps per symbol. For example on the SF 7, the number of possibility symbol is 128 possibility. When we set  敤敱      equal to 0, it will be classified as symbol 0 or also can be interpreted as reference base upchirp.
+LoRa typically support SF range from 5 to 12 on some modules  楴╣     [11] 楴c      and from 6 to 12 on modules  楴╣     [12] 楴c     . LoRa also supports bandwidth of 125 Khz, 250 kHz, and 500 kHz. However LoRaWan specification restrict usable spreading factors to range 7 until 12  楴╣     [5] 楴c     .
+Struktur LoRa
+The General structure of LoRa is shown in Fig XX. A frame typically consist of preamble, header, payload and Cyclic Redundancy check (CRC). Preamble typically consist of 8 upchirp (can be configured), two network ID and also 2.25 downchirps. For information, downchirp is the complex conjugate of the upchirp, in the sense, downchirp will contain frequency shift from higher frequency to lower frequency. Header will contains the information about how to decode/interpret the packet. For example, header will contains payload length, coding rate and CRC indication. In Contrast payload will have actual transmitted data. CRC is an error detection mechanism to proof or check wheter the data is valid or corrupted during the transmission.
+漠杳     Typical pipeline of LoRa Receiver
+Picture  湯慴      asdasaasasda
+There is a long detailed step after receiver sampling the first sample of LoRa signal until decode the header or payload. FIG  牦╸     2 牦x      provide detailed information about the LoRa receiver pipeline. The first step of LoRa demodulation is detect the preamble. Because gateways will spend 24 hours listen on incoming LoRa Signal, but Edge device might not always send the signal, therefore its need some mechanism to distinguish between pure noise and LoRa signal. Preamble upchirps contains several same symbol 0 multiplied that serve for some purpose that is, preamble up chirp will be use for determine if LoRa packet exists or not.
+After we know the LoRa is presence, the second step is Synchronization. Probabilistic or statistically over 99% the receiver will sampling at wrong index, so its also need some mechanism to shifting the window frame that align with perfect frame index. The presence of Carrier frequency offset will make this harder
+Ultra Low SNR definition
+First, the definition of Signal to Noise Ratio (SNR), is the ratio between signal power and signal noise. Usually signals are often expressed as logaritmic decibel scale because many signals have wide range of dynamic range. The Equation for Power signal in decibel is
+敤敱
+Where  敤敱      is the power of the signal in linear scale. For the noise in LoRa, SNR is a power ratio
+敤敱
+For illustration, when Power of the signal is 10x stronger than power of the noise, the equation will have  敤敱      that equal to 10 dB SNR. In contrast when the noise power is 10x stronger than power of the signal the SNR will be –10 dB.
+氠瑢
+Table  湯慴      SNR Threshold reference by spreading factor
+SF
+SNR Limit
+Time on Air
+Range
+7
+-7.5
+61 ms
+2 km
+8
+-10
+103 ms
+4 km
+9
+-12.5
+185 ms
+6 km
+10
+-15
+371 ms
+8 km
+11
+-17.5
+10 km
+漠杳     On Table  牦╸     2 牦x      we see that semtech produce the limitation of SNR thorought different SF value. According to Semtech's LoRa demodulator specifications, the nominal minimum SNR for SF7 is approximately −7.5 dB. any signal lower than –7.5 dB in the case of SF7 will result in decreasing the payload successful rate of decode the payload. The reason is very simple, because the noise power is too large, often the receiver will missdetectthe symbol value of the LoRa. Its will affect many things including Preamble detection, synchronization, and symbol decoding. Any error in one part will eventually decrease the chance of successful packet decoding.
+Picture  湯慴      aaa
+Hence from Picture  牦╸     3 牦x      we define that the Ultra Low SNR region is the SNR threshold that any conventional technique unable to sense the presence of the LoRa signal.
+Offset
+Symbol Timing Offset (STO)
+Symbol Timing Offset adalah selisih waktu antara waktu kedatangan simbol aktual dengan waktu pengambilan sample yang dilakukan oleh penerima. Hasilnya adalah ketika frame seharusnya dimulai misalkan pada index ke 0, sedangkan karena adanya STO, index dapat dimulai pada pertengahan window. Akibat nyata dari STO adalah pergeseran symbol index saat melakukan dechirping. Hasilnya berpengaruh pada symbol decoding, karena pasti menghasilkan symbol yang salah.
+Carrier Frequency Offset (CFO)
+Carrier Frequency Offset merupakan deficiency dari keterbatasan alat karena tidak mampu menciptakan frequency carrier yang sempurna antara transciever dan receiver. Misalkan saat tranceiver menggunakan frequency carrier sebesar 915 MHz. Pada teorinya maka seharusnya frequency 915MHz adalah sinyal yang hanya memiliki nilai frequensi pada 915Mhz. Sedangkan pada kenyataannya, akan terdapat frequensi error yang biasa disebut dengan Part Per Million (PPM). Sebagai illustrasi untuk 5 ppm, maka perhitungannya adalah  敤敱     . Terdapat perbedaan sebesar 4575 Hz.
+Dampak yang dihasilkan adalah saat memiliki frequency carrier yang berbeda maka sinyal seakan akan memiliki titik starting poin frequency yang salah. Akibatnya adalah dari sisi receiver, frekuensi sweep seakan akan dimulai sedikit lebih atas atau sedikit lebih bawah tergantung dari perbedaan frekuensinya positif atau negatif.
+Sampling Frequency Offset (SFO)
+asaas Sampling Frequency Offset adalah perbedaan sampling frequency antara receiver dan transceiver. Sebagaimana yang kita tahu, saat receiver menerima sinyal analog, maka sinyal tersebut harus dikonversi ke dalam ranah digital agar bisa diproses. Cara nya adalah dengan melakukan sampling sebagai contoh dengan sampling sebesar 1 Mhz. Namun pada kenyataannya, osilator tidak mungkin ideal dan pasti memproduksi error menyebabkan frekuensi sampling tidak tepat 1 Mhz. Karena adanya hal ini, menyebabkan akumulasi error phase seiring berjalannya waktu. saat masa-masa preamble akumulasi tidak terasa dan masih dapat diabaikan, namun jika sudah menuju payload decoding, maka akumulasi terasa dan akan menyebabkan pergeseran symbol decoding saat melakukan dechirping.
+Literature review of LoRa receiver pipeline
+Conventional technique usage in symbol decoding
+As you remember in section LoRa modulation, symbol 0 is considered as upchirp. The complex conjugate of the upchirp is downchirp.
+If we calculate multiplication of any symbols with reference downchirp
+[formula .....]
+it will produce some instaneous frequency that only live on some frequency. That instaneous frequency is the accumulation of all range of bandwidth that's why somehow it can surpass noise power and symbol still can be decode even when noise have higher power.
+Conventional technique usage in synchronization
+assasasasa The Conventional tencnique for synchronization is have several studies. One of the studies is using cross reference with baseline chirps. The shifting of the symbol's output might be the shifting of the index, hence we can shift the frame according of the cross reference value.
+But with the presence of CFO, we don't know for sure that the output is the result of shifting by CFO, STO, or both.
+Then some related works  楴╣     [13] 楴c     , Present some ideas to make the usage of upchirp and downchirp to use the characteristic of that signal to distinguish between CFO and STO.
+[Present the formula here]
+After we get the amount of STO and CFO, we will use STO as a value to use as a window frame align. And CFO is use as a offset compensation in the symbol decoding parts, useful for decoding the correct desired symbols.
+Conventional technique usage in preamble detection
+As you remember in section LoRa structure, preamble is consist of several upchirps. the idea is, when you use symbol decoding per frame each frame by frame, you will eventually have sequence of outputted symbol result with same symbol value for several times, until the frame go to network id and downchirps. Even if the sampling index is not align, the receiver will also produce some symbols (range between 0 until  敤敱     ). its can be depends on in which index the starting poin of the sampling. But one that remains is, it will produce the same symbol of sequence that give us information of the LoRa presence. In additional information, LoRa header and payload will be design sedemian rupa agar tidak akan memiliki symbol sequence yang sama berulang sebanyak sequence di LoRa Preamble.
+Ref [X} menyatakan bahwa jika terdapat symbol yang sama secara berulang maka itu dinyatakan LoRa presence. Ref [Y] menyatakan bahwa jika terdapat symbol berulang dengan rentang  敤敱      maka itu dinyatakan sebagai LoRa presence. membuat sebuah rules dimana rentang menjadi  敤敱      membuat kemungkinan yang lebih besar bahwa preamble dideteksi dibandingkan dengan strict rule memiliki sequence of symbol yang sama. Karena adanya noise, ada beberapa kondisi dimana hasil symbol demodulation dapat bergesar  敤敱      symbol dari desired symbol.
+Literature review Recent technique using Machine Learning
+NELoRa the benchmarking
+NELoRa is the first paper that enhance the symbol demodulation trough using a machine learning. Ketika conventional method menggunakan dechirping untuk menentukan symbol, NELoRa menggunakan 2 langkah menggunakan AI untuk mengenhance probabilitas symbol success rate dalam SNR yang lebih rendah. Langkah pertama adalah menggunakan deep learning sebagai filter atau membuat masking pada LoRa spectrogram. Di dalam SNR yang sangat rendah, LoRa chirp vissibility akan rendah karena terhalang oleh noise. Dengan adanya masking, maka vissibility pada LoRa chirp akan sedikit dimunculkan kembali, seakan akan membuat masking yang memunculkan Vissibility chirp namun meng surpress sekitarnya (Noise nya).
+Langkah kedua adalah menggunakan spectrogram-based decoder. Ini merupakan type symbol classification menggunakan metode deep learning. Dengan masukan input spectrogram pada langkah sebelumnya dan meng-output kan symbol yang dideteksi. Dengan metode NELoRa, the results show that NELoRa obtains 1.84-2.35 dB SNR gains and a largest 272% (∼0.38-1.51 years) battery lifetime gain in average across different configurations and environments.
+GloriPhy
+GloriPhy memiliki tujuan yang mirip dengan NELoRa yaitu meng-enhance the reception quality of LoRaPHY signals through a channel-aware denoising mechanism. namun ini bekerja sedikit berbeda dengan NELoRa. GloriPhy tidak menggunakan symbol classification untuk menentukan symbol, instead GloRiPHy menggunakan AWGN Filter untuk mereduce komponen noise dan menghighlight LoRa Chirp. Hasilnya adalah spectrogram yang sudah lebih bersih sehingga dapat dikembalikan ke wujud IQ data menggunakan Inverse STFT.
+Gloriphy mulai untuk mengintroduce transformers-based pada komponen deep learning mereka. Komponen deep learning dengan transformer dipercaya dapat melihat konteks secara global dibandingkan hanya menggunakan CNN yang hanya melihat local features. Selain memperkuat symbol demodulation, GloriPhy memasukan unsur static phase offset kedalam dataset. Gloriphy meng klaim bahwa deep learning mereka dapat meningkatkan symbol successful rate dalam SNR yang sangat rendah dengan tambahan phase offset pada dataset mereka.
+LoRaSeek
+LoRaSeek merupakan saingan GloRiPHy karena memiliki sedikit persamaan. Persamanya yaitu mengunakan noise surpression untuk mereduksi komponen noise yang hasil akhirnya adalah spectrogram yang dapat di inverse STFT ke IQ data yang memiliki tingkat noise yang lebih rendah. Sehingga Conventional dechirping dapat diterapkan dan memproduce symbol yang lebih akurat.
+LoRaSeek ini menggunakan Jaringan UNet dengan komponen yang terdiri dari CNN dan transformer. UNet memiliki komponen dual attention yang bertujuan untuk mempreserve important data selagi jaringan unet pass ke network yang lebih dalam. Dual attention terdiri dari channel attention dan spatial attention.
+CaLoRa
+CALoRa  楴╣     [14] 楴c      memiliki tujuan dan goal yang sedikit berbeda dibandingkan dengan beberapa recent works sebelumnya. ketika recent works sebelumnya mentargetkan enhancement pada symbol demodulation. CaLoRa bertujuan untuk melakukan enhancement pada preamble detection, atau bagaimana caranya LoRa signal bisa terdeteksi dalam lingkukan SNR yang sangat rendah.
+CALoRa menggunakan slogan restore and detect. langkah pertama adalah menggukan chirp restorer untuk meng surpress noise by learning global pattern of LoRa Signals. Langkah kedua adalah menggunakan chirp restorer untuk mengrestore chirp LoRa, kemudian mencari pola preamble yang terdiri dari sequence of up-chirp, memberikan probabilitas keyakinan bahwa dalam rentang 20 frame windows seberapa yakin window tersebut memiliki pola preamble, serta memberikan hasil perkiraan lokasi starting of the preamble nya.
+Pengetesan deteksi preamble di test dalam lingkungan environment dengan SNR sangat rendah, serta ada juga pengujian datasets menggunakan Carrier Frequency Offset (CFO).
+Literature review C-RAN
+What is Cloud Radio Access Network (C-RAN) ? pada Ultra-Low SNR, semua gateways mungkin tidak dapat mendeteksi sinyal LoRa apalagi untuk mendecode payload datanya. Namun penelitian pada Dongrae C-RAN membuktikan bahwa sinyal LoRa dapat ditumpuk jika memiliki perfect synchronization. Hasilnya adalah sinyal LoRa akan bertambah secara coherent namun noise akan bertambah secara incoherent. Hasilnya adalah sebuah kemungkinan bahwa dengan adanya sinyal combining, Payload berhasil di decode walau memiliki SNR yang sangat buruk.
+Dari ide tersebut munculah ide bahwa gateways pada arsitektur C-RAN hanya berfungsi sebagai forwarder, yaitu penerus sinyal. Sinyal IQ signal akan diteruskan oleh gateways, semua detection, deconstruction, synchronization, combining, dan deconstruction akan dilakukan di network server. Hal ini juga memungkinkan untuk menggunakan machine learning dengan high complexity untuk melakukan symbol decoding
+Research Methodology
+Methods
+Saya menggunakan metode blaalalssa
+Architecture Design
+Architecture
+Design
+Results & Discussion
+Comprehensive result 1
+Comprehensive result 2
+Conclusion
+Conclusion maybe only body
+Reference
+楢╢     [1] Y. . Ren, G. . Li, Y. . Liu, Y. . Dong and Z. . Cao, "Aeroecho: Towards agricultural low-power wide-area backscatter with aerial excitation source," in Proceedings of IEEE INFOCOM, 2025.
+[2] Y. . Ren, A. . Gamage, L. . Liu, M. . Li, S. . Chen, Y. . Dong and Z. . Cao, "Sateriot: High-performance ground-space networking for rural iot," in Proceedings of ACM MobiCom, 2024.
+[3] Y. . Ren, L. . Liu, C. . Li, Z. . Cao and S. . Chen, "Is lorawan really wide? fine-grained lora link-level measurement in an urban environment," in Proceedings of IEEE ICNP, 2022.
+[4] S. . , "LoRa by the Numbers," 2025. [Online]. Available: https://www.semtech.com/lora.
+[5] "LoRaWAN Specification v1.1," 2025. [Online]. Available: https://resources.lora-alliance.org/technical-specifications/lorawan-specification-v1-1.
+[6] A. . Dongare, R. . Narayanan, A. . Gadre, A. . Luong, A. . Balanuta, S. . Kumar, B. . Iannucci and A. . Rowe, "Charm: Exploiting Geographical Diversity through Coherent Combining in Low-Power Wide-Area Networks," in Proceedings of ACM/IEEE IPSN, 2018.
+[7] S. . Demetri, M. . Zúñiga, G. . Picco, F. . Kuipers, L. . Bruzzone and T. . Telkamp, "Automated estimation of link quality for LoRa: a remote sensing approach," in Proceedings of ACM/IEEE IPSN, 2019.
+[8] S. . Pribadi, D. . Tanjung, D. . Kim and J. . Kim, "Toward Efficient LoRa CRAN Deployments: IQ Data Compression and Gateway Collaboration," in International Conference on Advanced Informatics: Concepts, Theory and Applications (ICAICTA), 2025.
+[9] J. . Du, Y. . Ren, M. . Zhang, Y. . Liu and Z. . Cao, NELoRa-Bench: A Benchmark for Neural-enhanced LoRa Demodulation, 2023,
+[10] R. . Ghanaatian, O. . Afisiadis, M. . Cotting and A. . Burg, "LoRa Digital Receiver Analysis and Implementation," 2019. [Online]. Available: https://arxiv.org/abs/1811.04146.
+[11] "LoRa SX1261/2 Technical Documentation," 2025. [Online]. Available: https://www.semtech.fr/products/wireless-rf/lora-connect/sx1261.
+[12] "LoRa SX1276/77/78/79 Technical Documentation," 2026. [Online]. Available: https://www.semtech.fr/products/wireless-rf/lora-connect/sx1276.
+[13] C. . Bernier, F. . Dehmas and N. . Deparis, "Low Complexity LoRa Frame Synchronization for Ultra-Low Power Software-Defined Radios," IEEE Transactions on Communications, vol. 68, no. 5, p. 3140-3152, 2020.
+[14] Y. . Kim, S. . Byeon, D. . Kim, M. . Hasegawa and J. . Kim, "Chirp-Aware Self-Attention for Robust LoRa Preamble Detection Under Ultralow SNR," IEEE Internet of Things Journal, vol. 13, no. 9, p. 19205-19218, 2026. 楢b
+ㅁㅁ
+
+
+
+=== BodyText/Section4 ===
+
+汤捯      捤獥      氠瑢
+汫╣     제목 汫ॣ
+汫╣     시안 汫ॣ
+부산대학교 대학원 ○○○ 과
+요약
+머넙 ㅁ녑ㅈ ㅁㄴㅁ ㅂ젖범ㄴ ㅂㅈㅈㅈㅂ
+
+

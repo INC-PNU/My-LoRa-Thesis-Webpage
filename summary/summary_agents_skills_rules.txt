@@ -1,0 +1,20 @@
+=== SUMMARY: PERBEDAAN AGENT, SKILL, DAN RULE ===
+Tanggal: 2026-09-30
+
+1. AGENT (Pelaksana / Pekerja)
+- Definisi: Entitas AI yang memiliki kemampuan berpikir, memegang tools (terminal, edit file, browser), dan mengeksekusi tugas.
+- Sifat: Aktor utama.
+- Contoh: Antigravity IDE agent, sub-agent security-reviewer.
+
+2. RULE (SOP / Kebijakan Tetap)
+- Definisi: Pedoman kerja yang SELALU aktif (always-on) di setiap giliran/prompt.
+- Sifat: Pasif & permanen (selalu dimasukkan ke context AI).
+- Lokasi: .agents/rules/ atau GEMINI.md.
+- Contoh: "Selalu gunakan bahasa formal", "Jangan edit file konfigurasi tanpa konfirmasi".
+
+3. SKILL (Buku Manual On-Demand)
+- Definisi: Kumpulan instruksi atau keahlian spesifik yang HANYA dibaca saat ada tugas yang cocok dengan deskripsinya.
+- Sifat: Aktif jika relevan (on-demand).
+- Lokasi: .agents/skills/<nama-skill>/SKILL.md.
+- Contoh: TDD workflow, audit security, pembuatan ringkasan otomatis.
+==================================================
