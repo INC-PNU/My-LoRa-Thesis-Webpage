@@ -1,75 +1,63 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Machine Learning-Enhanced LoRa Receiver Pipeline in Ultra-Low SNR | Sean Pribadi (PNU)</title>
-  <meta name="description" content="Master's Thesis by Sean Pribadi, Department of AI Convergence, Pusan National University. Research on LoRa wireless synchronization and receiver pipelines under ultra-low SNR environments.">
-  <meta name="keywords" content="LoRa, LPWAN, Ultra-Low SNR, Machine Learning, Synchronization, CFO, STO, SFO, C-RAN, Deep Learning, Pusan National University">
+  <title>Investigating and Overcoming Synchronization Bottlenecks in Learning-Based Ultra-Low SNR LoRa Receivers | Sean Pribadi (PNU)</title>
+  <meta name="description" content="Master's Thesis by Sean Pribadi, Department of Information Convergence Engineering, Pusan National University. Diagnosing the Stage 2 synchronization bottleneck and demonstrating Denoise-then-Sync in ultra-low SNR LoRa receivers.">
+  <meta name="keywords" content="LoRa, Ultra-Low SNR, Synchronization Bottleneck, CFO, STO, SFO, CALoRa, LoRaSeek, GLoRiPHY, Denoise-then-Sync, Pusan National University">
   <meta name="author" content="Sean Pribadi">
-  
-  <!-- Open Graph / Social Media -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Machine Learning-Enhanced LoRa Receiver Pipeline in Ultra-Low SNR">
-  <meta property="og:description" content="Master's Thesis Research at Pusan National University. Tackling hardware offsets and signal degradation in ultra-low SNR LoRa receivers.">
-  <meta property="og:image" content="image/pipeline.png">
 
-  <!-- Fonts: Outfit (headings), Inter (body), JetBrains Mono (code/math) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Investigating and Overcoming Synchronization Bottlenecks in Learning-Based Ultra-Low SNR LoRa Receivers">
+  <meta property="og:description" content="PNU Master's Thesis Research: End-to-End 3-Stage LoRa Benchmark, Stage 2 Synchronization Bottleneck Proof, and Denoise-then-Sync Architecture.">
+  <meta property="og:image" content="image/fig05_proposed_sync_architecture.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Core Stylesheet -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- KaTeX for Academic Mathematical Typography -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <!-- Top Reading Progress Indicator -->
   <div id="reading-progress"></div>
 
-  <!-- Main Navigation Header -->
+  <!-- Navigation Header -->
   <header class="site-header">
     <div class="container nav-container">
-      <a href="#" class="brand-link" aria-label="Homepage">
+      <a href="#" class="brand-link">
         <div class="brand-icon">LoRa</div>
         <div class="brand-meta">
-          <span class="brand-title">Sean Pribadi • Thesis</span>
-          <span class="brand-sub">PNU AI Convergence Lab</span>
+          <span class="brand-title">Sean Pribadi • M.S. Thesis</span>
+          <span class="brand-sub">PNU Information Convergence Engineering</span>
         </div>
       </a>
 
-      <!-- Navigation Links -->
       <ul class="nav-menu">
         <li><a href="#abstract" class="nav-link">Abstract</a></li>
         <li><a href="#problem" class="nav-link">Problem</a></li>
-        <li><a href="#architecture" class="nav-link">LoRaWAN & C-RAN</a></li>
-        <li><a href="#pipeline" class="nav-link">Receiver Pipeline</a></li>
-        <li><a href="#offsets" class="nav-link">Offsets & Sync</a></li>
-        <li><a href="#sota" class="nav-link">SOTA Benchmark</a></li>
+        <li><a href="#methodology" class="nav-link">Methodology</a></li>
+        <li><a href="#results" class="nav-link">Results</a></li>
+        <li><a href="#sota" class="nav-link">SOTA</a></li>
+        <li><a href="#conclusion" class="nav-link">Roadmap</a></li>
+        <li><a href="#artifacts" class="nav-link">Artifacts</a></li>
         <li><a href="#references" class="nav-link">References</a></li>
       </ul>
 
-      <!-- Action Buttons -->
       <div class="nav-actions">
         <button id="theme-toggle" class="btn-icon" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
-          <span id="theme-icon">
-            <!-- Sun Icon (Default in Dark Mode) -->
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-          </span>
+          <span id="theme-icon"></span>
         </button>
-
         <button class="btn-pill btn-primary open-citation-modal">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
           Cite Thesis
         </button>
-
         <button class="btn-icon menu-toggle" aria-label="Toggle navigation menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
       </div>
     </div>
@@ -79,102 +67,95 @@
   <section class="hero-section">
     <div class="container">
       <div class="hero-badge-wrap">
-        <span class="badge badge-cyan">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
-          Master's Thesis Research
-        </span>
-        <span class="badge badge-emerald">AI Convergence & LPWAN</span>
-        <span class="badge badge-purple">Pusan National University</span>
-        <span class="badge badge-amber">C-RAN & Deep Learning</span>
+        <span class="badge badge-blue">Master's Thesis • Feb 2027</span>
+        <span class="badge badge-cyan">Information Convergence Engineering</span>
+        <span class="badge badge-emerald">Pusan National University</span>
+        <span class="badge badge-purple">Ultra-Low SNR LoRa & Deep Learning</span>
       </div>
 
       <h1 class="hero-title">
-        Machine Learning-Enhanced <span class="text-gradient">LoRa Receiver Pipeline</span> in Ultra-Low SNR Environments
+        Investigating and Overcoming <span class="text-gradient">Synchronization Bottlenecks</span> in Learning-Based Ultra-Low SNR LoRa Receivers
       </h1>
 
       <p class="hero-subtitle">
-        Investigating end-to-end signal reception, hardware-induced offset corrections (CFO, STO, SFO), and neural synchronization schemes for LoRa communication under severe blockage attenuation.
+        An end-to-end physical-layer investigation proving why state-of-the-art AI LoRa receivers break down under realistic Carrier Frequency Offset (CFO) and Symbol Timing Offset (STO), and demonstrating how spectrogram denoising rescues Stage 2 synchronization in ultra-low SNR channels.
       </p>
 
-      <!-- Author Card -->
       <div class="hero-author-card">
         <div class="author-meta">
           <div class="author-avatar">SP</div>
           <div>
             <div class="author-name">Sean Pribadi</div>
-            <div class="author-role">Master's Candidate in AI Convergence</div>
+            <div class="author-role">M.S. Candidate • <a href="mailto:sean246@mobile.re.kr">sean246@mobile.re.kr</a></div>
           </div>
         </div>
-
         <div class="author-divider"></div>
-
-        <div class="pnu-logo-badge">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-          <span>The Graduate School, Pusan National University (부산대학교 대학원)</span>
+        <div class="meta-item">
+          <span class="meta-label">Thesis Advisor</span>
+          <span class="meta-value">Prof. Jong-Deok Kim</span>
+        </div>
+        <div class="author-divider"></div>
+        <div class="meta-item">
+          <span class="meta-label">Department & Institution</span>
+          <span class="meta-value">Dept. of Information Convergence Engineering, Pusan National University</span>
         </div>
       </div>
 
-      <!-- Quick Action Buttons -->
       <div class="hero-cta-group">
-        <a href="#pipeline" class="btn-pill btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          Explore Receiver Pipeline
-        </a>
-        <a href="#simulator" class="btn-pill btn-outline">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h5l3 8 4-16 3 8h5"></path></svg>
-          Interactive SNR Simulator
-        </a>
-        <a href="#sota" class="btn-pill btn-outline">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-          Compare SOTA Models
-        </a>
+        <a href="#results" class="btn-pill btn-primary">Explore Experimental Results</a>
+        <a href="#proposed-sync" class="btn-pill btn-outline">Proposed Architecture</a>
+        <a href="#simulator" class="btn-pill btn-outline">Interactive Sync & SNR Lab</a>
+        <a href="#artifacts" class="btn-pill btn-outline">Resources & Code</a>
       </div>
 
-      <!-- Quick Research Stats Grid -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value">&lt; -7.5 dB</div>
-          <div class="stat-label">Ultra-Low SNR Threshold (SF7)</div>
+      <!-- 4 Quantitative KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-crimson">
+          <div class="kpi-tag">Bottleneck Diagnosed @ −18 dB</div>
+          <div class="kpi-value">42% vs. 82%</div>
+          <p class="kpi-desc">Conventional FFT CFO sync passes only 42% (44% STO) despite CALoRa detecting 82% of packets.</p>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">3 Offsets</div>
-          <div class="stat-label">CFO, STO & SFO Decoupling</div>
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-tag">FFT Peak Recovery @ −19 dB</div>
+          <div class="kpi-value">+26.1 dB</div>
+          <p class="kpi-desc">Peak-to-Median Ratio jumps from 1.48× (false lock at bin 101) to 29.8× (exact bin 42) via STFT denoising.</p>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">C-RAN</div>
-          <div class="stat-label">Centralized IQ Processing</div>
+        <div class="kpi-card kpi-cyan">
+          <div class="kpi-tag">Stage 2 Sync Gain @ −18 dB</div>
+          <div class="kpi-value">+28% to +29%</div>
+          <p class="kpi-desc">Denoise-then-Sync lifts STO accuracy 61% → 89% and CFO accuracy 58% → 87% using LoRaSeek.</p>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">End-to-End</div>
-          <div class="stat-label">Full Receiver Pipeline Scope</div>
+        <div class="kpi-card kpi-emerald">
+          <div class="kpi-tag">End-to-End Payload Gain</div>
+          <div class="kpi-value">+2.0 dB</div>
+          <p class="kpi-desc">90% payload decoding threshold improves from −15.5 dB to −17.5 dB (63% → 83% at −18 dB).</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Main Body Content with Sticky Sidebar -->
+  <!-- Main Workspace -->
   <main class="container layout-wrapper">
 
-    <!-- Sticky Table of Contents -->
+    <!-- Sticky Left Sidebar TOC -->
     <aside class="sidebar-toc" aria-label="Table of Contents">
       <div class="toc-title">
-        <span>Contents</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        <span>Thesis Sections</span>
+        <span>Ch. I–V</span>
       </div>
       <ul class="toc-list">
-        <li class="toc-item active"><a href="#abstract">Abstract & Purpose</a></li>
-        <li class="toc-item"><a href="#problem">Ultra-Low SNR Problem</a></li>
-        <li class="toc-item"><a href="#simulator">Interactive SNR Tool</a></li>
-        <li class="toc-item"><a href="#architecture">LoRaWAN & C-RAN</a></li>
-        <li class="toc-item"><a href="#pipeline">Receiver Pipeline</a></li>
-        <li class="toc-item"><a href="#offsets">Hardware Offsets</a></li>
-        <li class="toc-item"><a href="#sota">SOTA Benchmark</a></li>
-        <li class="toc-item"><a href="#methodology">Research Methodology</a></li>
-        <li class="toc-item"><a href="#references">References</a></li>
+        <li class="toc-item active"><a href="#abstract">Abstract & Objectives</a></li>
+        <li class="toc-item"><a href="#problem">Ch. I–II: Problem & Modeling</a></li>
+        <li class="toc-item"><a href="#simulator">Interactive Sync & SNR Lab</a></li>
+        <li class="toc-item"><a href="#methodology">Ch. III: Methodology & Sync</a></li>
+        <li class="toc-item"><a href="#results">Ch. IV: Experimental Results</a></li>
+        <li class="toc-item"><a href="#sota">Related Work & SOTA</a></li>
+        <li class="toc-item"><a href="#conclusion">Ch. V: Conclusion & Roadmap</a></li>
+        <li class="toc-item"><a href="#artifacts">Thesis Artifacts & Links</a></li>
+        <li class="toc-item"><a href="#references">References [1–18]</a></li>
       </ul>
     </aside>
 
-    <!-- Main Article Body -->
     <article class="content-body">
 
       <!-- Section: Abstract -->
@@ -182,187 +163,256 @@
         <span class="section-tag">Executive Summary</span>
         <h2 class="section-heading">Abstract & Research Objectives</h2>
 
-        <!-- Multilingual Tabs -->
-        <div class="tabs-header">
-          <button class="tab-btn active" data-tab="en">English (Primary)</button>
-          <button class="tab-btn" data-tab="id">Bahasa Indonesia</button>
-          <button class="tab-btn" data-tab="ko">한국어 (요약)</button>
+        <div class="tabs-header" role="tablist">
+          <button class="tab-btn active" data-tab="en" role="tab" aria-selected="true">English Abstract</button>
+          <button class="tab-btn" data-tab="id" role="tab" aria-selected="false">Ringkasan (Indonesia)</button>
+          <button class="tab-btn" data-tab="ko" role="tab" aria-selected="false">국문 요약 (한국어)</button>
         </div>
 
         <div id="tab-en" class="tab-content active">
           <p class="section-intro">
-            While Low-Power Wide-Area Networks (LPWANs) utilizing LoRa theoretically achieve over 10 miles of communication range, real-world deployments in complex urban and campus environments suffer from severe blockage attenuation. This attenuation drops the Signal-to-Noise Ratio (SNR) into the <strong>Ultra-Low SNR regime</strong>, causing conventional receiver demodulators to completely fail.
+            Although Low-Power Wide-Area Networks (LPWANs) based on Long-Range (LoRa) Chirp Spread Spectrum (CSS) modulation promise multi-kilometer connectivity, real-world urban and campus deployments suffer severe blockage attenuation that pushes signals into the <strong>ultra-low SNR regime</strong> (below Semtech's nominal $-7.5\text{ dB}$ limit for SF7). Recent deep-learning receivers—such as <strong>CALoRa</strong> for preamble detection and <strong>NELoRa</strong>, <strong>GLoRiPHY</strong>, and <strong>LoRaSeek</strong> for symbol decoding—demonstrate substantial sensitivity gains in isolated stages, yet end-to-end physical-layer performance under realistic hardware impairments remains largely unexplored.
           </p>
           <p>
-            Recent neural approaches (e.g., NELoRa, GloriPhy, CaLoRa) have demonstrated notable SNR gains either in symbol classification or preamble detection in isolation. However, a major research gap remains: <strong>no prior work addresses the full end-to-end LoRa receiver pipeline under Ultra-Low SNR while simultaneously handling real-world hardware-induced impairments</strong>—specifically Carrier Frequency Offset (CFO), Symbol Timing Offset (STO), and Sampling Frequency Offset (SFO).
+            In this thesis, we model and benchmark the complete three-stage sequential LoRa gateway receiver pipeline (Preamble Detection $\to$ Synchronization $\to$ Symbol Decoding) across $-25\text{ dB}$ to $-10\text{ dB}$ under realistic $\pm 5\text{ ppm}$ Carrier Frequency Offset (CFO) and fractional Symbol Timing Offset ($\text{STO} \in [0, T_s/2]$). While replacing conventional preamble detection with CALoRa yields a $+1.0\text{ dB}$ end-to-end gain under clean AWGN, that sensitivity advantage vanishes completely once CFO and STO are introduced: at $-18\text{ dB}$, CALoRa detects <strong>82%</strong> of packets, but conventional analytical up–down chirp FFT synchronization passes only <strong>42%</strong> for CFO and <strong>44%</strong> for STO, collapsing symbol decoding accuracy to <strong>53%</strong>.
           </p>
-          <div class="callout callout-info">
-            <div class="callout-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-              Core Thesis Purpose
-            </div>
-            <p style="margin-bottom:0.5rem;">
-              The primary purpose of this study is to <strong>design and evaluate a machine learning-based synchronization scheme</strong> for LoRa signal reception, specifically tailored for operation in ultra-low SNR environments without neglecting hardware-induced frequency and timing offsets.
-            </p>
-          </div>
+          <p>
+            To overcome this Stage 2 bottleneck, we validate a <strong>"Denoise-then-Sync"</strong> proof-of-work using STFT spectrogram denoising prior to analytical up–down chirp estimation (handling $2.25$ SFD down-chirps via complex conjugation). At $-19\text{ dB}$, pre-synchronization denoising recovers buried FFT peaks with a <strong>+26.1 dB</strong> peak-to-median gain ($1.48\times \to 29.8\times$). At $-18\text{ dB}$, it boosts STO accuracy from <strong>61% to 89%</strong> ($+28\%$) and CFO accuracy from <strong>58% to 87%</strong> ($+29\%$), delivering an immediate <strong>+2.0 dB</strong> end-to-end compensated payload decoding improvement ($90\%$ threshold shifting from $-15.5\text{ dB}$ to $-17.5\text{ dB}$; accuracy rising from $63\%$ to $83\%$ at $-18\text{ dB}$). Finally, we propose a dedicated <strong>Dual-Slope Denoise-then-Sync Network</strong> trained natively on unaligned preamble up-chirps and SFD down-chirps to unlock practical ultra-low SNR LoRa reception.
+          </p>
         </div>
 
         <div id="tab-id" class="tab-content">
           <p class="section-intro">
-            Low-Power Wide-Area Networks (LPWAN) seperti LoRa menyumbang lebih dari 30% pangsa pasar global dengan jutaan gateway dan ratusan juta sensor. Namun di kondisi lapangan (perkotaan dan area kampus), jarak komunikasi sebenarnya jauh di bawah ekspektasi teoritis akibat pelemahan redaman gedung (blockage attenuation) yang menjatuhkan Signal-to-Noise Ratio (SNR) secara signifikan.
+            Meskipun teknologi LoRa (Long-Range) menjanjikan jangkauan komunikasi multi-kilometer, implementasi di lingkungan perkotaan dan kampus mengalami redaman bangunan yang menjatuhkan Signal-to-Noise Ratio (SNR) ke zona <strong>ultra-low SNR</strong> (di bawah batas $-7.5\text{ dB}$ untuk SF7). Berbagai model AI terbaru telah meningkatkan deteksi preamble (<strong>CALoRa</strong>) dan dekoding simbol (<strong>GLoRiPHY</strong>, <strong>LoRaSeek</strong>), tetapi belum dievaluasi pada pipeline penerima tiga tahap secara utuh di bawah offset perangkat keras nyata.
           </p>
           <p>
-            Metode konvensional (dechirping) gagal total di bawah batas sensitivitas Semtech. Meskipun penelitian terkini memanfaatkan machine learning untuk denoiser atau klasifikasi simbol, <strong>belum ada penelitian yang meneliti arsitektur sinkronisasi dan estimasi offset (CFO, STO, SFO) secara lengkap dalam pipeline penerima LoRa pada Ultra-Low SNR</strong>. Tesis ini memadukan arsitektur Cloud Radio Access Network (C-RAN) dan machine learning untuk menjembatani celah tersebut.
+            Tesis ini membuktikan bahwa di bawah gangguan CFO ($\pm 5\text{ ppm}$) dan fractional STO ($\tau \in [0, T_s/2]$), keuntungan deteksi AI pada tahap 1 hilang sepenuhnya: pada SNR $-18\text{ dB}$, CALoRa mendeteksi <strong>82%</strong> paket, namun sinkronisasi FFT konvensional hanya meloloskan <strong>42%</strong> CFO dan <strong>44%</strong> STO sehingga akurasi dekoding jatuh ke <strong>53%</strong>. Dengan pendekatan <strong>Denoise-then-Sync</strong> (denoising spektrogram STFT sebelum sinkronisasi up–down chirp), puncak FFT yang tenggelam pada $-19\text{ dB}$ pulih sebesar <strong>+26.1 dB</strong>, akurasi STO/CFO meningkat <strong>+28–29%</strong> pada $-18\text{ dB}$, dan dekoding payload end-to-end meningkat sebesar <strong>+2.0 dB</strong> ($-15.5\text{ dB} \to -17.5\text{ dB}$).
           </p>
         </div>
 
         <div id="tab-ko" class="tab-content">
           <p class="section-intro">
-            LoRa는 저전력 광역 통신(LPWAN)의 핵심 기술이지만, 도심 및 캠퍼스 등 실제 환경에서는 장애물에 의한 신호 감쇄로 인해 Signal-to-Noise Ratio(SNR)가 급격히 저하되는 <strong>초저(Ultra-Low) SNR 문제</strong>에 직면합니다.
+            LoRa(Long-Range) 기반 LPWAN은 장거리 저전력 IoT 통신에 널리 활용되지만, 도심 및 캠퍼스 환경에서는 장애물 감쇄로 인해 신호가 SF7 기준 복조 한계($-7.5\text{ dB}$) 이하인 <strong>초저(Ultra-Low) SNR</strong> 영역으로 급격히 저하됩니다. 최근 프리앰블 검출(CALoRa)과 심볼 복조(GLoRiPHY, LoRaSeek)에 딥러닝이 도입되었으나, 실제 하드웨어 오프셋(CFO, STO) 환경에서 3단계 전체 수신기 파이프라인을 통합 검증한 연구는 부족합니다.
           </p>
           <p>
-            기존의 전통적인 수신기 기법(디처핑 및 상관 연산)은 감도 임계치 이하에서 패킷 검출과 복조에 실패합니다. 최근 딥러닝 기반 연구들이 제안되었으나, 하드웨어 오차(주파수 오프셋 CFO, 심볼 타이밍 오프셋 STO, 샘플링 오프셋 SFO)를 종합적으로 고려한 <strong>전체 수신기 파이프라인 동기화 연구는 부재한 실정</strong>입니다. 본 연구는 C-RAN 및 머신러닝 기반 신호 복원 및 오프셋 보정 아키텍처를 설계하고 평가합니다.
+            본 연구는 $\pm 5\text{ ppm}$ CFO 및 분수 심볼 타이밍 오프셋($\text{STO} \in [0, T_s/2]$) 환경의 종단간 벤치마크를 통해, $-18\text{ dB}$에서 CALoRa가 <strong>82%</strong>의 패킷을 검출하더라도 기존 FFT 기반 2단계 동기화가 CFO <strong>42%</strong>, STO <strong>44%</strong>만 통과시켜 전체 성능 이득이 소멸함을 규명하였습니다. 이를 해결하기 위한 <strong>Denoise-then-Sync</strong> 사전 검증에서 STFT 스펙트로그램 디노이징을 동기화 전에 적용한 결과, $-19\text{ dB}$에서 피크 대 중앙값 비율이 <strong>+26.1 dB</strong> 향상되었고, $-18\text{ dB}$에서 STO(61%→89%) 및 CFO(58%→87%) 정확도가 <strong>+28~29%p</strong> 개선되었으며, 종단간 페이로드 복조 임계값이 <strong>+2.0 dB</strong>($-15.5\text{ dB} \to -17.5\text{ dB}$) 향상됨을 입증하였습니다.
           </p>
         </div>
 
-        <!-- Specific Objectives Grid -->
-        <div class="grid-2">
-          <div class="card">
-            <h3 style="margin-bottom:0.6rem; color:var(--accent-cyan);">🎯 Objective 1: Adapt & Integrate ML</h3>
-            <p style="margin-bottom:0;">
-              Adapt and integrate deep learning techniques into conventional LoRa synchronization pipelines, replacing or augmenting traditional cross-correlation estimators that collapse under ultra-low SNR.
-            </p>
-          </div>
-          <div class="card">
-            <h3 style="margin-bottom:0.6rem; color:var(--accent-emerald);">📈 Objective 2: Comprehensive Evaluation</h3>
-            <p style="margin-bottom:0;">
-              Evaluate the performance enhancement in terms of Symbol Decoding Success Rate, Packet Reception Rate (PRR), and offset tolerance compared to conventional software-defined radio architectures.
-            </p>
-          </div>
+        <div class="callout callout-info">
+          <div class="callout-title">Core Research Gap & Specific Objectives</div>
+          <p style="margin-bottom:0.45rem;">
+            Because LoRa receivers operate as a strict sequential cascade, deploying deep learning in Stage 1 (Preamble Detection) and Stage 3 (Symbol Decoding) yields no practical benefit if <strong>Stage 2 (Synchronization)</strong> fails under ultra-low SNR.
+          </p>
+          <ul style="margin-left:1.3rem; color:var(--text-secondary); font-size:0.92rem; line-height:1.65;">
+            <li><strong>Objective 1:</strong> Adapt and integrate machine learning spectrogram restoration into LoRa synchronization to decouple CFO and STO under ultra-low SNR.</li>
+            <li><strong>Objective 2:</strong> Evaluate end-to-end Symbol Decoding Accuracy (SDA) and synchronization recovery improvements against conventional analytical receivers.</li>
+          </ul>
         </div>
       </section>
 
-      <!-- Section: Ultra-Low SNR Problem -->
+      <!-- Section: Problem & Modeling -->
       <section id="problem" class="article-section">
-        <span class="section-tag">Problem Formulation</span>
-        <h2 class="section-heading">The Ultra-Low SNR Challenge</h2>
+        <span class="section-tag">Chapters I & II</span>
+        <h2 class="section-heading">Problem Statement, LoRa Fundamentals & Synchronization Failure</h2>
+
         <p class="section-intro">
-          Signal-to-Noise Ratio (SNR) in LoRa systems represents the power ratio between the transmitted CSS chirp signal and the background noise floor. Expressed logarithmically in decibels:
+          Low-Power Wide-Area Networks (LPWANs) enable long-range telemetry across precision agriculture [1], [2], maritime monitoring, and smart cities [3], [4]. In 2024, Semtech [5], [6] reported that LoRa accounts for 30% of global LPWAN deployments with 6.9 million gateways and 350 million end nodes. Yet field studies [7], [8] confirm that blockage attenuation in urban and campus settings degrades SNR well below theoretical link budgets.
         </p>
 
-        <!-- Equation 1: SNR Formula -->
-        <div class="equation-card">
-          <div class="equation-header">
-            <span class="equation-badge">EQUATION 1</span>
-            <span class="equation-title">Signal-to-Noise Ratio (SNR) in Decibels</span>
-          </div>
-          <div class="equation-body">
-            <span class="math-var">SNR</span><sub class="math-sub">dB</sub>
-            <span class="math-op">=</span>
-            <span class="math-num">10</span>
-            <span class="math-func">log</span><sub class="math-sub">10</sub>
-            <span class="math-paren">(</span>
-            <div class="math-frac">
-              <div class="math-num"><span class="math-var">P</span><sub class="math-sub">signal</sub></div>
-              <div class="math-den"><span class="math-var">P</span><sub class="math-sub">noise</sub></div>
-            </div>
-            <span class="math-paren">)</span>
-          </div>
-          <div class="equation-legend">
-            <strong>Parameter Definitions:</strong> <em>P</em><sub>signal</sub> represents the received LoRa chirp signal power, and <em>P</em><sub>noise</sub> represents the background Additive White Gaussian Noise (AWGN) power floor.
-          </div>
-        </div>
-
-        <p>
-          When noise power is 10 times higher than signal power, the SNR is -10 dB. As shown in the table below, Semtech specifies the nominal physical layer sensitivity limits per Spreading Factor (SF). Any signal received below these limits enters the <strong>Ultra-Low SNR region</strong>, where conventional hardware dechirpers completely lose the signal.
-        </p>
-
-        <!-- Semtech Sensitivity Limits Table -->
+        <div class="table-caption">Table 1. Comparison of Wireless Communication Technologies</div>
         <div class="table-wrapper">
           <table class="custom-table">
             <thead>
               <tr>
-                <th>Spreading Factor (SF)</th>
-                <th>Semtech Demodulation Limit</th>
-                <th>Nominal Time on Air</th>
-                <th>Typical Range</th>
-                <th>Ultra-Low SNR Regime (Failure Zone)</th>
+                <th>Parameter</th>
+                <th>LoRa / LoRaWAN</th>
+                <th>Bluetooth (BLE)</th>
+                <th>Cellular (4G / 5G / NB-IoT)</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><strong>SF 7</strong></td>
-                <td>-7.5 dB</td>
-                <td>61 ms</td>
-                <td>~2 km</td>
-                <td><span style="color:var(--accent-rose); font-weight:700;">&lt; -7.5 dB</span></td>
+              <tr class="highlight-row">
+                <td><strong>Range</strong></td>
+                <td>Long (2 to 15 km)</td>
+                <td>Short (10 to 100 m)</td>
+                <td>Long (0.8 to 16 km)</td>
               </tr>
               <tr>
-                <td><strong>SF 8</strong></td>
-                <td>-10.0 dB</td>
-                <td>103 ms</td>
-                <td>~4 km</td>
-                <td><span style="color:var(--accent-rose); font-weight:700;">&lt; -10.0 dB</span></td>
+                <td><strong>Data Speed</strong></td>
+                <td>Very low (0.3 to 50 kbps)</td>
+                <td>Medium (1 to 2 Mbps)</td>
+                <td>High (Mbps to Gbps)</td>
+              </tr>
+              <tr class="highlight-row">
+                <td><strong>Power Consumption</strong></td>
+                <td>Ultra-low (5–10 years battery)</td>
+                <td>Very low</td>
+                <td>High</td>
               </tr>
               <tr>
-                <td><strong>SF 9</strong></td>
-                <td>-12.5 dB</td>
-                <td>185 ms</td>
-                <td>~6 km</td>
-                <td><span style="color:var(--accent-rose); font-weight:700;">&lt; -12.5 dB</span></td>
+                <td><strong>Primary Use Cases</strong></td>
+                <td>Off-grid, wide-area sensors</td>
+                <td>Phone-to-device, wearables</td>
+                <td>Streaming, high-data tracking</td>
               </tr>
               <tr>
-                <td><strong>SF 10</strong></td>
-                <td>-15.0 dB</td>
-                <td>371 ms</td>
-                <td>~8 km</td>
-                <td><span style="color:var(--accent-rose); font-weight:700;">&lt; -15.0 dB</span></td>
-              </tr>
-              <tr>
-                <td><strong>SF 11</strong></td>
-                <td>-17.5 dB</td>
-                <td>741 ms</td>
-                <td>~10 km</td>
-                <td><span style="color:var(--accent-rose); font-weight:700;">&lt; -17.5 dB</span></td>
-              </tr>
-              <tr>
-                <td><strong>SF 12</strong></td>
-                <td>-20.0 dB</td>
-                <td>1482 ms</td>
-                <td>~12-15 km</td>
-                <td><span style="color:var(--accent-rose); font-weight:700;">&lt; -20.0 dB</span></td>
+                <td><strong>Frequency Band</strong></td>
+                <td>433 MHz, 868 MHz, 915 MHz (ISM)</td>
+                <td>2.4 GHz</td>
+                <td>600–900 MHz, 1.7–3.7 GHz, 24–39 GHz</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Embedded Figure: Problem -->
-        <div class="figure-container">
-          <div class="figure-header">
-            <span class="figure-tag">FIGURE: THESIS PROBLEM DEFINITION</span>
-            <div class="figure-actions">
-              <span style="font-size:0.8rem; color:var(--text-muted);">Click image to view in HD Lightbox</span>
+        <h3 class="subsection-heading">LoRaWAN Architecture, C-RAN & Frame Structure</h3>
+        <p>
+          In standard LoRaWAN star-of-stars deployments (Figure 1), battery-powered <strong>Edge Devices</strong> broadcast low duty-cycle packets, multi-channel <strong>Gateways</strong> listen continuously and forward packets concurrently, and the cloud <strong>Network Server</strong> handles deduplication and voting. In <strong>C-RAN</strong> extensions [7], [9], distributed gateways forward raw or compressed I/Q samples so centralized servers can coherently combine signals and run complex deep-learning receivers.
+        </p>
+
+        <div class="figure-grid-2">
+          <div class="figure-container">
+            <div class="figure-header">
+              <span class="figure-tag">FIGURE 1</span>
+              <span class="figure-meta">LoRaWAN & C-RAN Data Flow</span>
             </div>
-          </div>
-          <div class="figure-img-wrap">
-            <img src="image/problem.png" alt="Ultra-Low SNR Problem and Sensitivity Limits" class="figure-img" loading="lazy">
-            <div class="img-zoom-hint">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Click to Zoom & Inspect
+            <div class="figure-img-wrap">
+              <img src="image/fig01_lorawan_dataflow.png" alt="Data flow diagram of I/Q signals and payload data in a LoRaWAN system" class="figure-img" loading="lazy">
+              <span class="img-zoom-hint">Zoom</span>
             </div>
+            <p class="figure-caption">
+              <strong>Figure 1.</strong> Data flow diagram of I/Q signals and payload data across End Devices, Gateways, and Network Server.
+            </p>
           </div>
-          <p class="figure-caption">
-            <strong>Figure: Ultra-Low SNR Region Definition.</strong> When path loss and blockage attenuation push signal levels below Semtech's physical demodulation thresholds, conventional correlation peaks are submerged beneath random AWGN fluctuations, leading to total synchronization and packet loss.
+
+          <div class="figure-container">
+            <div class="figure-header">
+              <span class="figure-tag">FIGURE 2</span>
+              <span class="figure-meta">Physical-Layer Frame Layout</span>
+            </div>
+            <div class="figure-img-wrap">
+              <img src="image/fig02_lora_frame_structure.png" alt="General structure of a LoRa Frame" class="figure-img" loading="lazy">
+              <span class="img-zoom-hint">Zoom</span>
+            </div>
+            <p class="figure-caption">
+              <strong>Figure 2.</strong> General structure of a LoRa frame: 8 preamble up-chirps, 2 network IDs, 2.25 conjugate SFD down-chirps, Header, Payload, and CRC.
+            </p>
+          </div>
+        </div>
+
+        <div class="equation-card">
+          <div class="equation-header">
+            <span class="equation-badge">CSS BASEBAND & DECHIRPING</span>
+            <span class="equation-title">Discrete-Time LoRa Modulation ($N = 2^{\text{SF}}$)</span>
+          </div>
+          <div class="equation-body">
+            $$x_s[n] = \exp\!\left(j2\pi\left(\frac{n^2}{2N} + \left(\frac{s}{N} - \frac{1}{2}\right)n\right)\right), \qquad d[n] = y[n]\cdot x_0^*[n], \qquad \hat{s} = \arg\max_{k \in \{0,\dots,N-1\}} \left|\text{FFT}\{d[n]\}[k]\right|$$
+          </div>
+          <div class="equation-legend">
+            Multiplying a received chirp $y[n]$ by the conjugate down-chirp $x_0^*[n]$ collapses the wideband sweep into a narrow spectral peak at bin $s$, enabling reception below $0\text{ dB}$ SNR until noise spikes exceed the coherent peak.
+          </div>
+        </div>
+
+        <h3 class="subsection-heading">Ultra-Low SNR Regime & Three-Stage Receiver Pipeline</h3>
+        <div class="table-caption">Table 2. Semtech Nominal SNR Limits & Link Characteristics Across Spreading Factors ($B = 125\text{ kHz}$, $\text{CR} = 4/5$)</div>
+        <div class="table-wrapper">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Spreading Factor (SF)</th>
+                <th>Semtech SNR Limit (dB)</th>
+                <th>Time on Air (ms)</th>
+                <th>Typical Range (km)</th>
+                <th>Ultra-Low SNR Failure Zone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>SF 7</strong></td><td>−7.5</td><td>61</td><td>2</td><td><span class="badge badge-crimson">&lt; −7.5 dB</span></td></tr>
+              <tr><td><strong>SF 8</strong></td><td>−10.0</td><td>103</td><td>4</td><td><span class="badge badge-crimson">&lt; −10.0 dB</span></td></tr>
+              <tr><td><strong>SF 9</strong></td><td>−12.5</td><td>185</td><td>6</td><td><span class="badge badge-crimson">&lt; −12.5 dB</span></td></tr>
+              <tr><td><strong>SF 10</strong></td><td>−15.0</td><td>371</td><td>8</td><td><span class="badge badge-crimson">&lt; −15.0 dB</span></td></tr>
+              <tr><td><strong>SF 11</strong></td><td>−17.5</td><td>741</td><td>10</td><td><span class="badge badge-crimson">&lt; −17.5 dB</span></td></tr>
+              <tr><td><strong>SF 12</strong></td><td>−20.0</td><td>1483</td><td>12</td><td><span class="badge badge-crimson">&lt; −20.0 dB</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="figure-grid-2">
+          <div class="figure-container">
+            <div class="figure-header">
+              <span class="figure-tag">FIGURE 3</span>
+              <span class="figure-meta">Ultra-Low SNR Thresholds</span>
+            </div>
+            <div class="figure-img-wrap">
+              <img src="image/fig03_ultralow_snr_definition.png" alt="Definition of ultra-low SNR region relative to theta_d and theta_pd thresholds" class="figure-img" loading="lazy">
+              <span class="img-zoom-hint">Zoom</span>
+            </div>
+            <p class="figure-caption">
+              <strong>Figure 3.</strong> Definition of the ultra-low SNR region below the 90% symbol demodulation ($\theta_d$) and preamble detection ($\theta_{pd}$) thresholds.
+            </p>
+          </div>
+
+          <div class="figure-container">
+            <div class="figure-header">
+              <span class="figure-tag">FIGURE 4</span>
+              <span class="figure-meta">3-Stage Gateway Pipeline</span>
+            </div>
+            <div class="figure-img-wrap">
+              <img src="image/pipeline.png" alt="LoRa gateway three-stage sequential receiver pipeline" class="figure-img" loading="lazy">
+              <span class="img-zoom-hint">Zoom</span>
+            </div>
+            <p class="figure-caption">
+              <strong>Figure 4.</strong> Sequential gateway receiver pipeline: Stage 1 (Preamble Detection), Stage 2 (Synchronization), and Stage 3 (Symbol Decoding).
+            </p>
+          </div>
+        </div>
+
+        <h3 class="subsection-heading">Hardware Offsets & Conventional Stage 2 Synchronization Failure</h3>
+        <div class="grid-3">
+          <div class="card">
+            <span class="badge badge-blue" style="margin-bottom:0.6rem;">STO ($\tau$)</span>
+            <h4 style="font-size:1rem; margin-bottom:0.45rem;">Symbol Timing Offset</h4>
+            <p style="font-size:0.86rem; margin-bottom:0;">
+              Asynchronous arrival misaligns the receiver's FFT window ($\Delta k_{\text{STO}}$), shifting dechirped FFT bin indices and corrupting downstream payload symbols.
+            </p>
+          </div>
+          <div class="card">
+            <span class="badge badge-emerald" style="margin-bottom:0.6rem;">CFO ($\Delta f$)</span>
+            <h4 style="font-size:1rem; margin-bottom:0.45rem;">Carrier Frequency Offset</h4>
+            <p style="font-size:0.86rem; margin-bottom:0;">
+              Crystal mismatch ($5\text{ ppm}$ at $915\text{ MHz} = 4{,}575\text{ Hz}$) introduces continuous phase rotation; any residual error $> \pm 488.3\text{ Hz}$ (half bin at SF7) causes wrong symbol bins.
+            </p>
+          </div>
+          <div class="card">
+            <span class="badge badge-purple" style="margin-bottom:0.6rem;">SFO ($\delta_s$)</span>
+            <h4 style="font-size:1rem; margin-bottom:0.45rem;">Sampling Frequency Offset</h4>
+            <p style="font-size:0.86rem; margin-bottom:0;">
+              ADC clock mismatch near $1\text{ MHz}$ produces cumulative phase drift that is negligible during short preambles but accumulates across longer payload frames.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-danger">
+          <div class="callout-title">Why Analytical Synchronization (Bernier et al. [13]) Breaks at Ultra-Low SNR</div>
+          <p style="margin-bottom:0.5rem;">
+            A single up-chirp cannot distinguish CFO from STO. Bernier et al. [13] decouple them by combining preamble up-chirp peak $k_{\text{up}}$ and SFD down-chirp peak $k_{\text{down}}$: CFO shifts both in the <strong>same</strong> direction ($k_{\text{up}} = k_{\text{CFO}} + k_{\text{STO}}$), whereas STO shifts them in <strong>opposite</strong> directions ($k_{\text{down}} = k_{\text{CFO}} - k_{\text{STO}}$):
+          </p>
+          <div class="equation-body" style="background:var(--bg-card); border-radius:var(--radius-sm); padding:0.75rem; margin:0.65rem 0; border:1px solid var(--border-subtle);">
+            $$\widehat{\Delta f} = \frac{B}{2N}\left(k_{\text{up}} + k_{\text{down}}\right) = \frac{k_{\text{up}} + k_{\text{down}}}{2T_s}, \qquad \hat{\tau} = \frac{T_s}{2N}\left(k_{\text{up}} - k_{\text{down}}\right) = \frac{k_{\text{up}} - k_{\text{down}}}{2B}$$
+          </div>
+          <p style="margin-bottom:0; font-size:0.9rem;">
+            Because both estimators depend directly on raw dechirped FFT <code>argmax</code> peak picking, random AWGN spikes in the ultra-low SNR regime corrupt $k_{\text{up}}$ and $k_{\text{down}}$—especially across the short $2.25$ SFD down-chirps—causing complete Stage 2 breakdown.
           </p>
         </div>
       </section>
 
-      <!-- Section: Interactive Chirp & SNR Simulator -->
+      <!-- Section: Interactive Ultra-Low SNR & Sync Lab -->
       <section id="simulator" class="article-section">
-        <span class="section-tag">Interactive Simulation</span>
-        <h2 class="section-heading">Interactive LoRa Chirp & Noise Synthesizer</h2>
+        <span class="section-tag">Interactive Demonstration</span>
+        <h2 class="section-heading">Interactive Ultra-Low SNR & Denoise-then-Sync Lab</h2>
         <p class="section-intro">
-          Experience what happens to a LoRa Chirp Spread Spectrum (CSS) symbol as Signal-to-Noise Ratio drops into the Ultra-Low SNR zone. Adjust the slider to see the instantaneous frequency ramp dissolve beneath Gaussian noise:
+          Explore the exact physical mechanism behind our thesis at <strong>−19 dB</strong>: turn off the Pre-Sync STFT Denoiser to see random AWGN spikes cause a false <code>argmax</code> lock at bin 101, then enable the Denoiser to observe true peak recovery at bin 42.
         </p>
 
         <div class="snr-simulator">
@@ -370,17 +420,17 @@
             <div class="sim-control-group">
               <label for="snr-slider">
                 <span>Signal-to-Noise Ratio (SNR)</span>
-                <span id="snr-display-val" style="color:var(--accent-cyan); font-family:var(--font-mono);">-5.0 dB</span>
+                <span id="snr-display-val" style="color:var(--accent-blue); font-family:var(--font-mono);">-19.0 dB</span>
               </label>
-              <input type="range" id="snr-slider" class="sim-slider" min="-25" max="15" step="0.5" value="-5">
+              <input type="range" id="snr-slider" class="sim-slider" min="-25" max="10" step="0.5" value="-19">
             </div>
 
             <div class="sim-control-group">
               <label for="sf-select">
-                <span>Spreading Factor Configuration</span>
-                <span style="color:var(--text-muted); font-size:0.8rem;"><span class="math-inline">2<sup>SF</sup></span> chips / symbol</span>
+                <span>Spreading Factor</span>
+                <span style="color:var(--text-muted); font-size:0.76rem;">125 kHz BW</span>
               </label>
-              <select id="sf-select" style="width:100%; padding:0.45rem; background:var(--bg-tertiary); color:var(--text-primary); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); font-family:var(--font-mono);">
+              <select id="sf-select" class="sim-select">
                 <option value="7" selected>SF 7 (Limit: -7.5 dB)</option>
                 <option value="8">SF 8 (Limit: -10.0 dB)</option>
                 <option value="9">SF 9 (Limit: -12.5 dB)</option>
@@ -389,764 +439,804 @@
                 <option value="12">SF 12 (Limit: -20.0 dB)</option>
               </select>
             </div>
+
+            <div class="sim-toggle-group">
+              <label class="toggle-check">
+                <input type="checkbox" id="offset-toggle" checked>
+                <span>Inject ±5 ppm CFO & Fractional STO</span>
+              </label>
+              <label class="toggle-check">
+                <input type="checkbox" id="denoiser-toggle">
+                <span>Enable Pre-Sync STFT Denoiser</span>
+              </label>
+            </div>
           </div>
 
-          <!-- Simulation Canvas -->
-          <div class="sim-canvas-wrap">
-            <canvas id="chirp-canvas"></canvas>
+          <div class="sim-dual-canvas">
+            <div class="sim-pane">
+              <div class="sim-pane-title">
+                <span>CSS Time–Frequency Spectrogram</span>
+                <span>Preamble + SFD</span>
+              </div>
+              <div class="sim-canvas-wrap">
+                <canvas id="chirp-canvas"></canvas>
+              </div>
+            </div>
+            <div class="sim-pane">
+              <div class="sim-pane-title">
+                <span>Dechirped Synchronization FFT (0–127)</span>
+                <span>Target: Bin 42</span>
+              </div>
+              <div class="sim-canvas-wrap">
+                <canvas id="fft-canvas"></canvas>
+              </div>
+            </div>
           </div>
 
           <div class="sim-readout">
-            <div>
-              <span style="color:var(--text-muted);">Current State:</span>
-              <span id="snr-regime-badge" class="sim-status status-normal">Standard Region</span>
+            <div class="sim-readout-item">
+              <span class="sim-readout-label">SNR Regime</span>
+              <span id="snr-regime-badge" class="sim-status status-ultralow">Ultra-Low SNR Regime</span>
             </div>
-            <div>
-              <span style="color:var(--text-muted);">Conventional Dechirp:</span>
-              <span id="conventional-status" style="font-weight:600;">Optimal</span>
+            <div class="sim-readout-item">
+              <span class="sim-readout-label">Detected FFT Peak</span>
+              <span id="conventional-status" style="font-weight:700;">—</span>
             </div>
-            <div>
-              <span style="color:var(--text-muted);">Neural Pipeline:</span>
-              <span id="ml-status" style="color:var(--accent-emerald); font-weight:600;">Active & Robust</span>
+            <div class="sim-readout-item">
+              <span class="sim-readout-label">Stage 2 Sync State</span>
+              <span id="sync-status" style="font-weight:700;">—</span>
             </div>
-            <button id="play-chirp-btn" class="btn-pill btn-outline" style="padding:0.35rem 0.85rem; font-size:0.78rem;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              Listen Chirp Tone
-            </button>
+            <div class="sim-readout-item">
+              <span class="sim-readout-label">Peak-to-Median (PMR)</span>
+              <span id="pmr-status" style="font-weight:700;">—</span>
+            </div>
+            <button id="play-chirp-btn" class="btn-pill btn-outline" style="padding:0.4rem 0.85rem; font-size:0.78rem;">Listen Chirp</button>
           </div>
         </div>
       </section>
 
-      <!-- Section: LoRaWAN & C-RAN Architecture -->
-      <section id="architecture" class="article-section">
-        <span class="section-tag">System Topology</span>
-        <h2 class="section-heading">LoRaWAN in General & C-RAN Architecture</h2>
+      <!-- Section: Methodology & Proposed Architecture -->
+      <section id="methodology" class="article-section">
+        <span class="section-tag">Chapter III</span>
+        <h2 class="section-heading">Research Methodology & Proposed Synchronization Architecture</h2>
+
         <p class="section-intro">
-          LoRa operates at the physical layer via Chirp Spread Spectrum modulation, while LoRaWAN manages the MAC protocol layer. Standard commercially available LoRaWAN systems deploy a three-tier star-of-stars topology:
+          Unlike prior studies that evaluate preamble detection or symbol decoding in isolation, our Python-based modular simulation framework evaluates the complete three-stage sequential LoRa gateway receiver directly on unaligned, offset-impaired I/Q streams.
         </p>
 
-        <div class="grid-3">
+        <div class="grid-4">
           <div class="card">
-            <h3 style="font-size:1.05rem; margin-bottom:0.5rem; color:var(--accent-cyan);">1. Edge Devices (Transmitters)</h3>
-            <p style="font-size:0.86rem; margin-bottom:0;">
-              Battery-powered end nodes and sensors that collect environmental physical parameters, modulate them into CSS RF chirps, and broadcast them asynchronously on unlicensed ISM bands.
-            </p>
+            <span class="badge badge-blue" style="margin-bottom:0.5rem;">Step 1</span>
+            <h4 style="font-size:0.96rem; margin-bottom:0.35rem;">Baseband Packet</h4>
+            <p style="font-size:0.82rem; margin-bottom:0;">2 pure-noise frames + 8 preamble up-chirps + 2 Sync Words + 2.25 SFD down-chirps + 10 random SF7 payload symbols.</p>
           </div>
           <div class="card">
-            <h3 style="font-size:1.05rem; margin-bottom:0.5rem; color:var(--accent-emerald);">2. Gateways (RF Forwarders)</h3>
-            <p style="font-size:0.86rem; margin-bottom:0;">
-              Multi-channel RF frontends listening continuously on ISM channels. In modern Cloud Radio Access Network (C-RAN) setups, gateways act as transparent forwarders streaming raw or compressed in-phase and quadrature (IQ) samples.
-            </p>
+            <span class="badge badge-amber" style="margin-bottom:0.5rem;">Step 2</span>
+            <h4 style="font-size:0.96rem; margin-bottom:0.35rem;">Channel Impairments</h4>
+            <p style="font-size:0.82rem; margin-bottom:0;">$1\text{ MHz}$ stream injected with Gaussian CFO ($\pm 5\text{ ppm}$), fractional STO ($\tau \in [0, T_s/2]$), and AWGN ($-25$ to $-10\text{ dB}$).</p>
           </div>
           <div class="card">
-            <h3 style="font-size:1.05rem; margin-bottom:0.5rem; color:var(--accent-purple);">3. Network Server (Central Brain)</h3>
-            <p style="font-size:0.86rem; margin-bottom:0;">
-              Centralized infrastructure performing deduplication, coherent signal combining, neural synchronization, and payload parsing before forwarding validated telemetry to application servers.
-            </p>
+            <span class="badge badge-purple" style="margin-bottom:0.5rem;">Step 3</span>
+            <h4 style="font-size:0.96rem; margin-bottom:0.35rem;">Sequential 3-Stage</h4>
+            <p style="font-size:0.82rem; margin-bottom:0;">Stage 1 coarse detection $\to$ Stage 2 CFO/STO estimation &amp; derotation $\to$ Stage 3 payload decoding.</p>
+          </div>
+          <div class="card">
+            <span class="badge badge-emerald" style="margin-bottom:0.5rem;">Step 4</span>
+            <h4 style="font-size:0.96rem; margin-bottom:0.35rem;">Monte Carlo Metrics</h4>
+            <p style="font-size:0.82rem; margin-bottom:0;">Logs Preamble Detection Rate, CFO ($\le 488.3\text{ Hz}$) &amp; STO Success Rates, End-to-End SDA, PMR, and latency.</p>
           </div>
         </div>
 
-        <!-- Embedded Figure: LoRaWAN & C-RAN Data Flow -->
+        <div class="grid-2">
+          <div>
+            <div class="table-caption" style="margin-top:0.5rem;">Table 3. Physical-Layer & Channel Simulation Parameters</div>
+            <div class="table-wrapper">
+              <table class="custom-table">
+                <thead>
+                  <tr><th>Parameter</th><th>Value</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Bandwidth ($B$)</td><td>$125\text{ kHz}$</td></tr>
+                  <tr><td>Spreading Factor ($\text{SF}$)</td><td>$7$ ($N = 128$ bins)</td></tr>
+                  <tr><td>Sampling Frequency ($f_s$)</td><td>$1\text{ MHz}$ ($O_s = 8\times$)</td></tr>
+                  <tr><td>Symbol Duration ($T_s$)</td><td>$2^{\text{SF}}/B \approx 1.024\text{ ms}$</td></tr>
+                  <tr><td>Preamble &amp; SFD</td><td>$8$ up-chirps, $2.25$ down-chirps</td></tr>
+                  <tr><td>Payload Length</td><td>$10$ symbols / packet</td></tr>
+                  <tr><td>CFO Impairment</td><td>$\pm 5\text{ ppm}$ (Gaussian Normal)</td></tr>
+                  <tr><td>STO Impairment</td><td>Fractional delay $\in [0, T_s/2]$</td></tr>
+                  <tr><td>Evaluated SNR Range</td><td>$-25\text{ dB}$ to $-10\text{ dB}$ ($1\text{ dB}$ step)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <div class="table-caption" style="margin-top:0.5rem;">Table 4. Evaluated End-to-End Pipeline Configurations</div>
+            <div class="table-wrapper">
+              <table class="custom-table">
+                <thead>
+                  <tr><th>Config</th><th>Stage 1</th><th>Stage 2</th><th>Stage 3</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Conv-Baseline</strong></td>
+                    <td>Conventional Repeated-Symbol</td>
+                    <td>Analytical Up–Down FFT [13]</td>
+                    <td>Dechirp FFT / LoRaSeek</td>
+                  </tr>
+                  <tr class="warn-row">
+                    <td><strong>AI-End2End (Conv-Sync)</strong></td>
+                    <td>CALoRa [18]</td>
+                    <td>Analytical Up–Down FFT [13]</td>
+                    <td>LoRaSeek [17]</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td><strong>PoW Denoise-then-Sync</strong></td>
+                    <td>Coarse Trigger / CALoRa</td>
+                    <td>Pre-Sync STFT Denoiser (LoRaSeek / GLoRiPHY + Conj. SFD) + Analytical Sync</td>
+                    <td>LoRaSeek [17]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="equation-card" style="margin-top:0;">
+              <div class="equation-header">
+                <span class="equation-badge">STRICT CFO BOUND</span>
+                <span class="equation-title">SF7 Half-Bin Demodulation Criterion</span>
+              </div>
+              <div class="equation-body">
+                $$|\widehat{\Delta f}_{\text{CFO}} - \Delta f_{\text{true}}| \le \frac{B}{2 \cdot 2^{\text{SF}}} \approx 488.3\text{ Hz}$$
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proposed Sync Architecture -->
+        <h3 id="proposed-sync" class="subsection-heading">Proposed Stage 2 Dual-Slope Denoise-then-Sync Architecture</h3>
+        <p>
+          Off-the-shelf payload denoisers like LoRaSeek [17] cannot be dropped directly into Stage 2 without adaptation because of a fundamental <strong>domain mismatch</strong>: LoRaSeek was trained exclusively on aligned single payload up-chirps ($\text{CFO} = 0$, $\text{STO} = 0$), whereas Stage 2 must process unaligned fractional-STO windows containing both $8$ preamble up-chirps and $2.25$ opposite-slope SFD down-chirps. (In our proof-of-work, SFD down-chirps are mapped into the up-chirp domain via <strong>complex conjugation</strong> before denoising.) To eliminate boundary mismatch permanently, our proposed final thesis module bridges CALoRa (Stage 1) and LoRaSeek (Stage 3) with three submodules (Figure 5):
+        </p>
+
         <div class="figure-container">
           <div class="figure-header">
-            <span class="figure-tag">FIGURE 1: DATA FLOW DIAGRAM IN LoRaWAN & C-RAN</span>
-            <div class="figure-actions">
-              <span style="font-size:0.8rem; color:var(--text-muted);">High Resolution Diagram</span>
-            </div>
+            <span class="figure-tag">FIGURE 5 • PROPOSED ARCHITECTURE</span>
+            <span class="figure-meta">Dual-Slope Denoise-then-Sync Network</span>
           </div>
           <div class="figure-img-wrap">
-            <img src="image/lora-keseluruhan.png" alt="Data flow diagram of IQ signals and payload data in LoRaWAN system" class="figure-img" loading="lazy">
-            <div class="img-zoom-hint">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Click to Zoom & Inspect
-            </div>
+            <img src="image/fig05_proposed_sync_architecture.png" alt="Proposed end-to-end learning-based LoRa receiver architecture featuring the Stage 2 Dual-Slope Denoise-then-Sync Network" class="figure-img" loading="lazy">
+            <span class="img-zoom-hint">Zoom</span>
           </div>
           <p class="figure-caption">
-            <strong>Figure 1: Data flow diagram of IQ signals and payload data in LoRaWAN system.</strong> Illustrating the reception flow from Edge Device transmission across multiple distributed Gateways, delivering digitized IQ streams over IP backhaul into the centralized Network Server for coherent combining and ML processing.
+            <strong>Figure 5.</strong> Proposed end-to-end learning-based LoRa receiver architecture featuring the Stage 2 Dual-Slope Denoise-then-Sync Network bridging Stage 1 preamble detection (CALoRa) and Stage 3 payload decoding (LoRaSeek).
           </p>
         </div>
+      </section>
 
-        <!-- Wireless Communication Technologies Comparison Table -->
-        <h3 style="margin:2rem 0 1rem 0;">Comparison of Wireless Communication Technologies</h3>
+      <!-- Section: Experimental Results (All 14 Figures + Tabs) -->
+      <section id="results" class="article-section">
+        <span class="section-tag">Chapter IV</span>
+        <h2 class="section-heading">Experimental Results & Quantitative Evaluation</h2>
+        <p class="section-intro">
+          Select a result group below to inspect each experimental milestone, or click <strong>View All Results (Figs. 6–19)</strong> to view the entire Chapter IV evaluation at once. Click any figure to zoom in via the high-resolution Lightbox.
+        </p>
+
+        <div class="result-tabs" role="tablist">
+          <button class="result-tab-btn active" data-result-tab="tab-4-1" role="tab" aria-selected="true">4.1 Baseline Benchmark (Figs. 6–7)</button>
+          <button class="result-tab-btn" data-result-tab="tab-4-2" role="tab" aria-selected="false">4.2 End-to-End Bottleneck (Figs. 8–13)</button>
+          <button class="result-tab-btn" data-result-tab="tab-4-3" role="tab" aria-selected="false">4.3 PoW Peak Recovery (Figs. 14–16)</button>
+          <button class="result-tab-btn" data-result-tab="tab-4-4" role="tab" aria-selected="false">4.4 PoW Sync &amp; +2 dB Gain (Figs. 17–19)</button>
+          <button class="result-tab-btn" data-result-tab="all" role="tab" aria-selected="false">View All (14 Figs.)</button>
+        </div>
+
+        <!-- Tab 4.1 -->
+        <div id="tab-4-1" class="result-panel active">
+          <h3 class="subsection-heading" style="margin-top:0;">4.1. Baseline Symbol Demodulator Benchmark ($N = 1{,}000$ SF7 Symbols @ $-18\text{ dB}$)</h3>
+          <p>
+            Among conventional DSP methods, <strong>Naive 1/8 Decimation FFT</strong> (subsampling $1\text{ MHz} \to 125\text{ kHz}$ directly before dechirping) collapses to <strong>14.3%</strong> accuracy due to wideband noise aliasing. <strong>Polyphase Downsampling</strong> reaches <strong>99.2%</strong> in $37.7\text{ ms}$, but only because its Nyquist FIR low-pass filter strips $87.5\%$ ($+9.03\text{ dB}$) of out-of-band noise under idealized zero-CFO/STO sync (effectively comparable to SF10), making it an excluded theoretical reference rather than a fair SF7 baseline. Among AI models, STFT denoiser architectures—<strong>GLoRiPHY (95.2%, 5.23 s)</strong> and <strong>LoRaSeek (93.2%, 4.12 s)</strong>—outperform <strong>NELoRa (79.0%, 22.24 s)</strong> by $+14.2\%\text{--}16.2\%$ while running $4.2\times\text{--}5.4\times$ faster. LoRaSeek's speed and accuracy make it our primary Stage 3 decoder.
+          </p>
+          <div class="figure-grid-2">
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 6</span>
+                <span class="figure-meta">SF7, SNR −18 dB, N = 1,000</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig06_demod_accuracy_benchmark.png" alt="Comparison of symbol decoding accuracy across DSP and AI demodulators at -18 dB" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 6.</strong> Symbol decoding accuracy across conventional DSP and deep-learning demodulators for synchronized SF7 symbols at −18 dB SNR.
+              </p>
+            </div>
+
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 7</span>
+                <span class="figure-meta">Batch Inference Speed</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig07_demod_latency_benchmark.png" alt="Comparison of execution latency across DSP and AI symbol demodulators" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 7.</strong> Execution latency comparison across conventional DSP (ms) and deep-learning (s) symbol demodulators for $1{,}000$ symbols.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4.2 -->
+        <div id="tab-4-2" class="result-panel">
+          <h3 class="subsection-heading" style="margin-top:0;">4.2. End-to-End Pipeline Evaluation: Clean AWGN vs. Realistic CFO & STO</h3>
+          <p>
+            <strong>Experiment A — Clean AWGN Without Offsets ($\Delta f = 0, \tau = 0$):</strong> Pairing CALoRa with LoRaSeek shifts the 90% preamble detection threshold from $-17.5\text{ dB}$ to $-19.1\text{ dB}$ (Figure 8) and improves end-to-end Symbol Decoding Accuracy (SDA) by <strong>+1.0 dB</strong> at the 90% threshold ($-17.3\text{ dB} \to -18.3\text{ dB}$, Figure 9).
+          </p>
+          <div class="figure-grid-2" style="margin-bottom:1.75rem;">
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 8</span>
+                <span class="figure-meta">Exp. A: Clean AWGN</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig08_clean_preamble_detection.png" alt="Preamble detection versus SNR under pure AWGN" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 8.</strong> Preamble detection rate vs. SNR under clean AWGN, comparing conventional detection and CALoRa.
+              </p>
+            </div>
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 9</span>
+                <span class="figure-meta">Exp. A: Clean AWGN</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig09_clean_symbol_decoding.png" alt="Symbol decoding accuracy versus SNR under clean AWGN" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 9.</strong> End-to-end symbol decoding accuracy vs. SNR under clean AWGN without hardware offsets (+1.0 dB gain).
+              </p>
+            </div>
+          </div>
+
+          <p>
+            <strong>Experiment B — Realistic Channel ($\pm 5\text{ ppm}$ CFO &amp; Fractional STO):</strong> Even with offsets present, CALoRa still detects <strong>82%</strong> of packets at $-18\text{ dB}$ (vs. $46\%$ conventional, Figure 10), yet the downstream SDA gain vanishes completely—collapsing to <strong>53%</strong> at $-18\text{ dB}$ with a $90\%$ threshold near $-15.5\text{ dB}$ (Figure 11). Inspecting Stage 2 reveals the exact culprit: at $-18\text{ dB}$, only <strong>42%</strong> of packets pass CFO estimation (Figure 12) and <strong>44%</strong> pass STO estimation (Figure 13).
+          </p>
+          <div class="figure-grid-2">
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 10</span>
+                <span class="figure-meta">Exp. B: CFO + STO</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig10_offset_preamble_detection.png" alt="Preamble detection rate under CFO and STO offsets" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 10.</strong> Stage 1 preamble detection rate vs. SNR under $\pm 5\text{ ppm}$ CFO and fractional STO (CALoRa maintains 82% @ −18 dB).
+              </p>
+            </div>
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 11</span>
+                <span class="figure-meta">Exp. B: CFO + STO</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig11_offset_symbol_decoding.png" alt="End-to-end symbol decoding accuracy under CFO and STO" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 11.</strong> End-to-end SDA under CFO and STO: the 1–2 dB sensitivity gain disappears despite strong Stage 1 detection.
+              </p>
+            </div>
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 12</span>
+                <span class="figure-meta">Stage 2 Bottleneck</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig12_offset_cfo_bottleneck.png" alt="Stage 2 CFO estimation success rate under hardware offsets" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 12.</strong> Stage 2 CFO estimation success rate ($\le \pm 488.3\text{ Hz}$), collapsing to 42% at −18 dB regardless of preamble detector.
+              </p>
+            </div>
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 13</span>
+                <span class="figure-meta">Stage 2 Bottleneck</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig13_offset_sto_bottleneck.png" alt="Stage 2 STO estimation success rate under hardware offsets" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 13.</strong> Stage 2 STO estimation success rate under realistic hardware impairments (44% @ −18 dB).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4.3 -->
+        <div id="tab-4-3" class="result-panel">
+          <h3 class="subsection-heading" style="margin-top:0;">4.3. Proof-of-Work (1/2): FFT Peak Breakdown & Recovery via Spectrogram Denoising</h3>
+          <p>
+            At $+10\text{ dB}$ (Figure 14), dechirped preamble up-chirp ($k_{\text{up}}$, bin 30) and SFD down-chirp ($k_{\text{down}}$, bin 74) FFT peaks are razor-sharp. At $-19\text{ dB}$ (Figure 15), the true chirp peak at bin 42 is submerged beneath AWGN spikes ($\text{PMR} = 1.48\times$), causing <code>argmax</code> to falsely lock onto bin 101. Passing that identical $-19\text{ dB}$ signal through the LoRaSeek STFT denoiser and inverse STFT before dechirping (Figure 16) suppresses background noise and restores the exact ground-truth peak at bin 42 with a <strong>$29.8\times$ PMR (+26.1 dB peak-to-noise gain)</strong>.
+          </p>
+          <div class="figure-grid-3">
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 14</span>
+                <span class="figure-meta">Baseline (+10 dB)</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig14_pow_high_snr_fft.png" alt="Clean dechirped up-chirp and down-chirp FFT peaks at +10 dB" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 14.</strong> Clean preamble up-chirp ($k_{\text{up}}$) and SFD down-chirp ($k_{\text{down}}$) FFT peaks at $+10\text{ dB}$.
+              </p>
+            </div>
+
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 15</span>
+                <span class="figure-meta">Raw −19 dB Failure</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig15_pow_ultralow_breakdown.png" alt="Raw dechirped FFT breakdown at -19 dB showing false peak at bin 101" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 15.</strong> Ultra-low SNR breakdown at $-19\text{ dB}$ ($\text{PMR} = 1.48\times$): noise spikes cause false lock at bin 101 instead of bin 42.
+              </p>
+            </div>
+
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 16</span>
+                <span class="figure-meta">Denoised −19 dB Rescue</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig16_pow_denoised_recovery.png" alt="Denoised dechirped FFT spectrum at -19 dB recovering true bin 42" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 16.</strong> Denoised FFT at $-19\text{ dB}$ after LoRaSeek STFT noise suppression: true peak at bin 42 recovered ($\text{PMR} = 29.8\times$, $+26.1\text{ dB}$).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4.4 -->
+        <div id="tab-4-4" class="result-panel">
+          <h3 class="subsection-heading" style="margin-top:0;">4.4. Proof-of-Work (2/2): Stage 2 Sync Recovery & +2.0 dB End-to-End Payload Gain</h3>
+          <p>
+            Evaluating Denoise-then-Sync across $-25\text{ dB}$ to $-10\text{ dB}$ confirms dramatic Stage 2 recovery: at $-18\text{ dB}$, CFO accuracy jumps from <strong>58% to 83% (GLoRiPHY)</strong> and <strong>87% (LoRaSeek, +29%)</strong> (Figure 17), while STO accuracy increases from <strong>61% to 89% (+28%)</strong>, shifting the 90% threshold by $2.1\text{ dB}$ (Figure 18). Compensating incoming frames with these denoised estimates boosts downstream payload decoding (Figure 19) by <strong>+2.0 dB</strong> at the 90% threshold ($-15.5\text{ dB} \to -17.5\text{ dB}$) and raises decoding accuracy at $-18\text{ dB}$ from <strong>63% to 83% (+20%)</strong>.
+          </p>
+          <div class="figure-grid-3">
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 17</span>
+                <span class="figure-meta">Stage 2 CFO Gain</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig17_pow_cfo_denoised.png" alt="Stage 2 CFO estimation accuracy before vs. after STFT denoising" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 17.</strong> CFO estimation accuracy across $-25$ to $-10\text{ dB}$: LoRaSeek front-end raises $-18\text{ dB}$ accuracy from $58\%$ to $87\%$ ($+29\%$).
+              </p>
+            </div>
+
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 18</span>
+                <span class="figure-meta">Stage 2 STO Gain</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig18_pow_sto_denoised.png" alt="Stage 2 STO estimation accuracy before vs. after STFT denoising" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 18.</strong> STO estimation accuracy across $-25$ to $-10\text{ dB}$: pre-sync denoising lifts $-18\text{ dB}$ accuracy from $61\%$ to $89\%$ ($+28\%$).
+              </p>
+            </div>
+
+            <div class="figure-container">
+              <div class="figure-header">
+                <span class="figure-tag">FIGURE 19</span>
+                <span class="figure-meta">End-to-End Payload (+2.0 dB)</span>
+              </div>
+              <div class="figure-img-wrap">
+                <img src="image/fig19_pow_compensated_payload.png" alt="Compensated payload decoding accuracy demonstrating +2 dB sensitivity gain" class="figure-img" loading="lazy">
+                <span class="img-zoom-hint">Zoom</span>
+              </div>
+              <p class="figure-caption">
+                <strong>Figure 19.</strong> End-to-end compensated payload decoding accuracy: 90% threshold improves from $-15.5\text{ dB}$ to $-17.5\text{ dB}$ ($+2.0\text{ dB}$).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consolidated Summary Table 5 -->
+        <div class="table-caption">Table 5. Summary of Thesis Experimental Findings Across Pipeline Configurations</div>
         <div class="table-wrapper">
           <table class="custom-table">
             <thead>
               <tr>
-                <th>Parameter</th>
-                <th>LoRa / LoRaWAN</th>
-                <th>Bluetooth (BLE)</th>
-                <th>Cellular (4G/5G/NB-IoT)</th>
+                <th>Pipeline / Method</th>
+                <th>Stage 1 Det. @ −18 dB</th>
+                <th>Stage 2 STO @ −18 dB</th>
+                <th>Stage 2 CFO @ −18 dB</th>
+                <th>Payload SDA @ −18 dB</th>
+                <th>90% Decoding Threshold</th>
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td><strong>Conv-Baseline (With CFO/STO)</strong></td>
+                <td>46%</td>
+                <td>61% (Isolated)</td>
+                <td>58% (Isolated)</td>
+                <td>53%–63%</td>
+                <td>−15.5 dB</td>
+              </tr>
+              <tr class="warn-row">
+                <td><strong>AI-End2End (Conv-Sync)</strong></td>
+                <td>82%</td>
+                <td>44% (E2E)</td>
+                <td>42% (E2E)</td>
+                <td>53% (E2E)</td>
+                <td>−15.5 dB *(Gain Collapsed)*</td>
+              </tr>
               <tr class="highlight-row">
-                <td><strong>Communication Range</strong></td>
-                <td>Long (2 to 15 km)</td>
-                <td>Short (10 to 100 m)</td>
-                <td>Long (0.8 to 16 km)</td>
-              </tr>
-              <tr>
-                <td><strong>Data Transmission Speed</strong></td>
-                <td>Very Low (0.3 to 50 kbps)</td>
-                <td>Medium (1 to 2 Mbps)</td>
-                <td>High (Megabits to Gigabits)</td>
-              </tr>
-              <tr class="highlight-row">
-                <td><strong>Power Consumption</strong></td>
-                <td>Ultra-low (Years on coin cell)</td>
-                <td>Very Low</td>
-                <td>High (Demands battery recharge)</td>
-              </tr>
-              <tr>
-                <td><strong>Primary Use Cases</strong></td>
-                <td>Off-grid wide-area sensors, smart city, agriculture</td>
-                <td>Wearables, phone-to-device peripherals</td>
-                <td>Streaming, video feeds, automotive tracking</td>
-              </tr>
-              <tr>
-                <td><strong>Operating Frequency Bands</strong></td>
-                <td>Unlicensed ISM (433, 868, 915 MHz)</td>
-                <td>2.4 GHz ISM</td>
-                <td>Licensed spectrum (600 MHz to 39 GHz)</td>
+                <td><strong>PoW Denoise-then-Sync (LoRaSeek)</strong></td>
+                <td>82% (Coarse)</td>
+                <td>89% (+28%)</td>
+                <td>87% (+29%)</td>
+                <td>83% (+20%)</td>
+                <td>−17.5 dB (+2.0 dB Gain)</td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- Section: The Complete LoRa Receiver Pipeline -->
-      <section id="pipeline" class="article-section">
-        <span class="section-tag">Core Technical Architecture</span>
-        <h2 class="section-heading">The Complete LoRa Receiver Pipeline</h2>
-        <p class="section-intro">
-          Receiving an incoming LoRa packet is a multi-stage sequential process. A failure at any earlier stage causes complete packet loss down the line:
-        </p>
-
-        <!-- Figure 2: The Master Pipeline Diagram -->
-        <div class="figure-container">
-          <div class="figure-header">
-            <span class="figure-tag">FIGURE 2: COMPREHENSIVE LoRa RECEIVER PIPELINE</span>
-            <div class="figure-actions">
-              <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">(4087 × 2234 Ultra HD) • Click to Expand</span>
-            </div>
-          </div>
-          <div class="figure-img-wrap">
-            <img src="image/pipeline.png" alt="Detailed LoRa Receiver Demodulation and Synchronization Pipeline" class="figure-img" loading="lazy">
-            <div class="img-zoom-hint">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Inspect 4K Pipeline Diagram
-            </div>
-          </div>
-          <p class="figure-caption">
-            <strong>Figure 2: The Master LoRa Digital Receiver Pipeline.</strong> Covering the three fundamental stages: Preamble Detection (signal sensing amidst channel noise), Synchronization (estimating and decoupling CFO, STO, and SFO), and Symbol Demodulation (dechirping, FFT energy concentration, and payload decoding).
-          </p>
-        </div>
-
-        <!-- 3 Pipeline Stages Breakdown -->
-        <div class="grid-3">
-          <div class="card">
-            <span class="badge badge-cyan" style="margin-bottom:0.75rem;">Stage 1</span>
-            <h3 style="font-size:1.1rem; margin-bottom:0.6rem;">Preamble Detection</h3>
-            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6;">
-              Because gateways listen 24/7 on empty spectrum, the receiver must distinguish pure noise from incoming signals. A standard preamble consists of 8 consecutive unmodulated base upchirps (<span class="math-inline"><em>S</em> = 0</span>), two network synchronization chirps, and 2.25 downchirps.
-            </p>
-          </div>
-
-          <div class="card">
-            <span class="badge badge-emerald" style="margin-bottom:0.75rem;">Stage 2</span>
-            <h3 style="font-size:1.1rem; margin-bottom:0.6rem;">Synchronization</h3>
-            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6;">
-              Statistically, over 99% of sample windows are misaligned upon arrival. The receiver must determine the exact starting boundary of symbols (STO) while simultaneously decoupling Carrier Frequency Offset (CFO) and Sampling Frequency Offset (SFO).
-            </p>
-          </div>
-
-          <div class="card">
-            <span class="badge badge-purple" style="margin-bottom:0.75rem;">Stage 3</span>
-            <h3 style="font-size:1.1rem; margin-bottom:0.6rem;">Symbol Demodulation</h3>
-            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6;">
-              In-phase and quadrature samples are multiplied by a reference base downchirp (complex conjugate of upchirp). This collapses the continuous frequency sweep into a single instantaneous peak on the Discrete Fourier Transform (DFT), identifying the transmitted symbol <span class="math-inline"><em>S</em> &isin; [0, 2<sup>SF</sup> &minus; 1]</span>.
-            </p>
-            <div class="equation-card" style="margin-top:0.85rem; padding:0.9rem;">
-              <div class="equation-header" style="margin-bottom:0.4rem; padding-bottom:0.3rem;">
-                <span class="equation-badge">DECHIRPING</span>
-                <span class="equation-title">Conjugate Multiplication</span>
-              </div>
-              <div class="equation-body compact">
-                <span class="math-var">y</span><span class="math-paren">(</span><span class="math-var">t</span><span class="math-paren">)</span>
-                <span class="math-op">=</span>
-                <span class="math-var">s</span><sub class="math-sub">rx</sub><span class="math-paren">(</span><span class="math-var">t</span><span class="math-paren">)</span>
-                <span class="math-op">&middot;</span>
-                <span class="math-var">s</span><sub class="math-sub">down</sub><sup class="math-sup">*</sup><span class="math-paren">(</span><span class="math-var">t</span><span class="math-paren">)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section: Hardware Impairments & Offsets -->
-      <section id="offsets" class="article-section">
-        <span class="section-tag">Physical Layer Modeling</span>
-        <h2 class="section-heading">Hardware-Induced Frequency & Timing Offsets</h2>
-        <p class="section-intro">
-          In ideal theoretical models, transmitters and receivers share identical oscillators and sampling clocks. In commercial off-the-shelf hardware, three critical impairments must be corrected:
-        </p>
-
-        <div class="grid-3">
-          <!-- Offset 1: STO -->
-          <div class="offset-card">
-            <div class="offset-header">
-              <div class="offset-title">Symbol Timing Offset (STO)</div>
-              <span class="badge badge-cyan">&tau;</span>
-            </div>
-            <p style="font-size:0.86rem;">
-              <strong>Definition:</strong> Time difference between actual symbol arrival and the receiver's sampling window starting index.
-            </p>
-            <div class="equation-card" style="padding:1rem; margin:0.85rem 0;">
-              <div class="equation-header" style="margin-bottom:0.4rem; padding-bottom:0.35rem;">
-                <span class="equation-badge">STO SHIFT</span>
-                <span class="equation-title">Sample Index Misalignment</span>
-              </div>
-              <div class="equation-body compact">
-                <span class="math-var">&Delta;k</span><sub class="math-sub">STO</sub>
-                <span class="math-op">=</span>
-                <span class="math-func">round</span>
-                <span class="math-paren">(</span>
-                <div class="math-frac">
-                  <div class="math-num"><span class="math-var">&tau;</span></div>
-                  <div class="math-den"><span class="math-var">T</span><sub class="math-sub">s</sub></div>
-                </div>
-                <span class="math-paren">)</span>
-              </div>
-            </div>
-            <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:0;">
-              <strong>Impact:</strong> Causes a circular time shift during dechirping, manifesting directly as a shifted FFT peak index and yielding wrong decoded symbols.
-            </p>
-          </div>
-
-          <!-- Offset 2: CFO -->
-          <div class="offset-card">
-            <div class="offset-header">
-              <div class="offset-title">Carrier Frequency Offset (CFO)</div>
-              <span class="badge badge-emerald">&Delta;f</span>
-            </div>
-            <p style="font-size:0.86rem;">
-              <strong>Definition:</strong> Oscillator imperfection between transmitter and receiver RF local synthesizers.
-            </p>
-            <div class="equation-card" style="padding:1rem; margin:0.85rem 0;">
-              <div class="equation-header" style="margin-bottom:0.4rem; padding-bottom:0.35rem;">
-                <span class="equation-badge">CFO SHIFT</span>
-                <span class="equation-title">Carrier Frequency Error</span>
-              </div>
-              <div class="equation-body compact">
-                <span class="math-var">&Delta;f</span>
-                <span class="math-op">=</span>
-                <span class="math-var">f</span><sub class="math-sub">c</sub>
-                <span class="math-op">&times;</span>
-                <span class="math-var">PPM</span>
-                <span class="math-op">&times;</span>
-                <span class="math-num">10</span><sup class="math-sup">&minus;6</sup>
-              </div>
-            </div>
-            <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:0;">
-              <strong>Example:</strong> For a 5 PPM crystal at 915 MHz, <span class="math-inline">&Delta;f = 915 &times; 10<sup>6</sup> &times; 5 &times; 10<sup>&minus;6</sup> = 4,575 Hz</span>. This shifts the frequency sweep vertically.
-            </p>
-          </div>
-
-          <!-- Offset 3: SFO -->
-          <div class="offset-card">
-            <div class="offset-header">
-              <div class="offset-title">Sampling Frequency Offset (SFO)</div>
-              <span class="badge badge-purple">&delta;<sub>s</sub></span>
-            </div>
-            <p style="font-size:0.86rem;">
-              <strong>Definition:</strong> Discrepancy between ADC sampling clocks on transceiver and receiver chips.
-            </p>
-            <div class="equation-card" style="padding:1rem; margin:0.85rem 0;">
-              <div class="equation-header" style="margin-bottom:0.4rem; padding-bottom:0.35rem;">
-                <span class="equation-badge">SFO DRIFT</span>
-                <span class="equation-title">Accumulated Phase Error</span>
-              </div>
-              <div class="equation-body compact">
-                <span class="math-var">&theta;</span><sub class="math-sub">err</sub><span class="math-paren">(</span><span class="math-var">t</span><span class="math-paren">)</span>
-                <span class="math-op">=</span>
-                <span class="math-num">2&pi;</span>
-                <div class="math-integral">
-                  <span class="int-sym">&int;</span>
-                  <div class="int-bounds">
-                    <span><em>t</em></span>
-                    <span>0</span>
-                  </div>
-                </div>
-                <span class="math-var">&delta;</span><sub class="math-sub">s</sub><span class="math-paren">(</span><span class="math-var">&tau;</span><span class="math-paren">)</span>
-                <span class="math-var">d&tau;</span>
-              </div>
-            </div>
-            <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:0;">
-              <strong>Impact:</strong> Phase errors accumulate progressively over time. While negligible during short preambles, SFO severely degrades longer payload frames.
-            </p>
-          </div>
-        </div>
-
-        <div class="callout callout-warning">
-          <div class="callout-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            The Decoupling Dilemma under Ultra-Low SNR
-          </div>
-          <p style="margin-bottom:0.75rem;">
-            Because both STO and CFO shift the dechirped FFT peak, conventional receivers rely on conjugate symmetry between upchirps and downchirps to decouple the two offsets:
-          </p>
-          <div class="equation-card" style="margin: 0.85rem 0; padding: 1rem 1.25rem;">
-            <div class="equation-header" style="margin-bottom:0.5rem; padding-bottom:0.4rem;">
-              <span class="equation-badge">EQUATION 2</span>
-              <span class="equation-title">Conventional Algebraic Offset Decoupling</span>
-            </div>
-            <div class="equation-body compact">
-              <span class="math-var">&Delta;k</span><sub class="math-sub">STO</sub>
-              <span class="math-op">=</span>
-              <div class="math-frac">
-                <div class="math-num"><span class="math-var">f</span><sub class="math-sub">up</sub> <span class="math-op">+</span> <span class="math-var">f</span><sub class="math-sub">down</sub></div>
-                <div class="math-den"><span class="math-num">2</span></div>
-              </div>
-              <span style="display:inline-block; width:1.75rem;"></span>
-              <span class="math-var">&Delta;f</span><sub class="math-sub">CFO</sub>
-              <span class="math-op">=</span>
-              <div class="math-frac">
-                <div class="math-num"><span class="math-var">f</span><sub class="math-sub">up</sub> <span class="math-op">&minus;</span> <span class="math-var">f</span><sub class="math-sub">down</sub></div>
-                <div class="math-den"><span class="math-num">2</span></div>
-              </div>
-            </div>
-          </div>
-          <p style="margin-bottom:0;">
-            However, under Ultra-Low SNR, the downchirp correlation peaks are completely submerged by noise, causing conventional algebraic decoupling to collapse without neural assistance.
-          </p>
-        </div>
-      </section>
-
-      <!-- Section: State-of-the-Art Benchmarking -->
+      <!-- Section: Related Work & SOTA -->
       <section id="sota" class="article-section">
-        <span class="section-tag">Related Work & Literature Review</span>
-        <h2 class="section-heading">State-of-the-Art Machine Learning Benchmark</h2>
+        <span class="section-tag">Literature Context</span>
+        <h2 class="section-heading">State-of-the-Art Literature Comparison</h2>
         <p class="section-intro">
-          A systematic comparison of recent breakthroughs in deep learning-enhanced LoRa physical layers and where this thesis contributes:
+          Comparing deep-learning and signal-processing works across the three receiver stages and C-RAN deployments.
         </p>
 
-        <!-- SOTA Interactive Filter Bar -->
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
-          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-            <button class="btn-pill btn-outline sota-filter-btn active" data-filter="all">All Models</button>
-            <button class="btn-pill btn-outline sota-filter-btn" data-filter="demod">Symbol Demodulation</button>
-            <button class="btn-pill btn-outline sota-filter-btn" data-filter="detect">Preamble Detection</button>
-            <button class="btn-pill btn-outline sota-filter-btn" data-filter="sync">Sync & Offsets</button>
+        <div class="sota-toolbar">
+          <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+            <button class="btn-pill btn-outline sota-filter-btn active" data-filter="all">All Works</button>
+            <button class="btn-pill btn-outline sota-filter-btn" data-filter="detect">Stage 1: Detection</button>
+            <button class="btn-pill btn-outline sota-filter-btn" data-filter="sync">Stage 2: Sync</button>
+            <button class="btn-pill btn-outline sota-filter-btn" data-filter="demod">Stage 3: Decoding</button>
+            <button class="btn-pill btn-outline sota-filter-btn" data-filter="cran">C-RAN</button>
           </div>
-          <input type="text" id="sota-search" placeholder="Search architecture, author..." style="padding:0.45rem 0.9rem; background:var(--bg-tertiary); border:1px solid var(--border-subtle); border-radius:var(--radius-full); color:var(--text-primary); font-size:0.85rem; width:220px;">
+          <input type="text" id="sota-search" class="sota-search-input" placeholder="Search model, author, focus...">
         </div>
 
-        <!-- SOTA Cards Grid -->
         <div class="grid-2">
-
-          <!-- NELoRa -->
-          <div class="sota-card" data-category="demod">
-            <div>
-              <div class="sota-header">
-                <div class="sota-name">NELoRa</div>
-                <span class="badge badge-cyan">Benchmark 2023</span>
-              </div>
-              <div class="sota-meta">Du et al. (ACM/IEEE) • First Neural Demodulator</div>
-              <p style="font-size:0.86rem; color:var(--text-secondary);">
-                Pioneered machine learning for LoRa demodulation. Uses a 2-stage model: deep learning spectrogram masking to restore chirp visibility, followed by a CNN spectrogram-based symbol classifier.
-              </p>
-              <ul style="font-size:0.82rem; color:var(--text-muted); margin-left:1.25rem; line-height:1.6;">
-                <li><strong>Gains:</strong> +1.84 to 2.35 dB SNR gain</li>
-                <li><strong>Battery:</strong> Up to 272% (~1.5 years) battery extension</li>
-                <li><strong>Limitation:</strong> Focuses only on symbol classification; ignores STO/CFO sync under noise</li>
-              </ul>
-            </div>
-            <div class="sota-tags">
-              <span class="badge badge-cyan">Spectrogram Masking</span>
-              <span class="badge badge-cyan">CNN Classifier</span>
-            </div>
-          </div>
-
-          <!-- GloriPhy -->
-          <div class="sota-card" data-category="demod">
-            <div>
-              <div class="sota-header">
-                <div class="sota-name">GloriPhy</div>
-                <span class="badge badge-emerald">Transformer 2024</span>
-              </div>
-              <div class="sota-meta">Channel-Aware Denoising Mechanism</div>
-              <p style="font-size:0.86rem; color:var(--text-secondary);">
-                Introduced Transformer attention to capture global spectrogram context rather than purely local CNN features. Applies an AWGN denoising filter and converts spectrograms back into clean IQ data via Inverse STFT.
-              </p>
-              <ul style="font-size:0.82rem; color:var(--text-muted); margin-left:1.25rem; line-height:1.6;">
-                <li><strong>Advantage:</strong> Preserves IQ phase and accounts for static phase offsets</li>
-                <li><strong>Demodulation:</strong> Retains standard dechirping on cleaned IQ stream</li>
-                <li><strong>Limitation:</strong> High computational cost; synchronization assumed ideal</li>
-              </ul>
-            </div>
-            <div class="sota-tags">
-              <span class="badge badge-emerald">Transformer Attention</span>
-              <span class="badge badge-emerald">Inverse STFT</span>
-            </div>
-          </div>
-
-          <!-- LoRaSeek -->
-          <div class="sota-card" data-category="demod">
-            <div>
-              <div class="sota-header">
-                <div class="sota-name">LoRaSeek</div>
-                <span class="badge badge-purple">Dual Attention</span>
-              </div>
-              <div class="sota-meta">UNet Architecture with Dual Attention</div>
-              <p style="font-size:0.86rem; color:var(--text-secondary);">
-                Competitor to GloriPhy utilizing a UNet network with channel and spatial attention mechanisms. Focuses on noise suppression to preserve critical features across deeper network layers.
-              </p>
-              <ul style="font-size:0.82rem; color:var(--text-muted); margin-left:1.25rem; line-height:1.6;">
-                <li><strong>Feature:</strong> Combines spatial and channel attention in UNet skip-connections</li>
-                <li><strong>Processing:</strong> Denoises spectrogram before standard inverse conversion</li>
-                <li><strong>Limitation:</strong> Does not resolve dynamic CFO or multi-path time drifts</li>
-              </ul>
-            </div>
-            <div class="sota-tags">
-              <span class="badge badge-purple">UNet Skip Links</span>
-              <span class="badge badge-purple">Spatial Attention</span>
-            </div>
-          </div>
-
-          <!-- CaLoRa -->
           <div class="sota-card" data-category="detect">
             <div>
               <div class="sota-header">
-                <div class="sota-name">CaLoRa</div>
-                <span class="badge badge-amber">IEEE IoT-J 2026</span>
+                <div class="sota-name">CALoRa [18]</div>
+                <span class="badge badge-amber">Stage 1 • IEEE IoT-J 2026</span>
               </div>
-              <div class="sota-meta">Kim, Byeon, Kim, Hasegawa, Kim • Preamble Specialist</div>
-              <p style="font-size:0.86rem; color:var(--text-secondary);">
-                Adopts a "Restore and Detect" paradigm using Chirp-Aware Self-Attention. Restores upchirps across 20-frame windows to compute detection confidence and pinpoint preamble arrival times under CFO.
+              <div class="sota-meta">Kim, Byeon, Kim, Hasegawa, Kim • Restore &amp; Detect</div>
+              <p style="font-size:0.86rem;">
+                Replaces FFT peak counting with CNN + Chirp-Aware Self-Attention across 20-frame windows, achieving 90% SF7 preamble detection down to $-21.7\text{ dB}$ even under CFO.
               </p>
-              <ul style="font-size:0.82rem; color:var(--text-muted); margin-left:1.25rem; line-height:1.6;">
-                <li><strong>Focus:</strong> Robust preamble detection under extreme negative SNR</li>
-                <li><strong>Tested:</strong> Validated against carrier frequency offsets</li>
-                <li><strong>Limitation:</strong> Demodulation and full packet synchronization left for downstream</li>
-              </ul>
             </div>
             <div class="sota-tags">
-              <span class="badge badge-amber">Chirp-Aware Attention</span>
-              <span class="badge badge-amber">Preamble Detection</span>
+              <span class="badge badge-amber">90% @ −21.7 dB</span>
+              <span class="badge badge-cyan">75.2% Pure Demod</span>
             </div>
           </div>
 
-          <!-- This Thesis -->
-          <div class="sota-card this-work" data-category="sync demod detect" style="grid-column: 1 / -1;">
+          <div class="sota-card" data-category="sync">
             <div>
               <div class="sota-header">
-                <div class="sota-name" style="color:var(--accent-cyan);">This Thesis Work (Sean Pribadi, PNU)</div>
-                <span class="badge badge-cyan" style="background:var(--grad-primary); color:#0b0f19; font-weight:800;">PROPOSED ARCHITECTURE</span>
+                <div class="sota-name">Bernier et al. [13] &amp; Xhonneux et al. [15]</div>
+                <span class="badge badge-crimson">Stage 2 • Analytical</span>
               </div>
-              <div class="sota-meta">Department of AI Convergence, Pusan National University • 2026</div>
-              <p style="font-size:0.92rem; color:var(--text-primary); font-weight:500;">
-                A comprehensive neural receiver pipeline that bridges the critical synchronization gap in Ultra-Low SNR environments:
+              <div class="sota-meta">IEEE TCOM 2020 / IEEE IoT-J 2022 • Conventional Sync</div>
+              <p style="font-size:0.86rem;">
+                Analytical up–down chirp FFT peak picking decouples CFO and STO efficiently at moderate SNR, but relies on raw <code>argmax</code> peaks that fail below $-15.5\text{ dB}$.
               </p>
-              <div class="grid-3" style="margin:1rem 0;">
-                <div>
-                  <h4 style="font-size:0.9rem; color:var(--accent-cyan); margin-bottom:0.35rem;">Full-Pipeline Integration</h4>
-                  <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0;">
-                    Unifies preamble detection, neural synchronization, and symbol restoration within a centralized C-RAN architecture.
-                  </p>
-                </div>
-                <div>
-                  <h4 style="font-size:0.9rem; color:var(--accent-emerald); margin-bottom:0.35rem;">CFO, STO & SFO Decoupling</h4>
-                  <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0;">
-                    Leverages neural models to decouple hardware offsets even when downchirp peaks are submerged under severe AWGN noise.
-                  </p>
-                </div>
-                <div>
-                  <h4 style="font-size:0.9rem; color:var(--accent-purple); margin-bottom:0.35rem;">C-RAN Coherent Combining</h4>
-                  <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0;">
-                    Combines multi-gateway IQ signals constructively while running high-complexity deep learning on cloud GPUs.
-                  </p>
-                </div>
-              </div>
             </div>
             <div class="sota-tags">
-              <span class="badge badge-cyan">Full Receiver Pipeline</span>
-              <span class="badge badge-emerald">Neural Synchronization</span>
-              <span class="badge badge-purple">C-RAN Deployment</span>
-              <span class="badge badge-amber">Hardware Offset Resilient</span>
+              <span class="badge badge-crimson">42% CFO @ −18 dB</span>
+              <span class="badge badge-crimson">Stage 2 Bottleneck</span>
             </div>
           </div>
 
+          <div class="sota-card" data-category="demod">
+            <div>
+              <div class="sota-header">
+                <div class="sota-name">NELoRa [10]</div>
+                <span class="badge badge-cyan">Stage 3 • Classifier</span>
+              </div>
+              <div class="sota-meta">Du et al. (2021 / Bench 2023) • First Neural Demodulator</div>
+              <p style="font-size:0.86rem;">
+                Pioneered STFT spectrogram masking + hybrid neural symbol classification, reporting $1.84\text{--}2.35\text{ dB}$ SNR gains ($79.0\%$ accuracy, $22.24\text{ s}$ latency in our SF7 $-18\text{ dB}$ test).
+              </p>
+            </div>
+            <div class="sota-tags">
+              <span class="badge badge-cyan">79.0% @ −18 dB</span>
+              <span class="badge badge-amber">22.24 s / 1k sym</span>
+            </div>
+          </div>
+
+          <div class="sota-card" data-category="demod">
+            <div>
+              <div class="sota-header">
+                <div class="sota-name">GLoRiPHY [16] &amp; LoRaSeek [17]</div>
+                <span class="badge badge-emerald">Stage 3 • STFT Denoisers</span>
+              </div>
+              <div class="sota-meta">ACM SenSys '24 / ACM MobiCom '25 • Denoise + iSTFT</div>
+              <p style="font-size:0.86rem;">
+                Suppress noise in STFT using Conformer (GLoRiPHY: $95.2\%$, $5.23\text{ s}$) or Dual-Attention U-Net (LoRaSeek: $93.2\%$, $4.12\text{ s}$) before iSTFT and standard dechirping.
+              </p>
+            </div>
+            <div class="sota-tags">
+              <span class="badge badge-emerald">93.2%–95.2% Acc.</span>
+              <span class="badge badge-blue">4.12–5.23 s</span>
+            </div>
+          </div>
+
+          <div class="sota-card" data-category="cran">
+            <div>
+              <div class="sota-header">
+                <div class="sota-name">Charm [7] &amp; Pribadi et al. [9]</div>
+                <span class="badge badge-purple">C-RAN • Multi-Gateway</span>
+              </div>
+              <div class="sota-meta">ACM/IEEE IPSN 2018 &amp; ICAICTA 2025 • Coherent Combining</div>
+              <p style="font-size:0.86rem;">
+                Forwards raw/compressed I/Q streams from distributed gateways to cloud servers for coherent combining and GPU-based synchronization/decoding.
+              </p>
+            </div>
+            <div class="sota-tags">
+              <span class="badge badge-purple">Coherent Combining</span>
+              <span class="badge badge-cyan">IQ Compression</span>
+            </div>
+          </div>
+
+          <div class="sota-card this-work" data-category="detect sync demod">
+            <div>
+              <div class="sota-header">
+                <div class="sota-name" style="color:var(--accent-blue);">This Thesis Work (Sean Pribadi, PNU)</div>
+                <span class="badge badge-blue">Bridging Stage 1 → Stage 3</span>
+              </div>
+              <div class="sota-meta">Full Pipeline Bottleneck Proof + Dual-Slope Denoise-then-Sync</div>
+              <p style="font-size:0.86rem;">
+                Diagnoses Stage 2 as the $42\%$ vs. $82\%$ bottleneck under realistic CFO/STO, proves $+26.1\text{ dB}$ peak rescue and $+2.0\text{ dB}$ payload gain via Denoise-then-Sync, and proposes a native unaligned Dual-Slope Sync Network.
+              </p>
+            </div>
+            <div class="sota-tags">
+              <span class="badge badge-emerald">+28–29% Sync Gain</span>
+              <span class="badge badge-blue">+2.0 dB Payload</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- Section: Research Methodology -->
-      <section id="methodology" class="article-section">
-        <span class="section-tag">Implementation Strategy</span>
-        <h2 class="section-heading">Research Methodology & C-RAN Deployment</h2>
+      <!-- Section: Conclusion & Roadmap -->
+      <section id="conclusion" class="article-section">
+        <span class="section-tag">Chapter V</span>
+        <h2 class="section-heading">Conclusion & Future Research Roadmap</h2>
         <p class="section-intro">
-          The proposed methodology relies on an end-to-end signal processing and machine learning workflow:
+          Bridging Stage 1 preamble detection and Stage 3 symbol decoding with learning-assisted Stage 2 synchronization unlocks practical ultra-low SNR LoRa reception under realistic hardware offsets. Table 6 summarizes remaining engineering limitations and the roadmap toward final thesis completion.
         </p>
 
-        <div class="grid-2">
-          <div class="card">
-            <h3 style="font-size:1.05rem; margin-bottom:0.6rem; color:var(--accent-cyan);">1. Synthetic & Testbed Signal Generation</h3>
-            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6; margin-bottom:0;">
-              Simulating continuous baseband LoRa signals across Spreading Factors (SF7–SF12), bandwidths (125–500 kHz), and sweeping SNR from +10 dB down to -25 dB with calibrated AWGN, Rayleigh fading, and parameterized CFO (up to ±20 ppm) and STO window jitter.
-            </p>
+        <div class="table-caption">Table 6. Current Limitations and Future Research Roadmap</div>
+        <div class="table-wrapper">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Focus Area</th>
+                <th>Current Limitation</th>
+                <th>Planned Future Work</th>
+                <th>Target Outcome</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Dedicated Dual-Slope Sync Model</strong></td>
+                <td>Proof-of-work reuses off-the-shelf LoRaSeek (trained on aligned single up-chirps) via SFD conjugation, leaving fractional-STO boundary mismatch.</td>
+                <td>Train the proposed Dual-Slope Unaligned Synchronization Network natively on unaligned preamble up-chirps and $2.25$ SFD down-chirps under fractional STO, CFO, and AWGN.</td>
+                <td>Eliminate domain mismatch and boost sub-bin CFO/STO accuracy below $-18\text{ dB}$.</td>
+              </tr>
+              <tr>
+                <td><strong>Inference Latency &amp; Edge Efficiency</strong></td>
+                <td>STFT neural denoising requires $4.12\text{--}5.23\text{ s}$ per $1{,}000$ symbols, exceeding real-time embedded gateway budgets.</td>
+                <td>Apply lightweight attention blocks, structured pruning, and INT8 quantization tailored for gateway deployment.</td>
+                <td>Real-time, low-latency synchronization on commercial LoRaWAN gateways.</td>
+              </tr>
+              <tr>
+                <td><strong>Multi-SF, SFO &amp; Real SDR Testing</strong></td>
+                <td>Current evaluation focuses on synthetic SF7 AWGN + CFO/STO channels without cumulative SFO or multipath fading.</td>
+                <td>Extend evaluation across $\text{SF}7\text{--}\text{SF}12$, Sampling Frequency Offset (SFO), multipath fading, and real over-the-air SDR traces.</td>
+                <td>Verify robustness and field readiness across diverse urban/campus deployments.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section: Artifacts & Links (PNU Graduation Requirement) -->
+      <section id="artifacts" class="article-section">
+        <span class="section-tag">Thesis Deliverables &amp; Related Sites</span>
+        <h2 class="section-heading">Thesis Resources, Code &amp; Related Links</h2>
+        <p class="section-intro">
+          Direct access to thesis documentation, simulation source code, testing benchmarks, and affiliated laboratory links.
+        </p>
+
+        <div class="grid-4">
+          <div class="artifact-card">
+            <div>
+              <div class="artifact-icon badge-blue" style="margin-bottom:0.65rem;">PDF</div>
+              <h4 style="font-size:0.95rem; margin-bottom:0.35rem;">Thesis Manuscript &amp; WCL Paper</h4>
+              <p style="font-size:0.8rem; margin-bottom:0;">Full Master's thesis draft (Ch. I–V) and submitted IEEE Wireless Communications Letters benchmark manuscript.</p>
+            </div>
+            <button class="btn-pill btn-outline open-citation-modal" style="width:fit-content; font-size:0.78rem; padding:0.4rem 0.8rem;">View Citation / Info</button>
           </div>
 
-          <div class="card">
-            <h3 style="font-size:1.05rem; margin-bottom:0.6rem; color:var(--accent-emerald);">2. Neural Synchronization Estimator</h3>
-            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6; margin-bottom:0;">
-              Designing a deep network that accepts raw I/Q samples or high-resolution STFT representations to predict fraction and integer timing offsets (<span class="math-inline">&Delta;k<sub>STO</sub></span>) and carrier frequency deviations (<span class="math-inline">&Delta;f<sub>CFO</sub></span>) before dechirping.
-            </p>
+          <div class="artifact-card">
+            <div>
+              <div class="artifact-icon badge-emerald" style="margin-bottom:0.65rem;">CODE</div>
+              <h4 style="font-size:0.95rem; margin-bottom:0.35rem;">Simulation &amp; Denoise-then-Sync</h4>
+              <p style="font-size:0.8rem; margin-bottom:0;">Python 3-stage pipeline simulator, CFO/STO impairment injector, and SOTA evaluation scripts.</p>
+            </div>
+            <a href="https://github.com/INC-PNU/My-LoRa-Thesis-Webpage" target="_blank" rel="noopener" class="btn-pill btn-outline" style="width:fit-content; font-size:0.78rem; padding:0.4rem 0.8rem;">GitHub Repository</a>
           </div>
 
-          <div class="card">
-            <h3 style="font-size:1.05rem; margin-bottom:0.6rem; color:var(--accent-purple);">3. C-RAN IQ Centralization & Compression</h3>
-            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6; margin-bottom:0;">
-              Implementing efficient IQ data streaming from distributed low-cost software-defined radio (SDR) gateways to the cloud server using entropy and quantization schemes based on Pribadi et al. (ICAICTA 2025).
-            </p>
+          <div class="artifact-card">
+            <div>
+              <div class="artifact-icon badge-purple" style="margin-bottom:0.65rem;">DATA</div>
+              <h4 style="font-size:0.95rem; margin-bottom:0.35rem;">Testing Dataset &amp; Traces</h4>
+              <p style="font-size:0.8rem; margin-bottom:0;">SF7 ($B=125\text{ kHz}$, $f_s=1\text{ MHz}$) Monte Carlo test sets across $-25\text{ dB}$ to $-10\text{ dB}$ with $\pm 5\text{ ppm}$ CFO &amp; STO.</p>
+            </div>
+            <a href="#methodology" class="btn-pill btn-outline" style="width:fit-content; font-size:0.78rem; padding:0.4rem 0.8rem;">See Parameters (Tbl. 3)</a>
           </div>
 
-          <div class="card">
-            <h3 style="font-size:1.05rem; margin-bottom:0.6rem; color:var(--accent-amber);">4. Empirical Benchmarking</h3>
-            <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.6; margin-bottom:0;">
-              Benchmarking Packet Reception Rate (PRR), Symbol Error Rate (SER), and computational execution latency against Semtech conventional dechirping, NELoRa, and CaLoRa baselines under identical synthetic and SDR testbeds.
-            </p>
+          <div class="artifact-card">
+            <div>
+              <div class="artifact-icon badge-amber" style="margin-bottom:0.65rem;">LAB</div>
+              <h4 style="font-size:0.95rem; margin-bottom:0.35rem;">PNU Affiliated Sites</h4>
+              <p style="font-size:0.8rem; margin-bottom:0;">Pusan National University, Dept. of Information Convergence Engineering, and Semtech / LoRa Alliance specs.</p>
+            </div>
+            <a href="https://www.pusan.ac.kr" target="_blank" rel="noopener" class="btn-pill btn-outline" style="width:fit-content; font-size:0.78rem; padding:0.4rem 0.8rem;">Visit PNU</a>
           </div>
         </div>
       </section>
 
-      <!-- Section: References -->
+      <!-- Section: References [1-18] -->
       <section id="references" class="article-section">
-        <span class="section-tag">Scholarly Citations</span>
-        <h2 class="section-heading">References & Bibliography</h2>
+        <span class="section-tag">Bibliography</span>
+        <h2 class="section-heading">References [1–18]</h2>
         <p class="section-intro">
-          Full bibliographic citations referenced in the thesis, formatted in IEEE citation standard:
+          Complete IEEE-formatted references matching <em>Master_AI Convergence_Sean_v4.hwp</em>.
         </p>
 
         <ul class="ref-list">
-          <li class="ref-item">
-            <span class="ref-number">[1]</span>
-            <div class="ref-text">
-              Y. Ren, G. Li, Y. Liu, Y. Dong, and Z. Cao, "Aeroecho: Towards agricultural low-power wide-area backscatter with aerial excitation source," in <em>Proc. IEEE INFOCOM</em>, 2025.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[2]</span>
-            <div class="ref-text">
-              Y. Ren, A. Gamage, L. Liu, M. Li, S. Chen, Y. Dong, and Z. Cao, "Sateriot: High-performance ground-space networking for rural IoT," in <em>Proc. ACM MobiCom</em>, 2024.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[3]</span>
-            <div class="ref-text">
-              Y. Ren, L. Liu, C. Li, Z. Cao, and S. Chen, "Is LoRaWAN really wide? Fine-grained LoRa link-level measurement in an urban environment," in <em>Proc. IEEE ICNP</em>, 2022.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[4]</span>
-            <div class="ref-text">
-              Semtech Corporation, "LoRa by the Numbers," 2025. [Online]. Available: <a href="https://www.semtech.com/lora" target="_blank" rel="noopener">semtech.com/lora</a>.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[5]</span>
-            <div class="ref-text">
-              LoRa Alliance, "LoRaWAN Specification v1.1," 2025. [Online]. Available: <a href="https://resources.lora-alliance.org" target="_blank" rel="noopener">lora-alliance.org</a>.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[6]</span>
-            <div class="ref-text">
-              A. Dongare, R. Narayanan, A. Gadre, A. Luong, A. Balanuta, S. Kumar, B. Iannucci, and A. Rowe, "Charm: Exploiting geographical diversity through coherent combining in low-power wide-area networks," in <em>Proc. ACM/IEEE IPSN</em>, 2018.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[7]</span>
-            <div class="ref-text">
-              S. Demetri, M. Zúñiga, G. Picco, F. Kuipers, L. Bruzzone, and T. Telkamp, "Automated estimation of link quality for LoRa: A remote sensing approach," in <em>Proc. ACM/IEEE IPSN</em>, 2019.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[8]</span>
-            <div class="ref-text">
-              <strong>S. Pribadi, D. Tanjung, D. Kim, and J. Kim</strong>, "Toward efficient LoRa CRAN deployments: IQ data compression and gateway collaboration," in <em>Proc. Int. Conf. Advanced Informatics: Concepts, Theory and Applications (ICAICTA)</em>, 2025.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[9]</span>
-            <div class="ref-text">
-              J. Du, Y. Ren, M. Zhang, Y. Liu, and Z. Cao, "NELoRa-Bench: A benchmark for neural-enhanced LoRa demodulation," <em>arXiv preprint arXiv:2305.15842</em>, 2023.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[10]</span>
-            <div class="ref-text">
-              R. Ghanaatian, O. Afisiadis, M. Cotting, and A. Burg, "LoRa digital receiver analysis and implementation," <em>arXiv preprint arXiv:1811.04146</em>, 2019.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[11]</span>
-            <div class="ref-text">
-              Semtech Corporation, "LoRa SX1261/2 Technical Documentation," 2025.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[12]</span>
-            <div class="ref-text">
-              Semtech Corporation, "LoRa SX1276/77/78/79 Technical Documentation," 2026.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[13]</span>
-            <div class="ref-text">
-              C. Bernier, F. Dehmas, and N. Deparis, "Low complexity LoRa frame synchronization for ultra-low power software-defined radios," <em>IEEE Trans. Commun.</em>, vol. 68, no. 5, pp. 3140–3152, 2020.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
-
-          <li class="ref-item">
-            <span class="ref-number">[14]</span>
-            <div class="ref-text">
-              Y. Kim, S. Byeon, D. Kim, M. Hasegawa, and J. Kim, "Chirp-aware self-attention for robust LoRa preamble detection under ultralow SNR," <em>IEEE Internet of Things J.</em>, vol. 13, no. 9, pp. 19205–19218, 2026.
-            </div>
-            <button class="ref-btn copy-ref-btn" title="Copy Citation">Copy</button>
-          </li>
+          <li class="ref-item"><span class="ref-number">[1]</span><div class="ref-text">Y. Ren, G. Li, Y. Liu, Y. Dong, and Z. Cao, "Aeroecho: Towards agricultural low-power wide-area backscatter with aerial excitation source," in <em>Proc. IEEE INFOCOM</em>, 2025.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[2]</span><div class="ref-text">Y. Ren, A. Gamage, L. Liu, M. Li, S. Chen, Y. Dong, and Z. Cao, "Sateriot: High-performance ground-space networking for rural IoT," in <em>Proc. ACM MobiCom</em>, 2024.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[3]</span><div class="ref-text">Y. Ren, L. Liu, C. Li, Z. Cao, and S. Chen, "Is LoRaWAN really wide? Fine-grained LoRa link-level measurement in an urban environment," in <em>Proc. IEEE ICNP</em>, 2022.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[4]</span><div class="ref-text">L. E. Márquez, A. Osorio, M. G. Calle, J. C. Vélez, A. Segura-Serrano, and J. E. Candelo-Becerra, "On the use of LoRaWAN in smart cities: A study with blocking interference," <em>IEEE Internet Things J.</em>, vol. 7, pp. 2806–2815, 2020.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[5]</span><div class="ref-text">Semtech Corporation, "LoRa by the Numbers," 2025. [Online]. Available: <a href="https://www.semtech.com/lora" target="_blank" rel="noopener">https://www.semtech.com/lora</a></div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[6]</span><div class="ref-text">LoRa Alliance, "LoRaWAN Specification v1.1," 2025. [Online]. Available: <a href="https://resources.lora-alliance.org/technical-specifications/lorawan-specification-v1-1" target="_blank" rel="noopener">lora-alliance.org</a></div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[7]</span><div class="ref-text">A. Dongare, R. Narayanan, A. Gadre, A. Luong, A. Balanuta, S. Kumar, B. Iannucci, and A. Rowe, "Charm: Exploiting geographical diversity through coherent combining in low-power wide-area networks," in <em>Proc. ACM/IEEE IPSN</em>, 2018.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[8]</span><div class="ref-text">S. Demetri, M. Zúñiga, G. Picco, F. Kuipers, L. Bruzzone, and T. Telkamp, "Automated estimation of link quality for LoRa: A remote sensing approach," in <em>Proc. ACM/IEEE IPSN</em>, 2019.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[9]</span><div class="ref-text"><strong>S. Pribadi, D. Tanjung, D. Kim, and J. Kim</strong>, "Toward efficient LoRa CRAN deployments: IQ data compression and gateway collaboration," in <em>Proc. ICAICTA</em>, 2025.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[10]</span><div class="ref-text">J. Du, Y. Ren, M. Zhang, Y. Liu, and Z. Cao, "NELoRa-Bench: A benchmark for neural-enhanced LoRa demodulation," <em>arXiv preprint arXiv:2305.15842</em>, 2023.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[11]</span><div class="ref-text">Semtech Corporation, "LoRa SX1261/2 Technical Documentation," 2025. [Online]. Available: <a href="https://www.semtech.com/products/wireless-rf/lora-connect/sx1261" target="_blank" rel="noopener">semtech.com</a></div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[12]</span><div class="ref-text">Semtech Corporation, "LoRa SX1276/77/78/79 Technical Documentation," 2026. [Online]. Available: <a href="https://www.semtech.com/products/wireless-rf/lora-connect/sx1276" target="_blank" rel="noopener">semtech.com</a></div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[13]</span><div class="ref-text">C. Bernier, F. Dehmas, and N. Deparis, "Low complexity LoRa frame synchronization for ultra-low power software-defined radios," <em>IEEE Trans. Commun.</em>, vol. 68, no. 5, pp. 3140–3152, 2020.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[14]</span><div class="ref-text">R. Ghanaatian, O. Afisiadis, M. Cotting, and A. Burg, "LoRa digital receiver analysis and implementation," <em>arXiv preprint arXiv:1811.04146</em>, 2019.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[15]</span><div class="ref-text">M. Xhonneux, O. Afisiadis, D. Bol, and J. Louveaux, "A low-complexity LoRa synchronization algorithm robust to sampling time offsets," <em>IEEE Internet Things J.</em>, vol. 9, no. 5, pp. 3756–3769, Mar. 2022.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[16]</span><div class="ref-text">K. Sabharwal, S. Ramesh, J. Wang, D. M. Divakaran, and M. C. Chan, "Enhancing LoRa reception with generative models: Channel-aware denoising of LoRaPHY signals," in <em>Proc. 22nd ACM SenSys</em>, 2024, pp. 507–520.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[17]</span><div class="ref-text">K. Nguyen, Y. Ren, J. Du, J. Lin, M. Gan, S. Chen, M. Zhang, C. Peng, and Z. Cao, "LoRaSeek: Boosting denoising ability in neural-enhanced LoRa decoder via hierarchical feature extraction," in <em>Proc. 31st ACM MobiCom</em>, 2025, pp. 712–726.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
+          <li class="ref-item"><span class="ref-number">[18]</span><div class="ref-text">Y. Kim, S. Byeon, D. Kim, M. Hasegawa, and J. Kim, "Chirp-aware self-attention for robust LoRa preamble detection under ultralow SNR," <em>IEEE Internet Things J.</em>, vol. 13, no. 9, pp. 19205–19218, 2026.</div><button class="ref-btn copy-ref-btn">Copy</button></li>
         </ul>
       </section>
 
     </article>
   </main>
 
-  <!-- Fullscreen Lightbox Modal for High-Resolution Figures -->
+  <!-- Lightbox Modal -->
   <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Image Lightbox">
     <div class="lightbox-toolbar">
       <div id="lightbox-title" class="lightbox-title">Figure Preview</div>
       <div class="lightbox-controls">
-        <button id="lightbox-zoom-out" class="btn-icon" title="Zoom Out" aria-label="Zoom Out">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button id="lightbox-reset" class="btn-icon" title="Reset Zoom" aria-label="Reset Zoom">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
-        </button>
-        <button id="lightbox-zoom-in" class="btn-icon" title="Zoom In" aria-label="Zoom In">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-        </button>
-        <button id="lightbox-close" class="btn-icon" title="Close Lightbox" aria-label="Close Lightbox" style="margin-left:0.5rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <button id="lightbox-zoom-out" class="btn-icon" title="Zoom Out" aria-label="Zoom Out">−</button>
+        <button id="lightbox-reset" class="btn-icon" title="Reset Zoom" aria-label="Reset Zoom">↺</button>
+        <button id="lightbox-zoom-in" class="btn-icon" title="Zoom In" aria-label="Zoom In">+</button>
+        <button id="lightbox-close" class="btn-icon" title="Close Lightbox" aria-label="Close Lightbox">✕</button>
       </div>
     </div>
     <div class="lightbox-body">
-      <img id="lightbox-img" src="" alt="Zoomed view" class="lightbox-img">
+      <img id="lightbox-img" src="" alt="Zoomed thesis figure" class="lightbox-img">
     </div>
+    <div id="lightbox-caption" class="lightbox-caption-bar"></div>
   </div>
 
-  <!-- Citation Modal (BibTeX Export) -->
+  <!-- Citation Modal -->
   <div id="citation-modal" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">Cite this Thesis Work</h3>
-        <button id="close-citation-btn" class="btn-icon" aria-label="Close Modal">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <h3 style="font-size:1.2rem;">Cite This Master's Thesis</h3>
+        <button id="close-citation-btn" class="btn-icon" aria-label="Close Modal">✕</button>
       </div>
-      <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:1rem;">
-        You can copy the BibTeX snippet below to cite this thesis in LaTeX or reference managers:
-      </p>
-      <div id="bibtex-code" class="bibtex-box">@mastersthesis{pribadi2026lora,
-  author    = {Sean Pribadi},
-  title     = {Machine Learning-Enhanced LoRa Receiver Pipeline in Ultra-Low SNR Environments},
-  school    = {The Graduate School, Pusan National University},
-  department= {Department of AI Convergence},
-  year      = {2026},
-  month     = {October},
-  address   = {Busan, Republic of Korea},
-  keywords  = {LoRa, LPWAN, Ultra-Low SNR, Synchronization, C-RAN, Deep Learning}
+      <p style="font-size:0.86rem; margin-bottom:0.85rem;">Copy the BibTeX entry below to cite this thesis:</p>
+      <div id="bibtex-code" class="bibtex-box">@mastersthesis{pribadi2027lora_sync,
+  author     = {Sean Pribadi},
+  title      = {Investigating and Overcoming Synchronization Bottlenecks in Learning-Based Ultra-Low SNR LoRa Receivers},
+  school     = {The Graduate School, Pusan National University},
+  department = {Department of Information Convergence Engineering},
+  year       = {2027},
+  month      = {February},
+  address    = {Busan, Republic of Korea},
+  note       = {Advisor: Prof. Jong-Deok Kim}
 }</div>
-      <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
-        <button id="copy-bibtex-btn" class="btn-pill btn-primary">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          Copy BibTeX
-        </button>
+      <div style="display:flex; justify-content:flex-end;">
+        <button id="copy-bibtex-btn" class="btn-pill btn-primary">Copy BibTeX</button>
       </div>
     </div>
   </div>
 
-  <!-- Site Footer -->
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand">
-          <div style="display:flex; align-items:center; gap:0.6rem;">
-            <div class="brand-icon" style="width:32px; height:32px; font-size:0.95rem;">LoRa</div>
-            <strong style="color:var(--text-primary); font-size:1.05rem;">LoRa Ultra-Low SNR Thesis</strong>
+        <div>
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.65rem;">
+            <div class="brand-icon" style="width:30px; height:30px; font-size:0.8rem;">LoRa</div>
+            <strong style="color:var(--text-primary);">Ultra-Low SNR LoRa Synchronization Thesis</strong>
           </div>
           <p style="font-size:0.84rem; max-width:380px;">
-            A research project on physical layer signal reconstruction, carrier offset correction, and C-RAN intelligence for next-generation Internet of Things.
+            Master's Thesis Showcase by Sean Pribadi (Advisor: Prof. Jong-Deok Kim), Department of Information Convergence Engineering, Pusan National University.
           </p>
         </div>
 
         <div>
-          <h4 class="footer-heading">Research Navigation</h4>
+          <h4 class="footer-heading">Sections</h4>
           <ul class="footer-links">
             <li><a href="#abstract">Abstract</a></li>
-            <li><a href="#problem">The Problem</a></li>
-            <li><a href="#pipeline">Receiver Pipeline</a></li>
-            <li><a href="#offsets">Hardware Offsets</a></li>
-            <li><a href="#sota">State of the Art</a></li>
+            <li><a href="#problem">Problem &amp; Modeling</a></li>
+            <li><a href="#methodology">Methodology &amp; Sync</a></li>
+            <li><a href="#results">Experimental Results</a></li>
+            <li><a href="#conclusion">Conclusion &amp; Roadmap</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="footer-heading">Affiliation & Source</h4>
+          <h4 class="footer-heading">Affiliations</h4>
           <ul class="footer-links">
             <li><a href="https://www.pusan.ac.kr" target="_blank" rel="noopener">Pusan National University</a></li>
             <li><a href="https://github.com/INC-PNU/My-LoRa-Thesis-Webpage" target="_blank" rel="noopener">GitHub Repository</a></li>
-            <li><a href="#references">Related Publications</a></li>
+            <li><a href="#references">References [1–18]</a></li>
             <li><a href="LICENSE" target="_blank">GPL-3.0 License</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <div>
-          © 2026 <strong>Sean Pribadi</strong> • Department of AI Convergence, Pusan National University.
-        </div>
-        <div>
-          Designed for static GitHub Pages deployment with zero build configuration.
-        </div>
+        <div>© 2026–2027 <strong>Sean Pribadi</strong> • Department of Information Convergence Engineering, Pusan National University.</div>
+        <div>Contact: <a href="mailto:sean246@mobile.re.kr">sean246@mobile.re.kr</a></div>
       </div>
     </div>
   </footer>
 
-  <!-- Main JavaScript File -->
   <script src="js/main.js"></script>
 </body>
 </html>

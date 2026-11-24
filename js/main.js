@@ -1,7 +1,6 @@
 /* ===================================================================
-   Master Thesis Webpage - Interactive JavaScript
-   Author: Sean Pribadi (Pusan National University - AI Convergence)
-   Topic: Ultra-Low SNR LoRa Receiver Pipeline with Machine Learning
+   Master's Thesis Webpage - Interactive Logic
+   Author: Sean Pribadi (Pusan National University)
    =================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTableOfContents();
   initMobileMenu();
   initAbstractTabs();
+  initResultTabs();
   initLightbox();
   initSnrSimulator();
   initSotaFilter();
@@ -19,23 +19,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* -------------------------------------------------------------
-   1. Theme Management (Dark / Light Mode)
+   1. Theme Management (Light Default + Dark Toggle)
 ------------------------------------------------------------- */
 function initTheme() {
   const themeToggle = document.getElementById('theme-toggle');
-  const storedTheme = localStorage.getItem('thesis_theme') || 'dark';
+  const storedTheme = localStorage.getItem('thesis_theme_v2') || 'light';
 
   document.documentElement.setAttribute('data-theme', storedTheme);
   updateThemeIcon(storedTheme);
 
   if (themeToggle) {
     themeToggle.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme') || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('thesis_theme', next);
+      localStorage.setItem('thesis_theme_v2', next);
       updateThemeIcon(next);
-      drawChirpSimulation(); // Redraw canvas with new palette
+      redrawCurrentSimulation();
     });
   }
 }
@@ -44,14 +44,14 @@ function updateThemeIcon(theme) {
   const icon = document.getElementById('theme-icon');
   if (!icon) return;
   if (theme === 'light') {
-    icon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+    icon.innerHTML = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
   } else {
-    icon.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+    icon.innerHTML = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
   }
 }
 
 /* -------------------------------------------------------------
-   2. Reading Progress Bar & Header State
+   2. Reading Progress & Header State
 ------------------------------------------------------------- */
 function initReadingProgress() {
   const progressBar = document.getElementById('reading-progress');
@@ -61,7 +61,7 @@ function initReadingProgress() {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
     progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
-  });
+  }, { passive: true });
 }
 
 function initHeaderScroll() {
@@ -69,40 +69,28 @@ function initHeaderScroll() {
   if (!header) return;
 
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 30) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  });
+    header.classList.toggle('scrolled', window.scrollY > 24);
+  }, { passive: true });
 }
 
 /* -------------------------------------------------------------
-   3. Table of Contents & ScrollSpy
+   3. Sticky Table of Contents ScrollSpy
 ------------------------------------------------------------- */
 function initTableOfContents() {
   const tocLinks = document.querySelectorAll('.toc-item a');
   const sections = document.querySelectorAll('.article-section');
-
-  if (sections.length === 0 || tocLinks.length === 0) return;
+  if (!sections.length || !tocLinks.length) return;
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const id = entry.target.getAttribute('id');
         tocLinks.forEach(link => {
-          const item = link.parentElement;
-          if (link.getAttribute('href') === `#${id}`) {
-            item.classList.add('active');
-          } else {
-            item.classList.remove('active');
-          }
+          link.parentElement.classList.toggle('active', link.getAttribute('href') === `#${id}`);
         });
       }
     });
-  }, {
-    rootMargin: '-20% 0px -70% 0px'
-  });
+  }, { rootMargin: '-20% 0px -68% 0px' });
 
   sections.forEach(section => observer.observe(section));
 }
@@ -113,18 +101,15 @@ function initTableOfContents() {
 function initMobileMenu() {
   const toggle = document.querySelector('.menu-toggle');
   const menu = document.querySelector('.nav-menu');
+  if (!toggle || !menu) return;
 
-  if (toggle && menu) {
-    toggle.addEventListener('click', () => {
-      menu.classList.toggle('mobile-open');
-    });
+  toggle.addEventListener('click', () => {
+    menu.classList.toggle('mobile-open');
+  });
 
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        menu.classList.remove('mobile-open');
-      });
-    });
-  }
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => menu.classList.remove('mobile-open'));
+  });
 }
 
 /* -------------------------------------------------------------
@@ -137,21 +122,49 @@ function initAbstractTabs() {
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const targetLang = tab.getAttribute('data-tab');
-
-      tabs.forEach(t => t.classList.remove('active'));
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
       contents.forEach(c => c.classList.remove('active'));
 
       tab.classList.add('active');
-      const targetContent = document.getElementById(`tab-${targetLang}`);
-      if (targetContent) {
-        targetContent.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      const target = document.getElementById(`tab-${targetLang}`);
+      if (target) target.classList.add('active');
+    });
+  });
+}
+
+/* -------------------------------------------------------------
+   6. Experimental Results Tab Switcher (Chapter IV)
+------------------------------------------------------------- */
+function initResultTabs() {
+  const buttons = document.querySelectorAll('.result-tab-btn');
+  const panels = document.querySelectorAll('.result-panel');
+  if (!buttons.length || !panels.length) return;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-result-tab');
+      buttons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      if (target === 'all') {
+        panels.forEach(p => p.classList.add('active'));
+      } else {
+        panels.forEach(p => p.classList.toggle('active', p.id === target));
       }
     });
   });
 }
 
 /* -------------------------------------------------------------
-   6. Image Lightbox with Zoom & Pan
+   7. Image Lightbox with Zoom, Pan & Captions
 ------------------------------------------------------------- */
 let currentZoom = 1;
 let isPanning = false;
@@ -162,6 +175,7 @@ function initLightbox() {
   const modal = document.getElementById('lightbox-modal');
   const modalImg = document.getElementById('lightbox-img');
   const modalTitle = document.getElementById('lightbox-title');
+  const modalCaption = document.getElementById('lightbox-caption');
   const zoomInBtn = document.getElementById('lightbox-zoom-in');
   const zoomOutBtn = document.getElementById('lightbox-zoom-out');
   const resetBtn = document.getElementById('lightbox-reset');
@@ -170,17 +184,18 @@ function initLightbox() {
 
   if (!modal || !modalImg) return;
 
-  // Open Lightbox on figure image or figure container click
   document.querySelectorAll('.figure-img-wrap').forEach(wrap => {
     wrap.addEventListener('click', () => {
       const img = wrap.querySelector('.figure-img');
       const container = wrap.closest('.figure-container');
-      const title = container ? container.querySelector('.figure-tag')?.innerText || 'Figure Detail' : 'Figure Detail';
+      const tag = container?.querySelector('.figure-tag')?.innerText || 'Figure';
+      const cap = container?.querySelector('.figure-caption')?.innerText || img?.alt || '';
 
       if (img) {
         modalImg.src = img.src;
         modalImg.alt = img.alt;
-        if (modalTitle) modalTitle.innerText = `${title}: ${img.alt || 'High Resolution Diagram'}`;
+        if (modalTitle) modalTitle.innerText = `${tag} — ${img.alt || 'High-Resolution Figure'}`;
+        if (modalCaption) modalCaption.innerText = cap;
         openLightbox();
       }
     });
@@ -205,24 +220,27 @@ function initLightbox() {
   }
 
   if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
-  if (resetBtn) resetBtn.addEventListener('click', () => {
-    currentZoom = 1;
-    translateX = 0;
-    translateY = 0;
-    updateImgTransform();
-  });
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      currentZoom = 1;
+      translateX = 0;
+      translateY = 0;
+      updateImgTransform();
+    });
+  }
+  if (zoomInBtn) {
+    zoomInBtn.addEventListener('click', () => {
+      currentZoom = Math.min(currentZoom + 0.35, 4.0);
+      updateImgTransform();
+    });
+  }
+  if (zoomOutBtn) {
+    zoomOutBtn.addEventListener('click', () => {
+      currentZoom = Math.max(currentZoom - 0.35, 0.75);
+      updateImgTransform();
+    });
+  }
 
-  if (zoomInBtn) zoomInBtn.addEventListener('click', () => {
-    currentZoom = Math.min(currentZoom + 0.35, 4.0);
-    updateImgTransform();
-  });
-
-  if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => {
-    currentZoom = Math.max(currentZoom - 0.35, 0.75);
-    updateImgTransform();
-  });
-
-  // Pan interaction
   if (body) {
     body.addEventListener('mousedown', (e) => {
       if (e.target === closeBtn || e.target.closest('.lightbox-toolbar')) return;
@@ -238,11 +256,8 @@ function initLightbox() {
       updateImgTransform();
     });
 
-    window.addEventListener('mouseup', () => {
-      isPanning = false;
-    });
+    window.addEventListener('mouseup', () => { isPanning = false; });
 
-    // Mouse wheel zoom
     body.addEventListener('wheel', (e) => {
       e.preventDefault();
       const delta = e.deltaY < 0 ? 0.2 : -0.2;
@@ -251,7 +266,6 @@ function initLightbox() {
     }, { passive: false });
   }
 
-  // Keyboard support (ESC to exit)
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeLightbox();
@@ -259,91 +273,137 @@ function initLightbox() {
     }
   });
 
-  // Background click to close
   modal.addEventListener('click', (e) => {
-    if (e.target === modal || e.target === body) {
-      closeLightbox();
-    }
+    if (e.target === modal || e.target === body) closeLightbox();
   });
 }
 
 /* -------------------------------------------------------------
-   7. Interactive LoRa Chirp & SNR Simulator (Canvas + Web Audio)
+   8. Interactive Ultra-Low SNR & Denoise-then-Sync Lab
 ------------------------------------------------------------- */
 let audioCtx = null;
 let chirpOsc = null;
 let chirpGain = null;
 
+function seededRand(seed) {
+  let x = Math.sin(seed * 9301 + 49297) * 233280;
+  return x - Math.floor(x);
+}
+
+function redrawCurrentSimulation() {
+  const slider = document.getElementById('snr-slider');
+  const sfSelect = document.getElementById('sf-select');
+  const offsetChk = document.getElementById('offset-toggle');
+  const denoiserChk = document.getElementById('denoiser-toggle');
+  if (!slider) return;
+  drawDualSimulation(
+    parseFloat(slider.value),
+    parseInt(sfSelect?.value || '7', 10),
+    offsetChk ? offsetChk.checked : true,
+    denoiserChk ? denoiserChk.checked : false
+  );
+}
+
 function initSnrSimulator() {
   const slider = document.getElementById('snr-slider');
   const sfSelect = document.getElementById('sf-select');
+  const offsetChk = document.getElementById('offset-toggle');
+  const denoiserChk = document.getElementById('denoiser-toggle');
   const snrVal = document.getElementById('snr-display-val');
-  const statusBadge = document.getElementById('snr-regime-badge');
-  const conventionalStatus = document.getElementById('conventional-status');
-  const mlStatus = document.getElementById('ml-status');
+  const regimeBadge = document.getElementById('snr-regime-badge');
+  const convStatus = document.getElementById('conventional-status');
+  const syncStatus = document.getElementById('sync-status');
+  const pmrStatus = document.getElementById('pmr-status');
   const playBtn = document.getElementById('play-chirp-btn');
 
   if (!slider) return;
 
+  const limits = { 7: -7.5, 8: -10.0, 9: -12.5, 10: -15.0, 11: -17.5, 12: -20.0 };
+
   const updateSim = () => {
     const snr = parseFloat(slider.value);
-    const sf = parseInt(sfSelect.value);
+    const sf = parseInt(sfSelect.value, 10);
+    const hasOffset = offsetChk ? offsetChk.checked : true;
+    const denoiserOn = denoiserChk ? denoiserChk.checked : false;
+
     if (snrVal) snrVal.innerText = `${snr > 0 ? '+' : ''}${snr.toFixed(1)} dB`;
 
-    // Semtech nominal limits
-    const limits = {
-      7: -7.5,
-      8: -10.0,
-      9: -12.5,
-      10: -15.0,
-      11: -17.5,
-      12: -20.0
-    };
     const limit = limits[sf] || -7.5;
-
-    // Evaluate regime
-    if (snr >= limit + 2) {
-      statusBadge.className = 'sim-status status-normal';
-      statusBadge.innerText = 'Standard LoRa Region (High SNR)';
-      if (conventionalStatus) conventionalStatus.innerText = '✅ 100% Success (Standard Dechirp)';
-      if (mlStatus) mlStatus.innerText = 'Optimal (Standard Processing)';
-    } else if (snr >= limit) {
-      statusBadge.className = 'sim-status status-limit';
-      statusBadge.innerText = 'Demodulation Limit Border';
-      if (conventionalStatus) conventionalStatus.innerText = '⚠️ Degraded (~40-70% Packet Loss)';
-      if (mlStatus) mlStatus.innerText = 'High Confidence Boost';
+    if (snr >= limit) {
+      regimeBadge.className = 'sim-status status-normal';
+      regimeBadge.innerText = 'Standard Region';
+    } else if (snr >= -15.0) {
+      regimeBadge.className = 'sim-status status-limit';
+      regimeBadge.innerText = 'Below Demod Limit';
     } else {
-      statusBadge.className = 'sim-status status-ultralow';
-      statusBadge.innerText = '🚨 Ultra-Low SNR Region (Below Limit)';
-      if (conventionalStatus) conventionalStatus.innerText = '❌ FAILED (100% Missed / Lost Sync)';
-      if (mlStatus) mlStatus.innerText = '✅ Rescued via Proposed Neural Sync & C-RAN';
+      regimeBadge.className = 'sim-status status-ultralow';
+      regimeBadge.innerText = 'Ultra-Low SNR Regime';
     }
 
-    drawChirpSimulation(snr, sf);
+    const simStats = drawDualSimulation(snr, sf, hasOffset, denoiserOn);
+
+    if (convStatus) {
+      if (snr >= limit && !hasOffset) {
+        convStatus.innerText = 'Locked (Conventional OK)';
+        convStatus.style.color = 'var(--accent-emerald)';
+      } else if (!denoiserOn && snr <= -16) {
+        convStatus.innerText = `False Peak @ Bin ${simStats.argmaxBin}`;
+        convStatus.style.color = 'var(--accent-crimson)';
+      } else if (denoiserOn && snr >= -20) {
+        convStatus.innerText = `True Peak @ Bin ${simStats.trueBin}`;
+        convStatus.style.color = 'var(--accent-emerald)';
+      } else {
+        convStatus.innerText = `Bin ${simStats.argmaxBin}`;
+        convStatus.style.color = 'var(--accent-amber)';
+      }
+    }
+
+    if (syncStatus) {
+      if (denoiserOn && snr >= -19.5) {
+        syncStatus.innerText = 'Denoise-then-Sync Locked';
+        syncStatus.style.color = 'var(--accent-emerald)';
+      } else if (!denoiserOn && hasOffset && snr <= -16.5) {
+        syncStatus.innerText = 'Stage 2 Sync Breakdown';
+        syncStatus.style.color = 'var(--accent-crimson)';
+      } else if (snr >= -15.5) {
+        syncStatus.innerText = 'Analytical Sync OK';
+        syncStatus.style.color = 'var(--accent-blue)';
+      } else {
+        syncStatus.innerText = 'Submerged in AWGN';
+        syncStatus.style.color = 'var(--accent-amber)';
+      }
+    }
+
+    if (pmrStatus) {
+      pmrStatus.innerText = `${simStats.pmr.toFixed(2)}× (${simStats.pmrDb >= 0 ? '+' : ''}${simStats.pmrDb.toFixed(1)} dB)`;
+    }
   };
 
   slider.addEventListener('input', updateSim);
-  sfSelect.addEventListener('change', updateSim);
-  window.addEventListener('resize', () => drawChirpSimulation());
+  if (sfSelect) sfSelect.addEventListener('change', updateSim);
+  if (offsetChk) offsetChk.addEventListener('change', updateSim);
+  if (denoiserChk) denoiserChk.addEventListener('change', updateSim);
+  window.addEventListener('resize', () => redrawCurrentSimulation());
 
-  // Audio preview toggle
   if (playBtn) {
-    playBtn.addEventListener('click', () => {
-      toggleChirpAudio(parseFloat(slider.value));
-    });
+    playBtn.addEventListener('click', () => toggleChirpAudio(parseFloat(slider.value)));
   }
 
-  // Initial draw
   updateSim();
 }
 
-function drawChirpSimulation(snr = -5, sf = 7) {
+function drawDualSimulation(snr = -19, sf = 7, hasOffset = true, denoiserOn = false) {
+  drawSpectrogramPane(snr, sf, hasOffset, denoiserOn);
+  return drawFftPane(snr, hasOffset, denoiserOn);
+}
+
+function drawSpectrogramPane(snr, sf, hasOffset, denoiserOn) {
   const canvas = document.getElementById('chirp-canvas');
   if (!canvas) return;
-
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
+  if (rect.width === 0) return;
 
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
@@ -351,85 +411,186 @@ function drawChirpSimulation(snr = -5, sf = 7) {
 
   const w = rect.width;
   const h = rect.height;
+  const isLight = document.documentElement.getAttribute('data-theme') !== 'dark';
 
-  // Background
-  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   ctx.fillStyle = isLight ? '#f8fafc' : '#080c14';
   ctx.fillRect(0, 0, w, h);
 
-  // Grid lines
-  ctx.strokeStyle = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+  // Subtle grid
+  ctx.strokeStyle = isLight ? 'rgba(15,23,42,0.06)' : 'rgba(255,255,255,0.06)';
   ctx.lineWidth = 1;
-  for (let x = 0; x < w; x += 40) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, h);
-    ctx.stroke();
+  for (let x = 0; x < w; x += w / 6) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
   }
-  for (let y = 0; y < h; y += 30) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(w, y);
-    ctx.stroke();
+  for (let y = 0; y < h; y += h / 4) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
   }
 
-  // Calculate noise amplitude based on SNR (dB = 10 * log10(P_sig / P_noise))
-  // Linear noise power ratio:
-  const snrLinear = Math.pow(10, snr / 10);
-  const signalAmp = 45;
-  const noiseAmp = signalAmp / Math.sqrt(Math.max(snrLinear, 0.001));
+  // Noise intensity (dramatically suppressed when denoiser is ON)
+  const effectiveSnr = denoiserOn ? Math.min(10, snr + 22) : snr;
+  const snrLinear = Math.pow(10, effectiveSnr / 10);
+  const noiseLevel = 1 / Math.sqrt(Math.max(snrLinear, 0.002));
+  const noiseDots = Math.min(3200, Math.floor(noiseLevel * 240));
 
-  // 1. Draw Noise Scatter / Background
-  const noiseCount = Math.min(2500, Math.floor(w * (noiseAmp / 12)));
-  ctx.fillStyle = isLight ? 'rgba(100, 116, 139, 0.35)' : 'rgba(148, 163, 184, 0.25)';
-  for (let i = 0; i < noiseCount; i++) {
-    const nx = Math.random() * w;
-    const ny = Math.random() * h;
-    const nsize = Math.random() * 2 + 0.5;
-    ctx.fillRect(nx, ny, nsize, nsize);
+  ctx.fillStyle = isLight ? 'rgba(100, 116, 139, 0.45)' : 'rgba(148, 163, 184, 0.42)';
+  for (let i = 0; i < noiseDots; i++) {
+    const nx = seededRand(i * 1.3 + snr) * w;
+    const ny = seededRand(i * 2.7 + sf) * h;
+    const sz = 1.2 + seededRand(i) * 1.4;
+    ctx.fillRect(nx, ny, sz, sz);
   }
 
-  // 2. Draw Chirp Trajectory (Upchirp frequency ramp)
+  // Chirp visibility alpha
+  const chirpAlpha = denoiserOn
+    ? 0.96
+    : Math.max(0.14, Math.min(0.98, (snr + 24) / 20));
+
+  const marginX = 16;
+  const marginY = 22;
+  const usableW = w - marginX * 2;
+  const usableH = h - marginY * 2;
+  const cfoShiftY = hasOffset ? -11 : 0;
+  const stoShiftX = hasOffset ? 10 : 0;
+
+  // Draw 3 preamble up-chirps + 1 SFD down-chirp
+  const segW = usableW / 4.2;
   ctx.save();
-  ctx.lineWidth = 3.5;
+  ctx.lineWidth = denoiserOn ? 3.2 : 2.8;
   ctx.lineCap = 'round';
-  ctx.shadowBlur = snr > -10 ? 12 : 3;
-  ctx.shadowColor = '#38bdf8';
-  ctx.strokeStyle = isLight ? '#0284c7' : '#38bdf8';
 
-  // Chirp sweeps from bottom (f_min) to top (f_max) across width
-  const marginX = 20;
-  const marginY = 20;
-  const chirpW = w - marginX * 2;
-  const chirpH = h - marginY * 2;
-
-  ctx.beginPath();
-  for (let i = 0; i <= 200; i++) {
-    const t = i / 200;
-    const cx = marginX + t * chirpW;
-    // Linear chirp instantaneous frequency ramp
-    let cy = (h - marginY) - t * chirpH;
-
-    // Add noise disturbance if SNR is low
-    if (noiseAmp > 20) {
-      cy += (Math.random() - 0.5) * Math.min(noiseAmp * 0.4, 25);
-    }
-
-    if (i === 0) ctx.moveTo(cx, cy);
-    else ctx.lineTo(cx, cy);
+  for (let c = 0; c < 3; c++) {
+    ctx.strokeStyle = isLight
+      ? `rgba(37, 99, 235, ${chirpAlpha})`
+      : `rgba(56, 189, 248, ${chirpAlpha})`;
+    const x0 = marginX + stoShiftX + c * segW;
+    const x1 = x0 + segW * 0.92;
+    ctx.beginPath();
+    ctx.moveTo(x0, h - marginY + cfoShiftY);
+    ctx.lineTo(x1, marginY + cfoShiftY);
+    ctx.stroke();
   }
+
+  // SFD Down-chirp
+  ctx.strokeStyle = isLight
+    ? `rgba(220, 38, 38, ${chirpAlpha})`
+    : `rgba(248, 113, 113, ${chirpAlpha})`;
+  const dx0 = marginX + stoShiftX + 3 * segW;
+  const dx1 = dx0 + segW * 0.92;
+  ctx.beginPath();
+  ctx.moveTo(dx0, marginY + cfoShiftY);
+  ctx.lineTo(dx1, h - marginY + cfoShiftY);
   ctx.stroke();
   ctx.restore();
 
-  // Labels
-  ctx.fillStyle = isLight ? '#64748b' : '#94a3b8';
-  ctx.font = '11px JetBrains Mono, monospace';
-  ctx.fillText('f_max (B/2)', marginX, marginY - 4);
-  ctx.fillText('f_min (-B/2)', marginX, h - 6);
-  ctx.fillText('CSS Upchirp Symbol [0]', w - 160, h - 6);
+  ctx.fillStyle = isLight ? '#334155' : '#94a3b8';
+  ctx.font = '600 11px JetBrains Mono, monospace';
+  ctx.fillText('Preamble Up-Chirps (Blue) + SFD Down-Chirp (Red)', 10, h - 7);
 }
 
-function toggleChirpAudio(snr) {
+function drawFftPane(snr, hasOffset, denoiserOn) {
+  const canvas = document.getElementById('fft-canvas');
+  if (!canvas) return { trueBin: 42, argmaxBin: 42, pmr: 1, pmrDb: 0 };
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width === 0) return { trueBin: 42, argmaxBin: 42, pmr: 1, pmrDb: 0 };
+
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+
+  const w = rect.width;
+  const h = rect.height;
+  const isLight = document.documentElement.getAttribute('data-theme') !== 'dark';
+
+  ctx.fillStyle = isLight ? '#f8fafc' : '#080c14';
+  ctx.fillRect(0, 0, w, h);
+
+  const N = 128;
+  const trueBin = 42;
+  const effSnr = denoiserOn ? Math.min(12.0, snr + 22.0) : snr;
+  const snrLin = Math.pow(10, effSnr / 10);
+  // Coherent FFT processing gain scaled across 128 bins
+  const sigAmp = Math.sqrt(snrLin * 110);
+  const mags = new Array(N);
+
+  for (let k = 0; k < N; k++) {
+    const noiseBase = 0.25 + 0.72 * seededRand(k * 7.13 + Math.round(snr * 2) * 3.1);
+    const spikeBoost = (!denoiserOn && k === 101 && snr <= -15) ? 0.52 : 0;
+    const dist = Math.abs(k - trueBin);
+    const leak = hasOffset && !denoiserOn
+      ? (dist === 0 ? 0.68 : dist === 1 ? 0.34 : 0)
+      : (dist === 0 ? 1.0 : dist === 1 ? 0.25 : 0);
+    mags[k] = noiseBase + spikeBoost + sigAmp * leak;
+  }
+
+  const maxVal = Math.max(...mags);
+  const sorted = [...mags].sort((a, b) => a - b);
+  const medianVal = sorted[Math.floor(N / 2)] || 1;
+  let argmaxBin = 0;
+  for (let k = 1; k < N; k++) {
+    if (mags[k] > mags[argmaxBin]) argmaxBin = k;
+  }
+
+  const pmr = mags[trueBin] / medianVal;
+  const pmrDb = 20 * Math.log10(Math.max(pmr, 0.01));
+
+  // Grid
+  ctx.strokeStyle = isLight ? 'rgba(15,23,42,0.06)' : 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  for (let y = 20; y < h - 24; y += 35) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+  }
+
+  const padX = 16;
+  const padTop = 24;
+  const padBot = 24;
+  const plotW = w - padX * 2;
+  const plotH = h - padTop - padBot;
+
+  // Plot FFT magnitude trace
+  ctx.beginPath();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = denoiserOn
+    ? (isLight ? '#059669' : '#34d399')
+    : (isLight ? '#334155' : '#94a3b8');
+
+  for (let k = 0; k < N; k++) {
+    const px = padX + (k / (N - 1)) * plotW;
+    const py = h - padBot - (mags[k] / maxVal) * plotH;
+    if (k === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // Highlight true bin 42
+  const tx = padX + (trueBin / (N - 1)) * plotW;
+  const ty = h - padBot - (mags[trueBin] / maxVal) * plotH;
+  ctx.fillStyle = '#059669';
+  ctx.beginPath();
+  ctx.arc(tx, ty, 4.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Highlight argmax if wrong
+  if (argmaxBin !== trueBin) {
+    const ax = padX + (argmaxBin / (N - 1)) * plotW;
+    const ay = h - padBot - (mags[argmaxBin] / maxVal) * plotH;
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath();
+    ctx.arc(ax, ay, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.fillStyle = isLight ? '#334155' : '#94a3b8';
+  ctx.font = '600 11px JetBrains Mono, monospace';
+  ctx.fillText(`Bin 0`, padX, h - 7);
+  ctx.fillText(`True Bin 42 | argmax: ${argmaxBin}`, w * 0.28, h - 7);
+  ctx.fillText(`127`, w - 34, h - 7);
+
+  return { trueBin, argmaxBin, pmr, pmrDb };
+}
+
+function toggleChirpAudio() {
   const btn = document.getElementById('play-chirp-btn');
   if (!btn) return;
 
@@ -437,67 +598,57 @@ function toggleChirpAudio(snr) {
     chirpOsc.stop();
     chirpOsc.disconnect();
     chirpOsc = null;
-    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Listen Chirp Tone`;
+    btn.innerText = 'Listen Chirp';
     return;
   }
 
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!audioCtx) audioCtx = new AudioContext();
-
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 
     chirpOsc = audioCtx.createOscillator();
     chirpGain = audioCtx.createGain();
 
     const now = audioCtx.currentTime;
-    chirpOsc.type = 'sawtooth';
-    // Frequency ramp up (400 Hz to 2400 Hz) to simulate chirp
-    chirpOsc.frequency.setValueAtTime(400, now);
-    chirpOsc.frequency.exponentialRampToValueAtTime(2400, now + 0.35);
+    chirpOsc.type = 'sine';
+    chirpOsc.frequency.setValueAtTime(420, now);
+    chirpOsc.frequency.exponentialRampToValueAtTime(2200, now + 0.35);
 
-    // Fade in and out
     chirpGain.gain.setValueAtTime(0.01, now);
-    chirpGain.gain.linearRampToValueAtTime(0.12, now + 0.05);
+    chirpGain.gain.linearRampToValueAtTime(0.1, now + 0.05);
     chirpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
 
     chirpOsc.connect(chirpGain);
     chirpGain.connect(audioCtx.destination);
-
     chirpOsc.start(now);
     chirpOsc.stop(now + 0.36);
 
-    btn.innerHTML = `🔊 Playing Chirp...`;
-
+    btn.innerText = 'Playing...';
     chirpOsc.onended = () => {
       chirpOsc = null;
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Listen Chirp Tone`;
+      btn.innerText = 'Listen Chirp';
     };
   } catch (e) {
-    console.warn('Web Audio not allowed or failed:', e);
-    showToast('Audio playback not supported in this browser.');
+    showToast('Audio playback unavailable in this browser.');
   }
 }
 
 /* -------------------------------------------------------------
-   8. SOTA Filter & Search
+   9. SOTA Filter & Search
 ------------------------------------------------------------- */
 function initSotaFilter() {
   const filterBtns = document.querySelectorAll('.sota-filter-btn');
   const cards = document.querySelectorAll('.sota-card');
   const searchInput = document.getElementById('sota-search');
 
-  if (filterBtns.length === 0 || cards.length === 0) return;
+  if (!filterBtns.length || !cards.length) return;
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
-      const filter = btn.getAttribute('data-filter');
-      applyFilterAndSearch(filter, searchInput ? searchInput.value.toLowerCase() : '');
+      applyFilter(btn.getAttribute('data-filter'), searchInput ? searchInput.value.toLowerCase() : '');
     });
   });
 
@@ -505,29 +656,23 @@ function initSotaFilter() {
     searchInput.addEventListener('input', (e) => {
       const activeBtn = document.querySelector('.sota-filter-btn.active');
       const filter = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
-      applyFilterAndSearch(filter, e.target.value.toLowerCase());
+      applyFilter(filter, e.target.value.toLowerCase());
     });
   }
 
-  function applyFilterAndSearch(filter, search) {
+  function applyFilter(filter, search) {
     cards.forEach(card => {
       const cat = card.getAttribute('data-category') || '';
       const text = card.innerText.toLowerCase();
-
-      const matchesCat = (filter === 'all') || (cat.includes(filter));
-      const matchesSearch = !search || text.includes(search);
-
-      if (matchesCat && matchesSearch) {
-        card.style.display = 'flex';
-      } else {
-        card.style.display = 'none';
-      }
+      const matchCat = filter === 'all' || cat.includes(filter);
+      const matchSearch = !search || text.includes(search);
+      card.style.display = matchCat && matchSearch ? 'flex' : 'none';
     });
   }
 }
 
 /* -------------------------------------------------------------
-   9. Citation Modal & Copy BibTeX
+   10. Citation Modal & Copy Helpers
 ------------------------------------------------------------- */
 function initCitationModal() {
   const openBtns = document.querySelectorAll('.open-citation-modal');
@@ -537,9 +682,7 @@ function initCitationModal() {
   const bibtexContent = document.getElementById('bibtex-code');
 
   openBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (modal) modal.classList.add('active');
-    });
+    btn.addEventListener('click', () => { if (modal) modal.classList.add('active'); });
   });
 
   if (closeBtn && modal) {
@@ -552,24 +695,19 @@ function initCitationModal() {
   if (copyBtn && bibtexContent) {
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(bibtexContent.innerText.trim()).then(() => {
-        showToast('✅ BibTeX citation copied to clipboard!');
+        showToast('BibTeX citation copied to clipboard.');
         copyBtn.innerText = 'Copied!';
-        setTimeout(() => {
-          copyBtn.innerText = 'Copy BibTeX';
-        }, 2000);
+        setTimeout(() => { copyBtn.innerText = 'Copy BibTeX'; }, 2000);
       });
     });
   }
 
-  // Handle individual reference copy buttons
   document.querySelectorAll('.copy-ref-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const refItem = btn.closest('.ref-item');
-      const text = refItem ? refItem.querySelector('.ref-text')?.innerText : '';
+      const text = refItem?.querySelector('.ref-text')?.innerText;
       if (text) {
-        navigator.clipboard.writeText(text).then(() => {
-          showToast('Citation copied!');
-        });
+        navigator.clipboard.writeText(text).then(() => showToast('Reference copied to clipboard.'));
       }
     });
   });
@@ -580,9 +718,6 @@ function closeCitationModal() {
   if (modal) modal.classList.remove('active');
 }
 
-/* -------------------------------------------------------------
-   10. Toast Feedback Helper
-------------------------------------------------------------- */
 function showToast(message) {
   let toast = document.getElementById('site-toast');
   if (!toast) {
@@ -591,17 +726,13 @@ function showToast(message) {
     toast.className = 'toast';
     document.body.appendChild(toast);
   }
-
-  toast.innerHTML = message;
+  toast.innerText = message;
   toast.classList.add('show');
-
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 2800);
+  setTimeout(() => toast.classList.remove('show'), 2600);
 }
 
 /* -------------------------------------------------------------
-   11. Mathematical Formula Rendering (KaTeX Auto-Render)
+   11. KaTeX Math Auto-Render
 ------------------------------------------------------------- */
 function initMathRendering() {
   const tryRender = () => {
@@ -620,19 +751,12 @@ function initMathRendering() {
     return false;
   };
 
-  // Attempt render immediately
   if (!tryRender()) {
-    // If KaTeX CDN is still downloading, retry on window load
-    window.addEventListener('load', () => {
-      tryRender();
-    });
-    // Fallback polling up to 2 seconds
+    window.addEventListener('load', () => tryRender());
     let attempts = 0;
     const interval = setInterval(() => {
       attempts++;
-      if (tryRender() || attempts > 10) {
-        clearInterval(interval);
-      }
+      if (tryRender() || attempts > 12) clearInterval(interval);
     }, 200);
   }
 }
